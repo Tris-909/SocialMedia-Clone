@@ -38,16 +38,43 @@ app.get('/posts', (req, res) => {
     .catch(err => console.log(err));
 })
 
-app.post('/posts', (request, res) => {    
-    const newPosts = {
-        body: request.body.body,
-        userHandle: request.body.userHandle,
+const FBAuth = (req, res, next) => {
+    let idToken;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        idToken = req.headers.authorization.split('Bearer ')[1];
+    } else {
+        console.log("No token found");
+        return res.status(403).json({ error: 'UnAuthorized'});
+    }
+
+    admin.auth().verifyIdToken(idToken)
+        .then(decodedToken => {
+            req.user = decodedToken;
+            console.log(decodedToken);
+            return db.collection('users').where('userID', '==', req.user.uid).limit(1).get();
+        })
+        .then(data => {
+            req.user.handle = data.docs[0].data().handle;
+            return next();
+        })
+        .catch(err => {
+            console.error('Error while verifying token', err);
+            return res.status(403).json(err);
+        })
+}
+// 1:31:11 got stuck on FBAuth                                                
+app.post('/post', FBAuth, (req, res ) => {    
+    if (req.body.body.trim() === '') {
+        return res.status(400).json({ body: 'Body must not be empty' });
+    }
+    
+    const newPosts = {  
+        body: req.body.body,
+        userHandle: req.user.handle,
         createdTime: new Date().toISOString()
     };
     
-    db
-        .collection('posts')
-        .orderBy('createdAt', 'desc')
+    db.collection('posts')
         .add(newPosts)
         .then((doc) => {
             res.json({message: `document ${doc.id} created successfully`});
@@ -167,7 +194,7 @@ app.post('/login', (req, res) => {
         if (err.code === "auth/wrong-password") {
             return res.status(403).json({general: 'Wrong Credentials, please try again'});
         } else {
-            return res.status(500).json({error: err.code});
+            return res.status(500).json({error: err.code}); 
         }
     });
 });
