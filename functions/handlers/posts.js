@@ -13,7 +13,8 @@ exports.getAllPosts = (req, res) => {
                 userHandle: doc.data().userHandle,
                 createdTime: doc.data().createdTime,
                 commentCount: doc.data().commentCount,
-                likeCount: doc.data().likeCount
+                likeCount: doc.data().likeCount,
+                userImage: doc.data().userImage
             });
         });
         return res.json(posts);
@@ -78,7 +79,7 @@ exports.getPost = (req, res) => {
 
 exports.commentOnPost = (req, res) => {
     if (req.body.body.trim() === '') {
-        return res.status(400).json({error: 'Command must not be empty'});
+        return res.status(400).json({ comment: 'Command must not be empty'});
     }
 
     const newComment = {
