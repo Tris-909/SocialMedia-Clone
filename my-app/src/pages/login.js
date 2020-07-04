@@ -9,7 +9,28 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
-import { theme } from '../App';
+
+const CssTextField = withStyles({
+    root: {
+      '& label.Mui-focused': {
+        color: '#33312a',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: '#33312a',
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#33312a',
+        },
+        '&:hover fieldset': {
+          borderColor: '#33312a',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#33312a',
+        },
+      },
+    },
+  })(TextField);
 
 const styles = {
     form: {
@@ -29,7 +50,7 @@ const styles = {
         }
     },
     TextField: {
-        margin: '1.5em 0em 1em 0em'
+        margin: '1.5em 0em 1em 0em',
     },
     customError: {
         color: '#e02702',
@@ -42,7 +63,13 @@ const styles = {
         fontSize: '1rem'
     },
     input: {
-        color: '#33312a'
+        color: '#33312a',
+        '&:focus' : {
+            color: '#33312a'
+        },
+        '&:actived' : {
+            color: '#33312a'
+        }
     },
     textfieldFocus: {
         color:  '#33312a'
@@ -79,7 +106,10 @@ export class login extends Component {
         }
         axios.post('/login', userData)
             .then(res => {
+                localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
+                console.log(`${res.data.token}`);
                 this.setState({loading: false});
+                console.log(this.props);
                 this.props.history.push('/');
             })
             .catch(err => {
@@ -102,7 +132,7 @@ export class login extends Component {
                         Login
                     </Typography>
                     <form noValidate onSubmit={this.handlerSubmit}>
-                        <TextField 
+                        <CssTextField 
                             id="email" 
                             name="email" 
                             type="email" 
@@ -112,12 +142,11 @@ export class login extends Component {
                             fullWidth 
                             onChange={this.handlerChange} 
                             value={this.state.email} 
-                            className={classes.TextField} 
+                            className={classes.TextField}
                             InputProps={{
-                                className: classes.input,
-                                onFocus: classes.textfieldFocus
+                                className: classes.input
                             }} />
-                        <TextField 
+                        <CssTextField 
                             id="password" 
                             name="password" 
                             type="password" 
@@ -127,9 +156,9 @@ export class login extends Component {
                             fullWidth 
                             onChange={this.handlerChange} 
                             value={this.state.password} 
+                            autoFocus
                             InputProps={{
                                 className: classes.input,
-                                onFocus: classes.textfieldFocus
                             }} />
                         {error.general && (<Typography variant="body2" className={classes.customError}>{error.general}</Typography>)}
                         <Button 
