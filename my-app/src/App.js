@@ -32,6 +32,9 @@ export const theme = createMuiTheme({
       colorPrimary: {
         backgroundColor: '#33312a'
       }
+    },
+    containedPrimary	: {
+        backgroundColor: '#33312a'
     }
   }
 })

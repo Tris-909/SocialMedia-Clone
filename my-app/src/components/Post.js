@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+// Mui Stuff
 import withStyles from '@material-ui/core/styles/withStyles';
 import {Link} from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const styles = makeStyles((theme) => ({
     card: {
         display: 'flex',
         marginBottom: '2em',
@@ -27,18 +30,18 @@ const useStyles = makeStyles((theme) => ({
 
 export class Post extends Component {
     render() {    
+        dayjs.extend(relativeTime);
         // eslint-disable-next-line
         const {classes, post : { body, createdTime, userImage, userHandle, postID, likeCount, commentCount} } = this.props;
         return (
-            <Card className={classes.card} style={{display: 'flex', alignItems: "center", marginTop: '3em'}}>
+            <Card className={classes.card} style={{display: 'flex', alignItems: "center", marginTop: '2em'}}>
                 <Avatar alt="user avatar" src={userImage} style={{width: "5em", height: '5em', margin: '1em'}}/>
-                {/* <CardMedia image={userImage} title="Profile Image" className={classes.image} /> */}
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component={Link} color="primary" to={`/users/${userHandle}`}>
                         {userHandle}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                        {createdTime}
+                        {dayjs(createdTime).fromNow()}
                     </Typography>
                     <Typography variant="body1">
                         {body}
@@ -49,4 +52,4 @@ export class Post extends Component {
     }
 }
 
-export default withStyles(useStyles)(Post);
+export default withStyles(styles)(Post);
