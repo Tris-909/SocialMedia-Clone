@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
@@ -92,9 +91,10 @@ export class login extends Component {
         password: '',
         error: {}
     }
+
     componentWillReceiveProps(nextsProps){
         if (nextsProps.UI.errors) {
-            this.setState({ errors: nextsProps.UI.errors});
+            this.setState({ error: nextsProps.UI.errors});
         }
     }
 
