@@ -54,6 +54,7 @@ exports.reduceUserDetails = (data) => {
     let userDetails = {};
 
     if (!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
+    if (!isEmpty(data.birth.trim())) userDetails.birth = data.birth;
     if (!isEmpty(data.website.trim())) {
         if (data.website.trim().substring(0, 4) !== "http") {
             userDetails.website = `https://${data.website.trim()}`;

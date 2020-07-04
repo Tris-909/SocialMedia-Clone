@@ -15,7 +15,7 @@ const styles = makeStyles((theme) => ({
     card: {
         display: 'flex',
         marginBottom: '2em',
-        marginTop: '3em',
+        marginTop: '1em',
         alignItems: "center"
     },
     large: {
@@ -34,7 +34,7 @@ export class Post extends Component {
         // eslint-disable-next-line
         const {classes, post : { body, createdTime, userImage, userHandle, postID, likeCount, commentCount} } = this.props;
         return (
-            <Card className={classes.card} style={{display: 'flex', alignItems: "center", marginTop: '2em'}}>
+            <Card className={classes.card} style={{display: 'flex', alignItems: "center", marginTop: '1em'}}>
                 <Avatar alt="user avatar" src={userImage} style={{width: "5em", height: '5em', margin: '1em'}}/>
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component={Link} color="primary" to={`/users/${userHandle}`}>

@@ -158,7 +158,7 @@ export class login extends Component {
                             type="submit" 
                             variant="contained" 
                             className={classes.submitButton}>
-                                {loading ? <CircularProgress /> : "Submit"}
+                                {loading ? <CircularProgress color="white"/> : "Submit"}
                         </Button>
                     </form>
                     <br />
