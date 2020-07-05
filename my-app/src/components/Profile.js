@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import dayjs from 'dayjs';
+import EditDetails from '../components/EditDetails';
 
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
@@ -35,6 +36,7 @@ const styles = {
     },
     link: {
         color:  '#33312a',
+        margin: '1em',
         textDecoration: 'underline',
         '&:visited': {
             color:  '#33312a'
@@ -54,7 +56,7 @@ class Profile extends Component {
         fileInput.click();
     };
     render() {
-        const {classes, profileData: {bio, website, location, email, handle, imageUrl, birth} } = this.props;
+        const {classes, profileData: {bio, website, insta, linkedIn ,location, email, handle, imageUrl, birth} } = this.props;
         let birthDate = null;
         if (birth !== undefined) {
             const date = (dayjs.unix(birth._seconds).$D).toString();
@@ -86,12 +88,45 @@ class Profile extends Component {
                             {bio}
                         </Typography>
                     </Grid>
-                    <Grid item>
-                        <Typography variant="h5" className={classes.itemMargin}>
-                            <a href={`${website}`} target="_blank" className={classes.link}>
-                                <i className="fab fa-facebook-f"></i>
-                            </a>
-                        </Typography>
+                    <Grid item container direction="row" alignItems="center" justify="center">
+                        
+                        {website ? 
+                        (
+                            <Grid item>
+                            <Typography variant="h5" className={classes.itemMargin}>
+                                <a href={`${website}`} target="_blank" className={classes.link}>
+                                    <i className="fab fa-facebook-f"></i>
+                                </a>
+                            </Typography>
+                            </Grid>
+                        ) : null }
+
+                        {insta ? 
+                        (
+                            <Grid item>
+                            <Typography variant="h5" className={classes.itemMargin}>
+                                <a href={`${insta}`} target="_blank" className={classes.link}>
+                                    <i className="fab fa-instagram"></i>
+                                </a>
+                            </Typography>
+                            </Grid>
+                        )
+                        : null }
+
+                        {linkedIn ? 
+                        (
+                            <Grid item>
+                            <Typography variant="h5" className={classes.itemMargin}>
+                                <a href={`${linkedIn}`} target="_blank" className={classes.link}>
+                                    <i className="fab fa-linkedin-in"></i>
+                                </a>
+                            </Typography>
+                            </Grid>
+                        ) 
+                        : null
+                        }
+
+                        <EditDetails />
                     </Grid>
                 </Grid>
             </Card>

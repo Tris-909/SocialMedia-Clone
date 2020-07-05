@@ -5,7 +5,7 @@ const isEmail = (email) => {
 }
 
 const isEmpty = (string) => {
-    if (string.trim() === '') return true; 
+    if (string === '') return true; 
     else return false;
 }
 
@@ -33,6 +33,14 @@ exports.validateSignUpData = (data) => {
     }
 }
 
+const isNotEmpty = (string) => {
+    if (string !== '') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 exports.validateLogInData = (data) => {
     let errors = {};
 
@@ -50,19 +58,14 @@ exports.validateLogInData = (data) => {
     }
 }
 
+
+
 exports.reduceUserDetails = (data) => {
     let userDetails = {};
-
-    if (!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
-    if (!isEmpty(data.birth.trim())) userDetails.birth = data.birth;
-    if (!isEmpty(data.website.trim())) {
-        if (data.website.trim().substring(0, 4) !== "http") {
-            userDetails.website = `https://${data.website.trim()}`;
-        } else {
-            userDetails.website = data.website;
-        }
-    }
-    if (!isEmpty(data.location.trim())) userDetails.location = data.location;
-
+    if (isNotEmpty(data.bio)) userDetails.bio = data.bio;
+    if (data.website !== undefined) userDetails.website = data.website;
+    if (data.insta !== undefined) userDetails.insta = data.insta;
+    if (data.linkedIn !== undefined) userDetails.linkedIn = data.linkedIn;
+    // if (!isEmpty(data.location.trim())) userDetails.location = data.location;
     return userDetails;
 }

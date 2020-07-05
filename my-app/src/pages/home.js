@@ -14,7 +14,6 @@ class home extends Component {
     componentDidMount(){
         axios.get(`/posts`)
             .then(res => {
-                console.log(res);
                 this.setState({
                     posts: res.data
                 })
@@ -27,11 +26,11 @@ class home extends Component {
             this.state.posts.map(post => <Post key={post.postID} post={post} />)
         ) : <p>Loading...</p>;
         return (
-            <Grid container>
-                <Grid item sm={4} xs={12}>
-                    <Profile profileData = {this.props.user.credentials}/>
+            <Grid container alignItems={this.props.user.authenticated ? null : "center"}>
+                <Grid item sm={this.props.user.authenticated ? 4 : 0} xs={12}>
+                    {this.props.user.authenticated ? <Profile profileData = {this.props.user.credentials}/> : null}
                 </Grid>
-                <Grid item sm={5} xs={12}>
+                <Grid item sm={this.props.user.authenticated ? 5 : 6} xs={12}>
                     {recentPostsMarkUp}
                 </Grid>
             </Grid>
