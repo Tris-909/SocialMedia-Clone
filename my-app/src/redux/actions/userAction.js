@@ -11,6 +11,7 @@ export const loginUser = (userData, history) => (dispatch) => {
         dispatch(getUserData());
         dispatch({type: CLEAR_ERRORS});
         history.push('/');
+        setTimeout(window.location.reload(),2);
     })
     .catch(err => {
         dispatch({
@@ -43,6 +44,7 @@ export const logoutUser = () => (dispatch) => {
     localStorage.removeItem('FBIdToken');
     delete axios.defaults.headers.common['Authorization'];
     dispatch({type: SET_UNAUTHENTICATED});
+    setTimeout(window.location.reload(),2);
 }
 
 export const getUserData = () => (dispatch) => {

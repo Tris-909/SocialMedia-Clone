@@ -40,7 +40,7 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <Router>
-        <Navbar/>
+        <Navbar token={token}/>
           <div className="container">
             <Switch>
               <Route exact path="/" component={home} />
