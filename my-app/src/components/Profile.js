@@ -7,6 +7,10 @@ import Card from '@material-ui/core/Card';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+
+import {connect} from 'react-redux';
+import {uploadImage, logoutUser} from '../redux/actions/userAction';
 
 const styles = {
     container: {
@@ -17,7 +21,8 @@ const styles = {
     avatar: {
         height: '8em',
         width: '8em',
-        margin: '1em'
+        margin: '1em',
+        cursor: "pointer"
     },
     Name: {
         color: '#33312a',
@@ -38,6 +43,16 @@ const styles = {
 };
 
 class Profile extends Component {
+    handleImageChange = (event) => {
+        const image = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', image, image.name);
+        this.props.uploadImage(formData);
+    };
+    handleEditImage = () => {
+        const fileInput = document.getElementById('imageInput');
+        fileInput.click();
+    };
     render() {
         const {classes, profileData: {bio, website, location, email, handle, imageUrl, birth} } = this.props;
         let birthDate = null;
@@ -50,8 +65,11 @@ class Profile extends Component {
         return (
             <Card className={classes.container}>
                 <Grid container direction="column" alignItems="center">
-                    <Grid item>
-                        <Avatar alt="your avatar" src={imageUrl} className={classes.avatar}/>
+                    <Grid item style={{position: 'relative'}}>
+                        <Tooltip title="Change Avatar" placement="right-start" className={classes.tooltip}> 
+                            <Avatar alt="your avatar" src={imageUrl} onClick={this.handleEditImage} className={classes.avatar} />
+                        </Tooltip>
+                        <input type="file" hidden id="imageInput" onChange={this.handleImageChange} />
                     </Grid>
                     <Grid item>
                         <Typography variant="h4" color="primary" className={classes.Name} component={Link} to={`/users/${handle}`}>
@@ -71,7 +89,7 @@ class Profile extends Component {
                     <Grid item>
                         <Typography variant="h5" className={classes.itemMargin}>
                             <a href={`${website}`} target="_blank" className={classes.link}>
-                                <i class="fab fa-facebook-f"></i>
+                                <i className="fab fa-facebook-f"></i>
                             </a>
                         </Typography>
                     </Grid>
@@ -81,4 +99,9 @@ class Profile extends Component {
     }
 }
 
-export default withStyles(styles)(Profile);
+const mapActionToProps = {
+    uploadImage,
+    logoutUser
+}
+
+export default connect(null, mapActionToProps)(withStyles(styles)(Profile));
