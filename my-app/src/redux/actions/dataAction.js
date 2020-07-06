@@ -46,10 +46,10 @@ export const unlikePost = (postID) => dispatch => {
 //DELETE A POST
 export const deletePost = (postID) => dispatch => {
     axios.delete(`post/${postID}`)
-        .then(res => {
+        .then(() => {
             dispatch({
                 type: DELETE_POST,
-                payload: res.data
+                payload: postID
             });
             setTimeout(window.location.reload(),2);
         })

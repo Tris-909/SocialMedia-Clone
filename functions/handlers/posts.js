@@ -1,4 +1,6 @@
-const {db} = require('../utilities/admin');
+const {admin, db} = require('../utilities/admin');
+const config = require('../utilities/config');
+
 
 exports.getAllPosts = (req, res) => {
     db.collection('posts')
@@ -14,7 +16,8 @@ exports.getAllPosts = (req, res) => {
                 createdTime: doc.data().createdTime,
                 commentCount: doc.data().commentCount,
                 likeCount: doc.data().likeCount,
-                userImage: doc.data().userImage
+                userImage: doc.data().userImage,
+                imagePostUrl: doc.data().imagePostUrl
             });
         });
         return res.json(posts);
@@ -25,15 +28,63 @@ exports.getAllPosts = (req, res) => {
     });
 }
 
+exports.uploadPostImage = (req, res) => {
+    const BusBoy = require('busboy');
+    const path = require('path');
+    const os = require('os');
+    const fs = require('fs');
+
+    const busboy = new BusBoy({ headers: req.headers });
+
+    let imageFileName;
+    let imageToBeUploaded = {};
+
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+        if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+            return res.status(400).json({ error: 'Wrong file type submitted' });
+        }
+        
+        const imageExtension = filename.split('.')[filename.split('.').length - 1];
+        imageFileName = `${Math.round(Math.random() * 100000000)}.${imageExtension}`; 
+        const filepath = path.join(os.tmpdir(), imageFileName);
+        imageToBeUploaded = { filepath, mimetype };
+        file.pipe(fs.createWriteStream(filepath));
+    });
+
+    busboy.on('finish', () => {
+        admin.storage().bucket().upload(imageToBeUploaded.filepath, {
+            resumable: false,
+            metadata: {
+                metadata: {
+                    contentType: imageToBeUploaded.mimetype
+                }
+            }
+        })
+        .then(() => {
+            const imagePostUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+            return db.doc(`/posts/${req.params.postID}`).update({ imagePostUrl: imagePostUrl });
+        })
+        .then(() => {
+            return res.json({ message: 'Image uploaded Successfully' }); 
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).json({error : err.code});
+        })
+    });
+    busboy.end(req.rawBody);
+}
+
 exports.postOnePost = (req, res ) => {    
     if (req.body.body.trim() === '') {
         return res.status(400).json({ body: 'Body must not be empty' });
     }
-    
+
     const newPosts = {  
         body: req.body.body,
         userHandle: req.user.handle,
         userImage: req.user.imageUrl,
+        postImage: req.user.imagePostUrl,
         createdTime: new Date().toISOString(),
         likeCount: 0,
         commentCount: 0

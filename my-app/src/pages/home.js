@@ -14,9 +14,9 @@ class home extends Component {
     componentDidMount(){
         this.props.getPosts();
     }
-
     render() {
         const { posts, loading } = this.props.data;
+        console.log(posts);
         let recentPostsMarkUp = !loading ? (
             posts.map(post => <Post key={post.postID} post={post} />)
         ) : <p>Loading...</p>;
