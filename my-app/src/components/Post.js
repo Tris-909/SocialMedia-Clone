@@ -55,27 +55,32 @@ const styles = {
 
 export class Post extends Component {
     state = {
-        isLiked: this.props.user.likes && this.props.user.likes.find(like => like.postID === this.props.post.postID)
+        isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID)
     }
     likedPost = () => {
         if (this.props.user.likes && this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
-            return true;
+            this.setState({isLiked: true});
         } else {
-            return false;
+            this.setState({isLiked: false});
         }
     }
     likePost = () => {
         this.props.likePost(this.props.post.postID);
-        this.setState({isLiked: true});
+        this.setState({isLiked: true,  firstTime: false});
     }
     unlikePost = () => {
         this.props.unlikePost(this.props.post.postID);
-        this.setState({isLiked: false});
+        this.setState({isLiked: false,  firstTime: false});
+    }
+
+    componentDidMount() {
+        this.likedPost();
     }
     render() {    
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
         const {classes, post : { body, createdTime, userImage, userHandle, postID, likeCount, commentCount}, user: {authenticated} } = this.props;
+        
         const likeButton = !authenticated ? 
         (
             null
@@ -90,6 +95,7 @@ export class Post extends Component {
             </Button>
             )
         );
+
         return (
         <React.Fragment>
             <Card className={classes.card}>
@@ -114,7 +120,7 @@ export class Post extends Component {
             <Card className={classes.CommentSection}>
                 <Grid item container align="center" direction="row" justify="space-between">
                     <Grid item style={{width: "50%"}}>
-                        {likeButton}
+                        {likeButton} 
                     </Grid> 
                     <Grid item style={{width: "50%"}}>  
                         <Button>

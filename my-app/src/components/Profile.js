@@ -90,7 +90,7 @@ class Profile extends Component {
                         (
                             <Grid item>
                             <Typography variant="h5" className={classes.itemMargin}>
-                                <a href={`${website}`} rel="_blank" className={classes.link}>
+                                <a href={`${website}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
                                     <i className="fab fa-facebook-f"></i>
                                 </a>
                             </Typography>
@@ -101,7 +101,7 @@ class Profile extends Component {
                         (
                             <Grid item>
                             <Typography variant="h5" className={classes.itemMargin}>
-                                <a href={`${insta}`} target="_blank" className={classes.link}>
+                                <a href={`${insta}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
                                     <i className="fab fa-instagram"></i>
                                 </a>
                             </Typography>
@@ -113,7 +113,7 @@ class Profile extends Component {
                         (
                             <Grid item>
                             <Typography variant="h5" className={classes.itemMargin}>
-                                <a href={`${linkedIn}`} target="_blank" className={classes.link}>
+                                <a href={`${linkedIn}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
                                     <i className="fab fa-linkedin-in"></i>
                                 </a>
                             </Typography>
