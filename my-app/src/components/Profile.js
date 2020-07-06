@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import dayjs from 'dayjs';
 import EditDetails from '../components/EditDetails';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -41,6 +40,10 @@ const styles = {
         '&:visited': {
             color:  '#33312a'
         }
+    },
+    editBox: {
+        border: '3px solid #33312a',
+        marginTop: '1em'
     }
 };
 
@@ -57,13 +60,6 @@ class Profile extends Component {
     };
     render() {
         const {classes, profileData: {bio, website, insta, linkedIn ,location, email, handle, imageUrl, birth} } = this.props;
-        let birthDate = null;
-        if (birth !== undefined) {
-            const date = (dayjs.unix(birth._seconds).$D).toString();
-            const month = (dayjs.unix(birth._seconds).$M + 1).toString();
-            const year = (dayjs.unix(birth._seconds).$y).toString();
-            birthDate = `${date}/${month}/${year}`;
-        }
         return (
             <Card className={classes.container}>
                 <Grid container direction="column" alignItems="center">
@@ -80,7 +76,7 @@ class Profile extends Component {
                     </Grid>
                     <Grid item>
                         <Typography variant="body1" className={classes.itemMargin}>
-                            {birthDate}
+                            {birth}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -94,7 +90,7 @@ class Profile extends Component {
                         (
                             <Grid item>
                             <Typography variant="h5" className={classes.itemMargin}>
-                                <a href={`${website}`} target="_blank" className={classes.link}>
+                                <a href={`${website}`} rel="_blank" className={classes.link}>
                                     <i className="fab fa-facebook-f"></i>
                                 </a>
                             </Typography>
@@ -125,7 +121,8 @@ class Profile extends Component {
                         ) 
                         : null
                         }
-
+                    </Grid>
+                    <Grid item className={classes.editBox}>
                         <EditDetails />
                     </Grid>
                 </Grid>

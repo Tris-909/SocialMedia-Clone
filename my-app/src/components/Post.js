@@ -9,33 +9,91 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
-const styles = makeStyles((theme) => ({
+import ChatIcon from '@material-ui/icons/Chat';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+
+import {connect} from 'react-redux';
+import {likePost, unlikePost} from '../redux/actions/dataAction';
+
+const styles = {
     card: {
         display: 'flex',
-        marginBottom: '2em',
         marginTop: '1em',
-        alignItems: "center"
+        alignItems: "center",
+        borderBottomLeftRadius: "0px",
+        borderBottomRightRadius: "0px"
     },
-    large: {
-        width: theme.spacing(7),
-        height: theme.spacing(7),
+    CommentSection: {
+        borderTopLeftRadius: "0px",
+        borderTopRightRadius: "0px"
+    },
+    SecCard: {
+        display: 'flex',
+        alignItems: 'space-between'
     },
     content: {
         padding: '1em',
-        objectFit: 'cover'
+        objectFit: 'cover',
+        width: '100%'
+    },
+    userImage: {
+        width: "5em", 
+        height: '5em', 
+        margin: '1em'
+    },
+    DetailBox: {
+        marginTop: '1em'
+    },
+    icon: {
+        fontSize: '2rem'
     }
-}));
+};
 
 export class Post extends Component {
+    state = {
+        isLiked: this.props.user.likes && this.props.user.likes.find(like => like.postID === this.props.post.postID)
+    }
+    likedPost = () => {
+        if (this.props.user.likes && this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    likePost = () => {
+        this.props.likePost(this.props.post.postID);
+        this.setState({isLiked: true});
+    }
+    unlikePost = () => {
+        this.props.unlikePost(this.props.post.postID);
+        this.setState({isLiked: false});
+    }
     render() {    
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
-        const {classes, post : { body, createdTime, userImage, userHandle, postID, likeCount, commentCount} } = this.props;
+        const {classes, post : { body, createdTime, userImage, userHandle, postID, likeCount, commentCount}, user: {authenticated} } = this.props;
+        const likeButton = !authenticated ? 
+        (
+            null
+        ) : (
+            this.state.isLiked ? (
+            <Button onClick={this.unlikePost}>
+                <Favorite color="secondary" className={classes.icon}/>
+            </Button>
+            ) : (
+            <Button onClick={this.likePost}>
+                <FavoriteBorder color="secondary" className={classes.icon}/>
+            </Button>
+            )
+        );
         return (
-            <Card className={classes.card} style={{display: 'flex', alignItems: "center", marginTop: '1em'}}>
-                <Avatar alt="user avatar" src={userImage} style={{width: "5em", height: '5em', margin: '1em'}}/>
+        <React.Fragment>
+            <Card className={classes.card}>
+                <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component={Link} color="primary" to={`/users/${userHandle}`}>
                         {userHandle}
@@ -46,10 +104,37 @@ export class Post extends Component {
                     <Typography variant="body1">
                         {body}
                     </Typography>
+                    <Grid container direction="row" justify="space-between" className={classes.DetailBox}>
+                        <Grid item>{likeCount} Likes</Grid>
+                        <Grid item>{commentCount} Comment</Grid>
+                    </Grid>
+
                 </CardContent>
             </Card>
-        )
+            <Card className={classes.CommentSection}>
+                <Grid item container align="center" direction="row" justify="space-between">
+                    <Grid item style={{width: "50%"}}>
+                        {likeButton}
+                    </Grid> 
+                    <Grid item style={{width: "50%"}}>  
+                        <Button>
+                            <ChatIcon className={classes.icon}/> 
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Card>
+        </React.Fragment>
+        );
     }
 }
 
-export default withStyles(styles)(Post);
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+const mapActionToProps = {
+    likePost, 
+    unlikePost
+}
+
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Post));

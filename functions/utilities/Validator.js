@@ -63,9 +63,10 @@ exports.validateLogInData = (data) => {
 exports.reduceUserDetails = (data) => {
     let userDetails = {};
     if (isNotEmpty(data.bio)) userDetails.bio = data.bio;
-    if (data.website !== undefined) userDetails.website = data.website;
-    if (data.insta !== undefined) userDetails.insta = data.insta;
-    if (data.linkedIn !== undefined) userDetails.linkedIn = data.linkedIn;
+    if (data.website !== "") userDetails.website = data.website;
+    if (data.insta !== "") userDetails.insta = data.insta;
+    if (data.linkedIn !== "") userDetails.linkedIn = data.linkedIn;
+    if (data.birth !== "") userDetails.birth = data.birth;
     // if (!isEmpty(data.location.trim())) userDetails.location = data.location;
     return userDetails;
 }

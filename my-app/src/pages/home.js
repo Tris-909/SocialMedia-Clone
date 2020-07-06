@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios';  
 import Post from '../components/Post';
 
 import {connect} from 'react-redux';
 import Profile from '../components/Profile';
+import {getPosts} from '../redux/actions/dataAction';
 
 class home extends Component {
     state = {
@@ -12,23 +12,18 @@ class home extends Component {
     }
     
     componentDidMount(){
-        axios.get(`/posts`)
-            .then(res => {
-                this.setState({
-                    posts: res.data
-                })
-            })
-            .catch(err => console.log(err));
+        this.props.getPosts();
     }
 
     render() {
-        let recentPostsMarkUp = this.state.posts ? (
-            this.state.posts.map(post => <Post key={post.postID} post={post} />)
+        const { posts, loading } = this.props.data;
+        let recentPostsMarkUp = !loading ? (
+            posts.map(post => <Post key={post.postID} post={post} />)
         ) : <p>Loading...</p>;
         return (
             <Grid container alignItems={this.props.user.authenticated ? null : "center"}>
-                <Grid item sm={this.props.user.authenticated ? 4 : 0} xs={12}>
-                    {this.props.user.authenticated ? <Profile profileData = {this.props.user.credentials}/> : null}
+                <Grid item sm={this.props.user.authenticated ? 3 : 0} xs={12}>
+                    {this.props.user.authenticated ? <Profile style={{position: "fixed"}} profileData = {this.props.user.credentials}/> : null}
                 </Grid>
                 <Grid item sm={this.props.user.authenticated ? 5 : 6} xs={12}>
                     {recentPostsMarkUp}
@@ -39,8 +34,12 @@ class home extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    data: state.data
 });
 
+const mapActionToProps = {
+    getPosts
+}
 
-export default connect(mapStateToProps)(home);
+export default connect(mapStateToProps,mapActionToProps)(home);
