@@ -59,7 +59,7 @@ class Profile extends Component {
         fileInput.click();
     };
     render() {
-        const {classes, profileData: {bio, website, insta, linkedIn ,location, email, handle, imageUrl, birth} } = this.props;
+        const {classes, profileData: {bio, website, insta, linkedIn , handle, imageUrl, birth} } = this.props;
         return (
             <Card className={classes.container}>
                 <Grid container direction="column" alignItems="center">
