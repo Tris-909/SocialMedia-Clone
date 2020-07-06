@@ -1,4 +1,4 @@
-import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_DATA } from '../types';
+import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST } from '../types';
 
 const initialState = {
     posts: [],
@@ -23,6 +23,12 @@ export default function(state = initialState, actions) {
         case UNLIKE_POST: 
             let index = state.posts.findIndex((post) => post.postID === actions.payload.postID);
             state.posts[index] = actions.payload;
+            return {
+                ...state
+            }
+        case DELETE_POST: 
+            let delIndex = state.posts.findIndex((post) => post.postID === actions.payload.postID);
+            state.posts.splice(delIndex, 1);
             return {
                 ...state
             }

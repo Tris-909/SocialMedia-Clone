@@ -17,7 +17,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 import {connect} from 'react-redux';
-import {likePost, unlikePost} from '../redux/actions/dataAction';
+import {likePost, unlikePost, deletePost} from '../redux/actions/dataAction';
 
 const styles = {
     card: {
@@ -72,7 +72,9 @@ export class Post extends Component {
         this.props.unlikePost(this.props.post.postID);
         this.setState({isLiked: false,  firstTime: false});
     }
-
+    deletePost = () => {
+        this.props.deletePost(this.props.post.postID);
+    }
     componentDidMount() {
         this.likedPost();
     }
@@ -101,9 +103,19 @@ export class Post extends Component {
             <Card className={classes.card}>
                 <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                 <CardContent className={classes.content}>
-                    <Typography variant="h5" component={Link} color="primary" to={`/users/${userHandle}`}>
-                        {userHandle}
-                    </Typography>
+                    <Grid container justify="space-between">
+                        <Grid item>
+                            <Typography variant="h5" component={Link} color="primary" to={`/users/${userHandle}`}>
+                                {userHandle}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Button onClick={this.deletePost}>
+                                <i className="fas fa-trash"></i>
+                            </Button>
+                        </Grid>
+                    </Grid>
+
                     <Typography variant="body2" color="textSecondary">
                         {dayjs(createdTime).fromNow()}
                     </Typography>
@@ -140,7 +152,8 @@ const mapStateToProps = (state) => ({
 
 const mapActionToProps = {
     likePost, 
-    unlikePost
+    unlikePost,
+    deletePost
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Post));
