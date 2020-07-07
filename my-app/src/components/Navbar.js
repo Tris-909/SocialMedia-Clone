@@ -11,6 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import {connect} from 'react-redux';
 import {logoutUser} from '../redux/actions/userAction';
 
+import AddPost from './AddPost';
+
 const styles = {
     Authoziration: {
         display: 'flex',
@@ -23,6 +25,7 @@ const styles = {
 }
 
 export class Navbar extends Component {
+
     render(props) {
         const {classes} = this.props;
         const content = this.props.token ? 
@@ -36,9 +39,7 @@ export class Navbar extends Component {
                         </Tooltip>
                     </Grid>
                     <Grid item>
-                        <Tooltip title="Add a post" placement="bottom">
-                            <Button color="inherit"><i className="fas fa-plus"></i></Button>
-                        </Tooltip>
+                        <AddPost />
                     </Grid>
                     <Grid item>
                         <Tooltip title="Notifications" placement="bottom">
@@ -60,6 +61,7 @@ export class Navbar extends Component {
             <Appbar position="fixed" >
                 <Toolbar className={this.props.token ? classes.Authoziration : classes.UnAuthorization}>
                     {content}
+                   
                 </Toolbar>
             </Appbar>
         )

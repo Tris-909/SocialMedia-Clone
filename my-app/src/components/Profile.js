@@ -52,6 +52,7 @@ class Profile extends Component {
         const image = event.target.files[0];
         const formData = new FormData();
         formData.append('image', image, image.name);
+        console.log(formData.image);
         this.props.uploadImage(formData);
     };
     handleEditImage = () => {

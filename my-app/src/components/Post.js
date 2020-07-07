@@ -17,7 +17,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 import {connect} from 'react-redux';
-import {likePost, unlikePost, deletePost} from '../redux/actions/dataAction';
+import {likePost, unlikePost} from '../redux/actions/dataAction';
 
 const styles = {
     card: {
@@ -98,7 +98,6 @@ export class Post extends Component {
             </Button>
             )
         );
-        console.log(this.props.post);    
         const deleteButton = this.props.user.credentials.handle === this.props.post.userHandle ? <DeleteButton thisPostID={postID}/> : null;
         return (
         <React.Fragment>
@@ -109,7 +108,7 @@ export class Post extends Component {
                         <Grid item>
                             <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                         </Grid>
-                        <Grid item direction="column">
+                        <Grid item>
                             <Grid item>
                                 <Typography variant="h5" component={Link} color="primary" to={`/users/${userHandle}`}>
                                     {userHandle}
@@ -131,7 +130,7 @@ export class Post extends Component {
                             {deleteButton}
                         </Grid>
                     </Grid>
-                    {imagePostUrl !== "" ? <img src={imagePostUrl} alt="Image Post Url" style={{width: '100%'}}/> : null}
+                    {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="Image Post Url" style={{width: '100%'}}/> : null}
                     <Grid container direction="row" justify="space-between" className={classes.DetailBox}>
                         <Grid item>{likeCount} Likes</Grid>
                         <Grid item>{commentCount} Comment</Grid>

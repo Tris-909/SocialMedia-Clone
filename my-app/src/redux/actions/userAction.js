@@ -1,4 +1,5 @@
 import {SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER } from '../types';
+import {getPosts} from './dataAction';
 import axios from 'axios';
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -63,11 +64,22 @@ export const uploadImage = (formData) => (dispatch) => {
     axios.post('/user/image', formData)
         .then(() => {
             dispatch(getUserData());
+            // setTimeout(window.location.reload(),2);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+export const uploadPostImage = (formData, postID) => (dispatch) => {
+    axios.post(`post/${postID}/image`, formData)
+        .then(() => {
+            dispatch(getPosts());
             setTimeout(window.location.reload(),2);
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 export const editUserDetails = (userDetails) => (dispatch) => {

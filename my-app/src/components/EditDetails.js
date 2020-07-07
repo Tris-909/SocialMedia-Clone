@@ -71,11 +71,9 @@ export class EditDetails extends Component {
     }
 
     onChange = (event) => {
-        console.log(event.target);
         this.setState({
             [event.target.name]: event.target.value
         });
-        console.log(this.state);
     }
 
     handleSubmit = () => {
@@ -86,7 +84,7 @@ export class EditDetails extends Component {
             linkedIn: this.state.linkedIn,
             birth: this.state.birth
         };
-        console.log(userDetails);
+        console.log(this.props);
         this.props.editUserDetails(userDetails);
         this.handleClose();
     }

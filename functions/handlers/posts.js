@@ -84,7 +84,6 @@ exports.postOnePost = (req, res ) => {
         body: req.body.body,
         userHandle: req.user.handle,
         userImage: req.user.imageUrl,
-        postImage: req.user.imagePostUrl,
         createdTime: new Date().toISOString(),
         likeCount: 0,
         commentCount: 0
