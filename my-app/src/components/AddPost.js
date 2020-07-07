@@ -100,6 +100,7 @@ export class AddPost extends Component {
             body: this.state.body
         }
         this.props.postOnePost(newPost);
+        this.setState({body: ''});
         this.handleClickClose();
     }
 

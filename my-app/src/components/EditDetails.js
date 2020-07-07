@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import Picker from 'emoji-picker-react';
+
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import {connect} from 'react-redux';
@@ -12,6 +14,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = {
     buttonLayout: {
@@ -33,8 +37,34 @@ const styles = {
         marginTop: '1em',
         marginBottom: '1em',
         marginLeft: '1em'
+    },
+    EmojiButton: {
+        fontSize: '2em',
+        marginLeft: '1em'
     }
 };
+
+const CssTextField = withStyles({
+    root: {
+      '& label.Mui-focused': {
+        color: '#33312a',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: '#33312a',
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#33312a',
+        },
+        '&:hover fieldset': {
+          borderColor: '#33312a',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#33312a',
+        },
+      },
+    },
+  })(TextField);
 
 export class EditDetails extends Component {
     state = {
@@ -43,7 +73,8 @@ export class EditDetails extends Component {
         insta: '',
         linkedIn: '',
         open: false,
-        birth: ''
+        birth: '',
+        openEmoji: false
     };
 
     mapUserDetailsToState = (credentials) => {
@@ -55,6 +86,26 @@ export class EditDetails extends Component {
             birth: credentials.birth ? credentials.birth : ''
         });
     };
+
+    onEmojiOpen = () => {
+        this.setState({
+            openEmoji: true
+        });
+    }
+
+    onEmojiClose = () => {
+        this.setState({
+            openEmoji: false
+        });
+    }
+
+    onEmojiCLick = (event, emojiObject) => {
+        const {bio} = this.state;
+        const text = `${bio}${emojiObject.emoji}`;
+        this.setState({
+            bio: text       
+        });
+    }
 
     handleOpen = () => {
         this.setState({open: true});
@@ -97,12 +148,18 @@ export class EditDetails extends Component {
                         Edit Details
                     </Button>
                 <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="md" >
-                    <DialogTitle>Edit your details</DialogTitle>
+                    <Grid>
+                        <DialogTitle>Edit your details</DialogTitle>
+                    </Grid>
                     <DialogContent>
+                    {this.state.openEmoji ? (
+                    <Dialog open={this.state.openEmoji} onClose={this.onEmojiClose}>
+                        <Picker onEmojiClick={this.onEmojiCLick} disableSearchBar disableSkinTonePicker /> 
+                    </Dialog>) : null}
                         <form>
                             <Grid container direction="row">
                             <Grid item style={{width: '50%'}}>
-                            <TextField 
+                            <CssTextField 
                                 name="bio"
                                 type="text"
                                 label="Bio"
@@ -117,19 +174,28 @@ export class EditDetails extends Component {
                             />
                             </Grid>
                             <Grid item container justify="center" style={{width: '50%', margin: 'auto'}}>
-                            <TextField 
-                                name="birth"
-                                type="text"
-                                label="Birthday"
-                                variant="outlined"
-                                placeholder="Your Birthday"
-                                value={this.state.birth}
-                                onChange={this.onChange}
-                            />
+                            <Grid item>
+                                <CssTextField 
+                                    name="birth"
+                                    type="text"
+                                    label="Birthday"
+                                    variant="outlined"
+                                    placeholder="Your Birthday"
+                                    value={this.state.birth}
+                                    onChange={this.onChange}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Tooltip title="Emoji for Bio" placement="bottom"> 
+                                <Button onClick={this.onEmojiOpen} className={classes.EmojiButton}>
+                                    <i className="far fa-smile-beam"></i>
+                                </Button>  
+                                </Tooltip>
+                            </Grid>
                             </Grid>
                             </Grid>
 
-                            <TextField 
+                            <CssTextField 
                             name="website"
                             type="text"
                             label="Facebook"
@@ -140,7 +206,7 @@ export class EditDetails extends Component {
                             onChange={this.onChange}
                             fullWidth/>
 
-                            <TextField 
+                            <CssTextField 
                             name="insta"
                             type="text"
                             label="Instagram"
@@ -151,7 +217,7 @@ export class EditDetails extends Component {
                             onChange={this.onChange}
                             fullWidth/>
 
-                            <TextField 
+                            <CssTextField 
                             name="linkedIn"
                             type="text"
                             label="LinkedIn"
