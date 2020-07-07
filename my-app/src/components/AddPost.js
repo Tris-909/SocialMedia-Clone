@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import Picker from 'emoji-picker-react';
+
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -14,7 +16,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import {connect} from 'react-redux';
 import {postOnePost} from '../redux/actions/dataAction';
 
-
 const styles = {
     body: {
         margin: '1em'
@@ -22,6 +23,9 @@ const styles = {
     post: {
         fontSize: '1.5rem',
         borderRadius: '2px solid #33312a'
+    },
+    EmojiButton: {
+        fontSize: '2em'
     }
 }
 
@@ -51,19 +55,45 @@ export class AddPost extends Component {
     state = {
         body: '',
         open: false,
-        loading: false
+        loading: false,
+        openEmoji: false,
+        chosenEmoji: null
     }
+
+    onEmojiOpen = () => {
+        this.setState({
+            openEmoji: true
+        });
+    }
+
+    onEmojiClose = () => {
+        this.setState({
+            openEmoji: false
+        });
+    }
+
+    onEmojiCLick = (event, emojiObject) => {
+        const {body} = this.state;
+        const text = `${body}${emojiObject.emoji}`;
+        this.setState({
+            body: text       
+        });
+    }
+
     handleClickOpen = () => {
         this.setState({open: true});
     }
+
     handleClickClose = () => {
         this.setState({open: false});
     }
+
     onChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
+
     handleSubmit = (event) => {
         event.preventDefault();
         const newPost = {
@@ -72,6 +102,7 @@ export class AddPost extends Component {
         this.props.postOnePost(newPost);
         this.handleClickClose();
     }
+
     render() {
         const {classes} = this.props;
         return (
@@ -80,8 +111,17 @@ export class AddPost extends Component {
                 <Button color="inherit" onClick={this.handleClickOpen}><i className="fas fa-plus"></i></Button>      
             </Tooltip>
             <Dialog open={this.state.open} onClose={this.handleClickClose} fullWidth maxWidth="md">
+                <Grid container justify="space-between">
                 <DialogTitle>What is on your mind ?</DialogTitle>
+                    <Button onClick={this.onEmojiOpen} className={classes.EmojiButton}>
+                        <i className="far fa-smile-beam"></i>
+                    </Button>  
+                </Grid>
                 <DialogContent>
+                    {this.state.openEmoji ? (
+                    <Dialog open={this.state.openEmoji} onClose={this.onEmojiClose}>
+                        <Picker onEmojiClick={this.onEmojiCLick} disableSearchBar disableSkinTonePicker /> 
+                    </Dialog>) : null}
                     <form>
                     <CssTextField 
                         name="body"

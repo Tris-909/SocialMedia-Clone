@@ -11,7 +11,7 @@
     "@webscopeio/react-textarea-autocomplete": "^4.7.0",
     "axios": "^0.19.2",
     "dayjs": "^1.8.29",
-    "emoji-mart": "^3.0.0",
+    "emoji-picker-react": "^3.2.1",
     "jwt-decode": "^2.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
