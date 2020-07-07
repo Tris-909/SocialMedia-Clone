@@ -11,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ChatIcon from '@material-ui/icons/Chat';
 import Favorite from '@material-ui/icons/Favorite';
@@ -18,6 +19,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 import {connect} from 'react-redux';
 import {likePost, unlikePost} from '../redux/actions/dataAction';
+import {uploadPostImage} from '../redux/actions/userAction';
 
 const styles = {
     card: {
@@ -57,8 +59,7 @@ const styles = {
 
 export class Post extends Component {
     state = {
-        isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID),
-
+        isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID)
     }
     likedPost = () => {
         if (this.props.user.likes && this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
@@ -78,6 +79,16 @@ export class Post extends Component {
     componentDidMount() {
         this.likedPost();
     }
+    handleImageChange = (postID, event) => {
+        const image = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', image, image.name);
+        this.props.uploadPostImage(formData, postID);
+    };
+    handleEditImage = () => {
+        const fileInput = document.getElementById('imagePostInput');
+        fileInput.click();
+    };
 
     render() {    
         dayjs.extend(relativeTime);
@@ -99,6 +110,13 @@ export class Post extends Component {
             )
         );
         const deleteButton = this.props.user.credentials.handle === this.props.post.userHandle ? <DeleteButton thisPostID={postID}/> : null;
+        const addImageButton = this.props.user.credentials.handle === this.props.post.userHandle ? (
+            <Tooltip title="Add Image" placement="left-start" className={classes.tooltip}> 
+            <Button onClick={this.handleEditImage}  style={{fontSize: '1.5em'}} >
+                <i className="far fa-image" style={{marginRight: '1em'}}></i>
+            </Button>
+            </Tooltip>
+        ) : null;
         return (
         <React.Fragment>
             <Card className={classes.card}>
@@ -121,13 +139,17 @@ export class Post extends Component {
                             </Grid>
                             <Grid item>
                                 <Typography variant="body1">
-                                    {body}
+                                    {body} {this.state.isShow ? `${postID}` : null}
                                 </Typography>
                             </Grid>
                         </Grid>
                         </Grid>
                         <Grid item>
+                            {addImageButton}
                             {deleteButton}
+                            {this.props.user.credentials.handle === this.props.post.userHandle ? 
+                            <input type="file" hidden id="imagePostInput" 
+                            onChange={(event) => this.handleImageChange(`${postID}`, event)} /> : null}
                         </Grid>
                     </Grid>
                     {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="Image Post Url" style={{width: '100%'}}/> : null}
@@ -161,7 +183,8 @@ const mapStateToProps = (state) => ({
 
 const mapActionToProps = {
     likePost, 
-    unlikePost
+    unlikePost,
+    uploadPostImage
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Post));

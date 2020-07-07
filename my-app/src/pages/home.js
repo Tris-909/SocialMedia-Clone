@@ -17,7 +17,7 @@ class home extends Component {
     render() {
         const { posts, loading } = this.props.data;
         let recentPostsMarkUp = !loading ? (
-            posts.map(post => <Post key={post.postID} post={post} />)
+            posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />} )
         ) : <p>Loading...</p>;
         return (
             <Grid container alignItems={this.props.user.authenticated ? null : "center"} style={{position: 'relative'}}>

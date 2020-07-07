@@ -75,7 +75,7 @@ export const uploadPostImage = (formData, postID) => (dispatch) => {
     axios.post(`post/${postID}/image`, formData)
         .then(() => {
             dispatch(getPosts());
-            setTimeout(window.location.reload(),2);
+            // setTimeout(window.location.reload(),2);
         })
         .catch(err => {
             console.log(err);
