@@ -79,7 +79,8 @@ export class Post extends Component {
         openComment: false
     }
     likedPost = () => {
-        if (this.props.user.likes && this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
+        if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
+            this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
             this.setState({isLiked: true});
         } else {
             this.setState({isLiked: false});
@@ -94,10 +95,11 @@ export class Post extends Component {
         this.setState({isLiked: false,  firstTime: false});
     }
     componentDidMount() {
-        this.likedPost();
+        console.log('123');
+        setTimeout(this.likedPost, 1000);
+        console.log(this.state);
     }
     onOpenComment = () => {
-        console.log('123');
         this.props.getPost(this.props.post.postID);
         this.setState({
             openComment: !this.state.openComment
@@ -117,7 +119,6 @@ export class Post extends Component {
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
         const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount, comments}, user: {authenticated} } = this.props;
-        const {data: {post}} = this.props;
         const likeButton = !authenticated ? 
         (
             null
