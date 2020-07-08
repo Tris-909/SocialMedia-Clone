@@ -1,4 +1,4 @@
-import { SET_POSTS, SET_POST ,LIKE_POST, POST_A_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST } from '../types';
+import { SET_POSTS, SET_POST, COMMENT_A_POST ,LIKE_POST, POST_A_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST } from '../types';
 
 const initialState = {
     posts: [],
@@ -18,6 +18,18 @@ export default function(state = initialState, actions) {
                 ...state,
                 posts: actions.payload,
                 loading: false 
+            }
+        case COMMENT_A_POST:
+            let curComments = [...state.post.comments];
+            curComments.push(actions.payload)
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    comments: [
+                        ...curComments
+                    ]
+                }
             }
         case SET_POST: 
             return {

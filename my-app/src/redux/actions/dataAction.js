@@ -1,4 +1,4 @@
-import {SET_POSTS, SET_POST ,POST_A_POST  ,LOADING_DATA, LIKE_POST, UNLIKE_POST, CLEAR_ERRORS, SET_ERRORS ,LOADING_UI,DELETE_POST} from '../types';
+import {SET_POSTS, SET_POST ,POST_A_POST, COMMENT_A_POST ,LOADING_DATA, LIKE_POST, UNLIKE_POST, CLEAR_ERRORS, SET_ERRORS ,LOADING_UI,DELETE_POST} from '../types';
 import axios from 'axios';
 
 //GET ALL POSTS
@@ -30,6 +30,19 @@ export const getPost = (postID) => dispatch => {
         .catch(err => {
             console.log(err);
         });
+}
+
+export const commentPost = (postID, body) => dispatch => {
+    axios.post(`/posts/${postID}/comment`, body)
+        .then(res => {
+            dispatch({
+                type: COMMENT_A_POST,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 export const postOnePost = (newPost) => (dispatch) => {

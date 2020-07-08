@@ -19,7 +19,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 import {connect} from 'react-redux';
-import {likePost, unlikePost, getPost} from '../redux/actions/dataAction';
+import {likePost, unlikePost, getPost, commentPost} from '../redux/actions/dataAction';
 import {uploadPostImage} from '../redux/actions/userAction';
 
 const styles = {
@@ -76,7 +76,8 @@ const styles = {
 export class Post extends Component {
     state = {
         isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID),
-        openComment: false
+        openComment: false,
+        body: ''
     }
     likedPost = () => {
         if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
@@ -86,6 +87,8 @@ export class Post extends Component {
             this.setState({isLiked: false});
         }
     }
+
+    // LIKE AND UNLIKE A POST
     likePost = () => {
         this.props.likePost(this.props.post.postID);
         this.setState({isLiked: true,  firstTime: false});
@@ -94,17 +97,24 @@ export class Post extends Component {
         this.props.unlikePost(this.props.post.postID);
         this.setState({isLiked: false,  firstTime: false});
     }
+    ///////////////////////////////////////////////////////
+
+    // LIKED POST RENDER FULLHEART ICON
     componentDidMount() {
-        console.log('123');
         setTimeout(this.likedPost, 1000);
-        console.log(this.state);
     }
+    ///////////////////////////////////////////////////////
+
+    // lOADING COMMENTS
     onOpenComment = () => {
         this.props.getPost(this.props.post.postID);
         this.setState({
             openComment: !this.state.openComment
         });
     }
+    ///////////////////////////////////////////////////////
+
+    // POST IMAGE UPLOAD 
     handleImageChange = (postID, event) => {
         const image = event.target.files[0];
         const formData = new FormData();
@@ -115,10 +125,14 @@ export class Post extends Component {
         const fileInput = document.getElementById('imagePostInput');
         fileInput.click();
     };
+    /////////////////////////////////////////////////////////////////
+
+
+
     render() {    
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
-        const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount, comments}, user: {authenticated} } = this.props;
+        const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount, comments}, user: {authenticated, credentials} } = this.props;
         const likeButton = !authenticated ? 
         (
             null
@@ -197,7 +211,7 @@ export class Post extends Component {
                     </Grid>
                 </Grid>
             </Card>
-            {this.state.openComment ? <AddComments key={postID} postID={postID} comments={comments}/> : null}
+            {this.state.openComment ? <AddComments key={postID} credentials={credentials} postID={postID} comments={comments}/> : null}
         </React.Fragment>
         );
     }
@@ -213,7 +227,8 @@ const mapActionToProps = {
     likePost, 
     unlikePost,
     uploadPostImage,
-    getPost
+    getPost,
+    commentPost
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Post));
