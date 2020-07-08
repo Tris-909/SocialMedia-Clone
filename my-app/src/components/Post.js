@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import DeleteButton from './DeleteButton';
+import AddComments from './AddComments';
 // Mui Stuff
 import withStyles from '@material-ui/core/styles/withStyles';
 import {Link} from 'react-router-dom';
@@ -18,7 +19,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 import {connect} from 'react-redux';
-import {likePost, unlikePost} from '../redux/actions/dataAction';
+import {likePost, unlikePost, getPost} from '../redux/actions/dataAction';
 import {uploadPostImage} from '../redux/actions/userAction';
 
 const styles = {
@@ -31,7 +32,9 @@ const styles = {
     },
     CommentSection: {
         borderTopLeftRadius: "0px",
-        borderTopRightRadius: "0px"
+        borderTopRightRadius: "0px",  
+        borderBottomLeftRadius: "0px",
+        borderBottomRightRadius: "0px"
     },
     SecCard: {
         display: 'flex',
@@ -54,12 +57,26 @@ const styles = {
     },
     icon: {
         fontSize: '2rem'
+    },
+    buttonContainer: {
+        borderTop: '1px solid black',
+        borderBottom: '1px solid black'
+    },
+    likeButton: {
+        width: "50%",
+        border: '0px',
+        borderRight: '1px solid black'
+    },
+    commentButton: {
+        width: "100%",
+        border: '0px',
     }
 };
 
 export class Post extends Component {
     state = {
-        isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID)
+        isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID),
+        openComment: false
     }
     likedPost = () => {
         if (this.props.user.likes && this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
@@ -79,6 +96,13 @@ export class Post extends Component {
     componentDidMount() {
         this.likedPost();
     }
+    onOpenComment = () => {
+        console.log('123');
+        this.props.getPost(this.props.post.postID);
+        this.setState({
+            openComment: !this.state.openComment
+        });
+    }
     handleImageChange = (postID, event) => {
         const image = event.target.files[0];
         const formData = new FormData();
@@ -89,22 +113,21 @@ export class Post extends Component {
         const fileInput = document.getElementById('imagePostInput');
         fileInput.click();
     };
-
     render() {    
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
-        const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount}, user: {authenticated} } = this.props;
-        
+        const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount, comments}, user: {authenticated} } = this.props;
+        const {data: {post}} = this.props;
         const likeButton = !authenticated ? 
         (
             null
         ) : (
             this.state.isLiked ? (
-            <Button onClick={this.unlikePost}>
+            <Button onClick={this.unlikePost} style={{width: '100%'}}>
                 <Favorite color="secondary" className={classes.icon}/>
             </Button>
             ) : (
-            <Button onClick={this.likePost}>
+            <Button onClick={this.likePost} style={{width: '100%'}}>
                 <FavoriteBorder color="secondary" className={classes.icon}/>
             </Button>
             )
@@ -116,7 +139,9 @@ export class Post extends Component {
                 <i className="far fa-image" style={{marginRight: '1em'}}></i>
             </Button>
             </Tooltip>
-        ) : null;
+        ) : null;   
+
+
         return (
         <React.Fragment>
             <Card className={classes.card}>
@@ -139,7 +164,7 @@ export class Post extends Component {
                             </Grid>
                             <Grid item>
                                 <Typography variant="body1">
-                                    {body} {this.state.isShow ? `${postID}` : null}
+                                    {body}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -152,7 +177,7 @@ export class Post extends Component {
                             onChange={(event) => this.handleImageChange(`${postID}`, event)} /> : null}
                         </Grid>
                     </Grid>
-                    {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="Image Post Url" style={{width: '100%'}}/> : null}
+                    {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="Post Picture Url" style={{width: '100%'}}/> : null}
                     <Grid container direction="row" justify="space-between" className={classes.DetailBox}>
                         <Grid item>{likeCount} Likes</Grid>
                         <Grid item>{commentCount} Comment</Grid>
@@ -160,31 +185,34 @@ export class Post extends Component {
                 </CardContent>
             </Card>
             <Card className={classes.CommentSection}>
-                <Grid item container align="center" direction="row" justify="space-between">
-                    <Grid item style={{width: "50%"}}>
+                <Grid item container align="center" direction="row" justify="space-between" className={classes.buttonContainer}>
+                    <Grid item className={classes.likeButton}>
                         {likeButton} 
                     </Grid> 
                     <Grid item style={{width: "50%"}}>  
-                        <Button>
+                        <Button className={classes.commentButton} onClick={this.onOpenComment}>
                             <ChatIcon className={classes.icon}/> 
                         </Button>
                     </Grid>
                 </Grid>
             </Card>
-
+            {this.state.openComment ? <AddComments key={postID} postID={postID} comments={comments}/> : null}
         </React.Fragment>
         );
     }
 }
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    data: state.data,
+    comments: state.data.post.comments
 });
 
 const mapActionToProps = {
     likePost, 
     unlikePost,
-    uploadPostImage
+    uploadPostImage,
+    getPost
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Post));
