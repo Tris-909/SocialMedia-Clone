@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import { CircularProgress } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import ChatIcon from '@material-ui/icons/Chat';
 import Favorite from '@material-ui/icons/Favorite';
@@ -191,7 +191,7 @@ export class Post extends Component {
                             onChange={(event) => this.handleImageChange(`${postID}`, event)} /> : null}
                         </Grid>
                     </Grid>
-                    {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="Post Picture Url" style={{width: '100%'}}/> : null}
+                    {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="ERROR" style={{width: '100%'}}/> : null}
                     <Grid container direction="row" justify="space-between" className={classes.DetailBox}>
                         <Grid item>{likeCount} Likes</Grid>
                         <Grid item>{commentCount} Comment</Grid>
@@ -200,12 +200,12 @@ export class Post extends Component {
             </Card>
             <Card className={classes.CommentSection}>
                 <Grid item container align="center" direction="row" justify="space-between" className={classes.buttonContainer}>
-                    <Grid item className={classes.likeButton}>
+                    <Grid item className={classes.likeButton} style={{paddingTop: '1em', paddingBottom: '1em'}}>
                         {likeButton} 
                     </Grid> 
-                    <Grid item style={{width: "50%"}}>  
-                        <Button className={classes.commentButton} onClick={this.onOpenComment}>
-                            <ChatIcon className={classes.icon}/> 
+                    <Grid item style={{width: "50%", paddingTop: '1em', paddingBottom: '1em'}}>  
+                        <Button className={classes.commentButton} onClick={this.onOpenComment} style={{color: '#33312a'}}>
+                        {!this.props.loading ? ( <ChatIcon className={classes.icon}/> ) : <CircularProgress color="inherit"/>}
                         </Button>
                     </Grid>
                 </Grid>

@@ -45,7 +45,7 @@ export const logoutUser = () => (dispatch) => {
     localStorage.removeItem('FBIdToken');
     delete axios.defaults.headers.common['Authorization'];
     dispatch({type: SET_UNAUTHENTICATED});
-    setTimeout(window.location.reload(),2);
+    setTimeout(window.location.href="/login",2);
 }
 
 export const getUserData = () => (dispatch) => {

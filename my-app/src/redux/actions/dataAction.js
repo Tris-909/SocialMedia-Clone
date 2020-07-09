@@ -1,4 +1,4 @@
-import {SET_POSTS, SET_POST ,POST_A_POST, COMMENT_A_POST ,LOADING_DATA, LIKE_POST, UNLIKE_POST, CLEAR_ERRORS, SET_ERRORS ,LOADING_UI,DELETE_POST} from '../types';
+import {SET_POSTS, SET_POST ,POST_A_POST, COMMENT_A_POST, DELETE_A_COMMENT ,LOADING_DATA, LIKE_POST, UNLIKE_POST, CLEAR_ERRORS ,LOADING_UI,DELETE_POST} from '../types';
 import axios from 'axios';
 
 //GET ALL POSTS
@@ -94,6 +94,18 @@ export const deletePost = (postID) => dispatch => {
                 payload: postID
             });
             setTimeout(window.location.reload(),2);
+        })
+        .catch(err => console.log(err));
+}
+
+//DELETE A COMMENT
+export const deleteComment = (postID, commentID) => dispatch => {
+    axios.delete(`post/${postID}/${commentID}/comment`)
+        .then(() => {
+            dispatch({
+                type:  DELETE_A_COMMENT,
+                payload: {postID, commentID}
+            })
         })
         .catch(err => console.log(err));
 }

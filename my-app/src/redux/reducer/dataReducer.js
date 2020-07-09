@@ -1,4 +1,4 @@
-import { SET_POSTS, SET_POST, COMMENT_A_POST ,LIKE_POST, POST_A_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST } from '../types';
+import { SET_POSTS, SET_POST, COMMENT_A_POST,LIKE_POST, POST_A_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST, DELETE_A_COMMENT } from '../types';
 
 const initialState = {
     posts: [],
@@ -30,6 +30,12 @@ export default function(state = initialState, actions) {
                         ...curComments
                     ]
                 }
+            }
+        case DELETE_A_COMMENT:
+            let delCIndex = state.post.comments.findIndex(comment => comment.commentID === actions.payload.commentID);
+            state.post.comments.splice(delCIndex, 1);
+            return {
+                ...state
             }
         case SET_POST: 
             return {

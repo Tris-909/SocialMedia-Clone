@@ -28,6 +28,40 @@ exports.getAllPosts = (req, res) => {
     });
 }
 
+
+exports.getPost = (req, res) => {
+    let postData = {};
+    db.doc(`/posts/${req.params.postID}`)
+        .get()
+        .then(doc => {
+            if (!doc.exists){
+                return res.status(404).json({error: 'Post not found'})
+            }
+            postData = doc.data();
+            postData.postID = doc.id;
+            return db.collection('comments').where('postID', '==', req.params.postID).get();
+        })
+        .then(data => {
+            postData.comments = [];
+            data.forEach(doc => {
+                postData.comments.push(
+                    {...doc.data(),
+                    commentID: doc.id
+                    });
+            });
+            // if (postData.comments.length > 0) {
+            //     postData.comments.map(comment => {
+            //         comment[commentID] = doc.id;
+            //     });
+            // }
+            return res.json(postData);
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({error: err.code});
+        });
+}
+
 exports.uploadPostImage = (req, res) => {
     const BusBoy = require('busboy');
     const path = require('path');
@@ -99,31 +133,6 @@ exports.postOnePost = (req, res ) => {
         .catch(err => {
             res.status(500).json({ error: 'something went wrong'});
             console.error(err);
-        });
-}
-
-exports.getPost = (req, res) => {
-    let postData = {};
-    db.doc(`/posts/${req.params.postID}`)
-        .get()
-        .then(doc => {
-            if (!doc.exists){
-                return res.status(404).json({error: 'Post not found'})
-            }
-            postData = doc.data();
-            postData.postID = doc.id;
-            return db.collection('comments').where('postID', '==', req.params.postID).get();
-        })
-        .then(data => {
-            postData.comments = [];
-            data.forEach(doc => {
-                postData.comments.push(doc.data());
-            });
-            return res.json(postData);
-        })
-        .catch(err => {
-            console.error(err);
-            res.status(500).json({error: err.code});
         });
 }
 
@@ -250,6 +259,36 @@ exports.deletePost = (req, res) => {
     })
     .then(() => {
         res.json({ message: "Post deleted successfully" });
+    })
+    .catch(err => {
+        console.error(err);
+        return res.status(500).json({error: err.code});
+    })
+}
+
+exports.deleteComment = (req, res) => {
+    db.doc(`/posts/${req.params.postID}`).get()
+        .then(doc => {
+            if (!doc.exists) {
+                return res.status(404).json({error: 'This Post Is Not Exist'});
+            }
+            return doc.ref.update({ commentCount: doc.data().commentCount - 1 });
+        })
+        .catch(err => {
+            res.status(500).json({error: 'Something went wrong'});
+        });
+
+
+    const document = db.doc(`/comments/${req.params.commentID}`);
+    document.get()
+    .then(doc => {
+        if (!doc.exists) {
+            return res.status(404).json({error: "Comment not found"});
+        }
+        return document.delete();
+    })
+    .then(() => {
+        res.json({ message: "Comment deleted successfully" });
     })
     .catch(err => {
         console.error(err);

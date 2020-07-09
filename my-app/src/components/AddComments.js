@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
-import {commentPost} from '../redux/actions/dataAction';
+import {commentPost,deleteComment,getPost} from '../redux/actions/dataAction';
 
 const styles = {
     userImage: {
@@ -91,6 +91,7 @@ export class AddComments extends Component {
         }
         this.props.commentPost(postID, body);
         this.setState({body: ''});
+        // this.props.getPost(postID);
     } 
     ////////////////////////////////////////////////////////////
 
@@ -114,6 +115,11 @@ export class AddComments extends Component {
         });
     }
 
+    deleteComment = (postID, commentID) => {
+        this.props.deleteComment(postID, commentID);
+        // this.props.getPost(postID);
+    }
+
     componentDidMount(){
         this.setState({
             comments: [...this.props.things]
@@ -121,14 +127,13 @@ export class AddComments extends Component {
     }
 
     render() {
-        const{classes, things} = this.props;
-        console.log(this.state.comments);
+        const{classes} = this.props;
         let render;
         //dayjs(this.state.comments[i].createdTime).unix()
             let arr = [];
-            for (var i = this.state.comments.length-1; i >= 0; i--) {
-                arr.push(this.state.comments[i]);
-                this.state.comments[i].compare = dayjs(this.state.comments[i].createdTime).unix();
+            for (var u = this.state.comments.length-1; u >= 0; u--) {
+                arr.push(this.state.comments[u]);
+                this.state.comments[u].compare = dayjs(this.state.comments[u].createdTime).unix();
             }
             let SortedArr = [];
             for (var i = 0; i < this.state.comments.length; i++) {
@@ -154,15 +159,14 @@ export class AddComments extends Component {
                     }
                 }
             }
-            console.log(SortedArr);
                 render = SortedArr.map(comment => {
                    return (
                    <Card key={Math.random()*3.147} className={classes.Card}>
-                       <Grid item container style={{width: "auto"}}>
+                       <Grid item container style={{width: "auto"}} justify="center">
                             <Grid item>
                                 <Avatar alt="user avatar" src={comment.userImage} className={classes.userImage} />
                             </Grid>
-                            <Grid item>
+                            <Grid item style={{width: '80%'}}>
                                 <Grid item>
                                     <Typography variant="h5" component={Link} color="primary" to={`/users/${comment.userHandle}`}>
                                         {comment.userHandle}
@@ -178,6 +182,11 @@ export class AddComments extends Component {
                                         {comment.body}
                                     </Typography>
                                 </Grid>
+                            </Grid>
+                            <Grid item>
+                                <Button style={{fontSize: '1.5em', marginTop: '1em'}} onClick={() => this.deleteComment(this.props.post.postID, comment.commentID)}>
+                                    <i className="fas fa-trash"></i>
+                                </Button>
                             </Grid>
                         </Grid>
                     </Card>);
@@ -239,7 +248,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionToProps = {
-    commentPost
+    commentPost,
+    deleteComment,
+    getPost
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(AddComments));

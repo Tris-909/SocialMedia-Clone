@@ -3,12 +3,13 @@ const express = require('express');
 const app = express();
 const {db} = require('./utilities/admin');
 const FBAuth = require('./utilities/FBAuth');
-
+//https://asia-east2-socialapp-2c8b0.cloudfunctions.net/api
 const {
     getAllPosts, 
     postOnePost, 
     getPost, 
     commentOnPost, 
+    deleteComment,
     likePost, 
     unlikePost,
     deletePost,
@@ -28,6 +29,7 @@ app.get('/posts', getAllPosts);
 app.post('/post', FBAuth, postOnePost);
 app.get('/post/:postID', getPost);
 app.post('/posts/:postID/comment', FBAuth, commentOnPost);
+app.delete('/post/:postID/:commentID/comment', FBAuth, deleteComment);
 app.get('/post/:postID/like', FBAuth, likePost);
 app.get('/post/:postID/unlike', FBAuth, unlikePost);
 app.delete('/post/:postID', FBAuth, deletePost);
@@ -107,8 +109,22 @@ exports.onUserImageChange = functions.region('asia-east2').firestore.document('/
                 return batch.commit();
             })
         } else return true;
-        
     });
+
+exports.onUserImageChangeComment = functions.region('asia-east2').firestore.document('/users/{userID}')
+.onUpdate((change) => {
+    if (change.before.data().imageUrl !== change.after.data().imageUrl) {
+        let batch = db.batch();
+        return db.collection('comments').where('userHandle', '==', change.before.data().handle).get()
+        .then((data) => {
+            data.forEach(doc => {
+                const comment = db.doc(`/comments/${doc.id}`);
+                batch.update(comment, { userImage: change.after.data().imageUrl });
+            })
+            return batch.commit();
+        })
+    } else return true;
+});
 
 exports.onPostDelete = functions.region('asia-east2').firestore.document('/posts/{postID}')
     .onDelete((snapshot, context) => {
