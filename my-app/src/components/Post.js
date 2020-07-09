@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import { CircularProgress } from '@material-ui/core';
 
 import ChatIcon from '@material-ui/icons/Chat';
 import Favorite from '@material-ui/icons/Favorite';
@@ -111,6 +112,7 @@ export class Post extends Component {
         this.setState({
             openComment: !this.state.openComment
         });
+        console.log(this.props.data);   
     }
     ///////////////////////////////////////////////////////
 
@@ -127,12 +129,10 @@ export class Post extends Component {
     };
     /////////////////////////////////////////////////////////////////
 
-
-
     render() {    
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
-        const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount, comments}, user: {authenticated, credentials} } = this.props;
+        const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount}, user: {authenticated, credentials} } = this.props;
         const likeButton = !authenticated ? 
         (
             null
@@ -155,7 +155,6 @@ export class Post extends Component {
             </Button>
             </Tooltip>
         ) : null;   
-
 
         return (
         <React.Fragment>
@@ -211,7 +210,14 @@ export class Post extends Component {
                     </Grid>
                 </Grid>
             </Card>
-            {this.state.openComment ? <AddComments key={postID} credentials={credentials} postID={postID} comments={comments}/> : null}
+            {this.state.openComment ? !this.props.loading ? 
+                <AddComments 
+                    open={this.state.openComment} 
+                    onClose={this.onOpenComment}
+                    things={this.props.comments} 
+                    key={postID} 
+                    credentials={credentials} 
+                    postID={postID}/>  : null : null}
         </React.Fragment>
         );
     }
@@ -220,7 +226,8 @@ export class Post extends Component {
 const mapStateToProps = (state) => ({
     user: state.user,
     data: state.data,
-    comments: state.data.post.comments
+    comments: state.data.post.comments,
+    loading: state.UI.loading
 });
 
 const mapActionToProps = {

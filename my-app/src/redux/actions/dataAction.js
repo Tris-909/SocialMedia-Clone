@@ -20,15 +20,18 @@ export const getPosts = () => dispatch => {
 }
 
 export const getPost = (postID) => dispatch => {
+    dispatch({type: LOADING_UI});
     axios.get(`/post/${postID}`)
         .then(res => {
             dispatch({
                 type: SET_POST,
                 payload: res.data
-            })
+            });
+            dispatch({type: CLEAR_ERRORS});
         })
         .catch(err => {
             console.log(err);
+            dispatch({type: CLEAR_ERRORS});
         });
 }
 

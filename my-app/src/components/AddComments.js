@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
-import {getPost, commentPost} from '../redux/actions/dataAction';
+import {commentPost} from '../redux/actions/dataAction';
 
 const styles = {
     userImage: {
@@ -43,6 +43,10 @@ const styles = {
         '&:hover': {
             backgroundColor: '#fff'
         }
+    },
+    DialogPaper: {
+        minHeight: '80vh',
+        maxHeight: '80vh'
     }
 }
 
@@ -70,6 +74,7 @@ const CssTextField = withStyles({
 
 export class AddComments extends Component {
     state = {
+        comments: [],
         body: ''
     }
     
@@ -79,6 +84,7 @@ export class AddComments extends Component {
             [event.target.name]: event.target.value
         });
     }
+
     handleSubmit = (postID) => {
         const body = {
             body: this.state.body
@@ -108,52 +114,86 @@ export class AddComments extends Component {
         });
     }
 
+    componentDidMount(){
+        this.setState({
+            comments: [...this.props.things]
+        });
+    }
 
     render() {
-        const{classes} = this.props;
+        const{classes, things} = this.props;
+        console.log(this.state.comments);
         let render;
-        if (this.props.post.body !== undefined) {
+        //dayjs(this.state.comments[i].createdTime).unix()
             let arr = [];
-            for (var i = this.props.post.comments.length-1; i >= 0; i--) {
-                arr.push(this.props.post.comments[i]);
+            for (var i = this.state.comments.length-1; i >= 0; i--) {
+                arr.push(this.state.comments[i]);
+                this.state.comments[i].compare = dayjs(this.state.comments[i].createdTime).unix();
             }
-            render = arr.map(comment => {
-               return (
-               <Card key={Math.random()*3.147} className={classes.Card}>
-                   <Grid item container style={{width: "auto"}}>
-                        <Grid item>
-                            <Avatar alt="user avatar" src={comment.userImage} className={classes.userImage} />
+            let SortedArr = [];
+            for (var i = 0; i < this.state.comments.length; i++) {
+                if (i === 0) {
+                    SortedArr.unshift(this.state.comments[0]);
+                }
+                if (i !== 0) {
+                    if (this.state.comments[i].compare > SortedArr[0].compare) {
+                        SortedArr.unshift(this.state.comments[i]);
+                    } else {
+                        let u = 0;
+                        while ( u < SortedArr.length) {
+                            if (this.state.comments[i].compare > SortedArr[u].compare) {
+                                SortedArr.splice(u, 0, this.state.comments[i]);
+                                break;
+                            } else if (u === SortedArr.length-1 && this.state.comments[i].compare < SortedArr[u].compare) { 
+                                console.log('push');
+                                SortedArr.push(this.state.comments[i]);
+                                break;
+                            }
+                            u++;
+                        }
+                    }
+                }
+            }
+            console.log(SortedArr);
+                render = SortedArr.map(comment => {
+                   return (
+                   <Card key={Math.random()*3.147} className={classes.Card}>
+                       <Grid item container style={{width: "auto"}}>
+                            <Grid item>
+                                <Avatar alt="user avatar" src={comment.userImage} className={classes.userImage} />
+                            </Grid>
+                            <Grid item>
+                                <Grid item>
+                                    <Typography variant="h5" component={Link} color="primary" to={`/users/${comment.userHandle}`}>
+                                        {comment.userHandle}
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="body2" color="textSecondary">
+                                        {dayjs(comment.createdTime).fromNow()}
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="body1">
+                                        {comment.body}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Grid item>
-                                <Typography variant="h5" component={Link} color="primary" to={`/users/${comment.userHandle}`}>
-                                    {comment.userHandle}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body2" color="textSecondary">
-                                    {dayjs(comment.createdTime).fromNow()}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body1">
-                                    {comment.body}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Card>);
-            });
-        }
-
+                    </Card>);
+                });
+        
+        
         return(
-            <React.Fragment>
+            <Dialog open={true} onClose={this.props.onClose} fullWidth maxWidth="md" style={{height: '90%'}}>
+                <Grid item container style={{height: '100%'}}>
+                <Grid item sm={12} style={{height: '100%'}}>
                 <Card className={classes.Card}>
                 <Grid item container style={{width: "auto"}}>
                     <Grid item>
                         <Avatar alt="user avatar" src={this.props.credentials.imageUrl} className={classes.userImage} />
                     </Grid>
-                    <Grid item sm={7}>
+                    <Grid item style={{width: '70%'}}>
                         <CssTextField 
                             name="body"
                             type="text"
@@ -186,7 +226,9 @@ export class AddComments extends Component {
                 </Grid>
                 </Card>
                 {render !== undefined ? render : null}
-            </React.Fragment>
+                </Grid>
+                </Grid>
+            </Dialog>
         );
     }
 }
@@ -197,7 +239,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionToProps = {
-    getPost,
     commentPost
 }
 
