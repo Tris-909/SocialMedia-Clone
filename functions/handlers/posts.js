@@ -256,25 +256,3 @@ exports.deletePost = (req, res) => {
         return res.status(500).json({error: err.code});
     })
 }
-
-exports.deleteComment = (req, res) => {
-    const document = db.doc(`/comments/${req.params.commentID}`);
-    document.get()
-        .then(doc => {
-            if (!doc.exists) {
-                return res.status(404).json({error: "Comment not found"});
-            }
-            if (doc.data().userHandle !== req.user.handle) {
-                return res.status(403).json({error: "UnAuthorized"});
-            } else {
-                return document.delete();
-            }
-        })
-        .then(() => {
-            res.json({message: 'Comment deleted successfully'});
-        })
-        .catch(err => {
-            console.log(err);
-            return res.status(500).json({error: err.code});
-        });
-}

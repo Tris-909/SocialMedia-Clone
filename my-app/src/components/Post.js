@@ -66,13 +66,11 @@ const styles = {
     likeButton: {
         width: "50%",
         border: '0px',
-        borderRight: '1px solid black',
-        paddingTop: '1em',
-        paddingBottom: '1em'
+        borderRight: '1px solid black'
     },
     commentButton: {
         width: "100%",
-        border: '0px'
+        border: '0px',
     }
 };
 
@@ -205,11 +203,10 @@ export class Post extends Component {
                     <Grid item className={classes.likeButton}>
                         {likeButton} 
                     </Grid> 
-                    <Grid item style={{width: "50%", paddingTop: '1em', paddingBottom: '1em'}}>  
-                        {!this.props.loading ? 
-                        (<Button className={classes.commentButton} onClick={this.onOpenComment}>
+                    <Grid item style={{width: "50%"}}>  
+                        <Button className={classes.commentButton} onClick={this.onOpenComment}>
                             <ChatIcon className={classes.icon}/> 
-                        </Button>) : <CircularProgress/> }       
+                        </Button>
                     </Grid>
                 </Grid>
             </Card>
@@ -220,7 +217,7 @@ export class Post extends Component {
                     things={this.props.comments} 
                     key={postID} 
                     credentials={credentials} 
-                    postID={postID}/> : null : null}
+                    postID={postID}/>  : null : null}
         </React.Fragment>
         );
     }
