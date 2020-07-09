@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
-import {commentPost} from '../redux/actions/dataAction';
+import {commentPost, getPost} from '../redux/actions/dataAction';
 
 const styles = {
     userImage: {
@@ -90,6 +90,7 @@ export class AddComments extends Component {
             body: this.state.body
         }
         this.props.commentPost(postID, body);
+        this.props.getPost(postID);
         this.setState({body: ''});
     } 
     ////////////////////////////////////////////////////////////
@@ -122,13 +123,12 @@ export class AddComments extends Component {
 
     render() {
         const{classes, things} = this.props;
-        console.log(this.state.comments);
         let render;
         //dayjs(this.state.comments[i].createdTime).unix()
             let arr = [];
-            for (var i = this.state.comments.length-1; i >= 0; i--) {
-                arr.push(this.state.comments[i]);
-                this.state.comments[i].compare = dayjs(this.state.comments[i].createdTime).unix();
+            for (var z = this.state.comments.length-1; z >= 0; z--) {
+                arr.push(this.state.comments[z]);
+                this.state.comments[z].compare = dayjs(this.state.comments[z].createdTime).unix();
             }
             let SortedArr = [];
             for (var i = 0; i < this.state.comments.length; i++) {
@@ -145,7 +145,6 @@ export class AddComments extends Component {
                                 SortedArr.splice(u, 0, this.state.comments[i]);
                                 break;
                             } else if (u === SortedArr.length-1 && this.state.comments[i].compare < SortedArr[u].compare) { 
-                                console.log('push');
                                 SortedArr.push(this.state.comments[i]);
                                 break;
                             }
@@ -154,7 +153,6 @@ export class AddComments extends Component {
                     }
                 }
             }
-            console.log(SortedArr);
                 render = SortedArr.map(comment => {
                    return (
                    <Card key={Math.random()*3.147} className={classes.Card}>
@@ -239,7 +237,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionToProps = {
-    commentPost
+    commentPost,
+    getPost
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(AddComments));
