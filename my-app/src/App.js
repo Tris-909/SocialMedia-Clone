@@ -15,6 +15,7 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import profile from './pages/profile';
 
 import {SET_AUTHENTICATED} from './redux/types';
 import {logoutUser, getUserData} from './redux/actions/userAction';
@@ -44,6 +45,7 @@ function App() {
           <div className="container">
             <Switch>
               <Route exact path="/" component={home} />
+              <Route exact path="/profile" component={profile} />
               <AuthRoute exact path="/login" component={login} />
               <AuthRoute exact path="/signup" component={signup} />
             </Switch>

@@ -35,7 +35,7 @@ export class Navbar extends Component {
                 <Button color="inherit" component={Link} to="/" edge="start">Home</Button>
                 <Grid item container direction="row" align="center" justify="center">
                     <Grid item>
-                        <Tooltip title="Profile" placement="bottom">
+                        <Tooltip title="Profile" placement="bottom" component={Link} to="/profile">
                             <Button color="inherit"><i className="fas fa-user"></i></Button>
                         </Tooltip>
                     </Grid>

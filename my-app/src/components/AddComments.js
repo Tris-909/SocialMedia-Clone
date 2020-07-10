@@ -122,8 +122,37 @@ export class AddComments extends Component {
 
     render() {
         const{classes} = this.props;
+        let arr = [];
+            for (var u = this.props.post.comments.length-1; u >= 0; u--) {
+                arr.push(this.props.post.comments[u]);
+                this.props.post.comments[u].compare = dayjs(this.props.post.comments[u].createdTime).unix();
+            }
+            let SortedArr = [];
+            for (var i = 0; i < this.props.post.comments.length; i++) {
+                if (i === 0) {
+                    SortedArr.unshift(this.props.post.comments[0]);
+                }
+                if (i !== 0) {
+                    if (this.props.post.comments[i].compare > SortedArr[0].compare) {
+                        SortedArr.unshift(this.props.post.comments[i]);
+                    } else {
+                        let u = 0;
+                        while ( u < SortedArr.length) {
+                            if (this.props.post.comments[i].compare > SortedArr[u].compare) {
+                                SortedArr.splice(u, 0, this.props.post.comments[i]);
+                                break;
+                            } else if (u === SortedArr.length-1 && this.props.post.comments[i].compare < SortedArr[u].compare) { 
+                                console.log('push');
+                                SortedArr.push(this.props.post.comments[i]);
+                                break;
+                            }
+                            u++;
+                        }
+                    }
+                }
+            }
         let render;
-                render = this.props.post.comments.map(comment => {
+                render = SortedArr.map(comment => {
                    return (
                    <Card key={Math.random()*3.147} className={classes.Card}>
                        <Grid item container style={{width: "auto"}}>
