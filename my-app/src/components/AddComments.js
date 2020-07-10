@@ -85,13 +85,14 @@ export class AddComments extends Component {
         });
     }
 
-    handleSubmit = (postID) => {
+    handleSubmit = (event) => {
+        event.preventDefault();
         const body = {
             body: this.state.body
         }
-        this.props.commentPost(postID, body);
+        this.props.commentPost(this.props.post.postID, body);
+        this.props.getPost(this.props.post.postID);
         this.setState({body: ''});
-        // this.props.getPost(postID);
     } 
     ////////////////////////////////////////////////////////////
 
@@ -117,52 +118,15 @@ export class AddComments extends Component {
 
     deleteComment = (postID, commentID) => {
         this.props.deleteComment(postID, commentID);
-        // this.props.getPost(postID);
-    }
-
-    componentDidMount(){
-        this.setState({
-            comments: [...this.props.things]
-        });
     }
 
     render() {
         const{classes} = this.props;
         let render;
-        //dayjs(this.state.comments[i].createdTime).unix()
-            let arr = [];
-            for (var u = this.state.comments.length-1; u >= 0; u--) {
-                arr.push(this.state.comments[u]);
-                this.state.comments[u].compare = dayjs(this.state.comments[u].createdTime).unix();
-            }
-            let SortedArr = [];
-            for (var i = 0; i < this.state.comments.length; i++) {
-                if (i === 0) {
-                    SortedArr.unshift(this.state.comments[0]);
-                }
-                if (i !== 0) {
-                    if (this.state.comments[i].compare > SortedArr[0].compare) {
-                        SortedArr.unshift(this.state.comments[i]);
-                    } else {
-                        let u = 0;
-                        while ( u < SortedArr.length) {
-                            if (this.state.comments[i].compare > SortedArr[u].compare) {
-                                SortedArr.splice(u, 0, this.state.comments[i]);
-                                break;
-                            } else if (u === SortedArr.length-1 && this.state.comments[i].compare < SortedArr[u].compare) { 
-                                console.log('push');
-                                SortedArr.push(this.state.comments[i]);
-                                break;
-                            }
-                            u++;
-                        }
-                    }
-                }
-            }
-                render = SortedArr.map(comment => {
+                render = this.props.post.comments.map(comment => {
                    return (
                    <Card key={Math.random()*3.147} className={classes.Card}>
-                       <Grid item container style={{width: "auto"}} justify="center">
+                       <Grid item container style={{width: "auto"}}>
                             <Grid item>
                                 <Avatar alt="user avatar" src={comment.userImage} className={classes.userImage} />
                             </Grid>
@@ -183,18 +147,21 @@ export class AddComments extends Component {
                                     </Typography>
                                 </Grid>
                             </Grid>
+                            {this.props.user.credentials.handle === comment.userHandle ? (
                             <Grid item>
-                                <Button style={{fontSize: '1.5em', marginTop: '1em'}} onClick={() => this.deleteComment(this.props.post.postID, comment.commentID)}>
-                                    <i className="fas fa-trash"></i>
-                                </Button>
-                            </Grid>
+                                 <Button style={{fontSize: '1.5em', marginTop: '1em'}} 
+                                 onClick={() => this.deleteComment(this.props.post.postID, comment.commentID)}>
+                                     <i className="fas fa-trash"></i>
+                                 </Button>
+                             </Grid>
+                            ) : null}
                         </Grid>
                     </Card>);
                 });
         
         
         return(
-            <Dialog open={true} onClose={this.props.onClose} fullWidth maxWidth="md" style={{height: '90%'}}>
+            <Dialog open={this.props.open} onClose={this.props.onClose} fullWidth maxWidth="md" style={{height: '90%'}}>
                 <Grid item container style={{height: '100%'}}>
                 <Grid item sm={12} style={{height: '100%'}}>
                 <Card className={classes.Card}>
@@ -222,7 +189,7 @@ export class AddComments extends Component {
                     </Grid>
                     <Grid item>
                         <Button 
-                            onClick={() => this.handleSubmit(this.props.post.postID)} 
+                            onClick={this.handleSubmit} 
                             className={classes.EmojiButton}
                             style={{marginLeft: '0.5em'}}>
                             <i className="far fa-paper-plane"></i>
@@ -244,7 +211,8 @@ export class AddComments extends Component {
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    post: state.data.post
+    post: state.data.post,
+    loading: state.UI.loading
 })
 
 const mapActionToProps = {

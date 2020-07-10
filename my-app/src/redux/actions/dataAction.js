@@ -36,16 +36,36 @@ export const getPost = (postID) => dispatch => {
 }
 
 export const commentPost = (postID, body) => dispatch => {
+    dispatch({type: LOADING_UI});
     axios.post(`/posts/${postID}/comment`, body)
         .then(res => {
             dispatch({
                 type: COMMENT_A_POST,
                 payload: res.data
-            })
+            });
+            dispatch({type: CLEAR_ERRORS});
         })
         .catch(err => {
             console.log(err);
+            dispatch({type: CLEAR_ERRORS});
         })
+}
+
+//DELETE A COMMENT
+export const deleteComment = (postID, commentID) => dispatch => {
+    dispatch({type: LOADING_UI});
+    axios.delete(`post/${postID}/${commentID}/comment`)
+        .then(() => {
+            dispatch({
+                type:  DELETE_A_COMMENT,
+                payload: {postID, commentID}
+            })
+            dispatch({type: CLEAR_ERRORS});
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({type: CLEAR_ERRORS});
+        });
 }
 
 export const postOnePost = (newPost) => (dispatch) => {
@@ -98,14 +118,3 @@ export const deletePost = (postID) => dispatch => {
         .catch(err => console.log(err));
 }
 
-//DELETE A COMMENT
-export const deleteComment = (postID, commentID) => dispatch => {
-    axios.delete(`post/${postID}/${commentID}/comment`)
-        .then(() => {
-            dispatch({
-                type:  DELETE_A_COMMENT,
-                payload: {postID, commentID}
-            })
-        })
-        .catch(err => console.log(err));
-}

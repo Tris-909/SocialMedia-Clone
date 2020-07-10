@@ -21,7 +21,7 @@ export default function(state = initialState, actions) {
             }
         case COMMENT_A_POST:
             let curComments = [...state.post.comments];
-            curComments.push(actions.payload)
+            curComments.unshift(actions.payload)
             return {
                 ...state,
                 post: {

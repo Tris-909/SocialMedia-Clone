@@ -77,13 +77,14 @@ const styles = {
 export class Post extends Component {
     state = {
         isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID),
+        likeCount: 0,
         openComment: false,
         body: ''
     }
     likedPost = () => {
         if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
             this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
-            this.setState({isLiked: true});
+            this.setState({isLiked: true, likeCount: 1});
         } else {
             this.setState({isLiked: false});
         }
@@ -92,16 +93,17 @@ export class Post extends Component {
     // LIKE AND UNLIKE A POST
     likePost = () => {
         this.props.likePost(this.props.post.postID);
-        this.setState({isLiked: true,  firstTime: false});
+        this.setState({isLiked: true});
     }
     unlikePost = () => {
         this.props.unlikePost(this.props.post.postID);
-        this.setState({isLiked: false,  firstTime: false});
+        this.setState({isLiked: false});
     }
     ///////////////////////////////////////////////////////
 
     // LIKED POST RENDER FULLHEART ICON
     componentDidMount() {
+        // this.likedPost();
         setTimeout(this.likedPost, 1000);
     }
     ///////////////////////////////////////////////////////
@@ -112,7 +114,6 @@ export class Post extends Component {
         this.setState({
             openComment: !this.state.openComment
         });
-        console.log(this.props.data);   
     }
     ///////////////////////////////////////////////////////
 
@@ -214,7 +215,6 @@ export class Post extends Component {
                 <AddComments 
                     open={this.state.openComment} 
                     onClose={this.onOpenComment}
-                    things={this.props.comments} 
                     key={postID} 
                     credentials={credentials} 
                     postID={postID}/>  : null : null}
