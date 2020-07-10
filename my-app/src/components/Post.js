@@ -112,23 +112,18 @@ export class Post extends Component {
 
     // lOADING COMMENTS
     onOpenComment = () => {
-        let oldPath = window.location.pathname;
-        const newPath = `/profile/${this.props.name}/post/${this.props.passedID}`;
+        // let oldPath = window.location.pathname;
+        // const newPath = `/profile/${this.props.name}/post/${this.props.passedID}`;
         this.setState({
-            openComment: true,
-            oldPath: oldPath,
-            newPath: newPath
+            openComment: true
         });
-
-
-        window.history.pushState(null, null, newPath);
+        // window.history.pushState(null, null, newPath);
         this.props.getPost(this.props.post.postID);
-
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     onCloseComment = () => {
-        window.history.pushState(null, null, this.state.oldPath);
+        // window.history.pushState(null, null, this.state.oldPath);
         this.props.getPost(this.props.post.postID);
         this.setState({
             openComment: false
@@ -185,7 +180,7 @@ export class Post extends Component {
                         <Grid item>
                             <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                         </Grid>
-                        <Grid item style={{width: '80%'}}>
+                        <Grid item style={{width: '78%'}}>
                             <Grid item container justify="space-between">
                                 <Grid item>
                                     <Typography variant="h5" component={Link} color="primary" to={`/profile/${userHandle}`}>

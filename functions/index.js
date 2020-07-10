@@ -4,6 +4,10 @@ const app = express();
 const {db} = require('./utilities/admin');
 const FBAuth = require('./utilities/FBAuth');
 //https://asia-east2-socialapp-2c8b0.cloudfunctions.net/api
+
+const cors = require('cors');
+app.use(cors());
+
 const {
     getAllPosts, 
     postOnePost, 

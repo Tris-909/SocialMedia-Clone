@@ -23,6 +23,8 @@ import axios from 'axios';
 
 export const theme = createMuiTheme(themeFile);
 
+axios.defaults.baseURL = 'https://asia-east2-socialapp-2c8b0.cloudfunctions.net/api';
+
 const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);

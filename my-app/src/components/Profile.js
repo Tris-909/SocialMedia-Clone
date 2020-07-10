@@ -80,7 +80,7 @@ class Profile extends Component {
                             {birth}
                         </Typography>
                     </Grid>
-                    <Grid item style={{width: '65%'}}>
+                    <Grid item container justify="center" style={{width: '65%'}}>
                         <Typography variant="body1" className={classes.itemMargin}>
                             {bio}
                         </Typography>

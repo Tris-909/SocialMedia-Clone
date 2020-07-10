@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 import Profile from '../components/Profile';
 import {getPosts} from '../redux/actions/dataAction';
 
+import PostSkeleton from '../components/PostSkeleton'
+
 class home extends Component {
     componentDidMount(){
         this.props.getPosts();
@@ -14,7 +16,7 @@ class home extends Component {
         const { posts, loading } = this.props.data;
         let recentPostsMarkUp = !loading ? (
             posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />} )
-        ) : <p>Loading...</p>;
+        ) : <PostSkeleton />;
         return (
             <Grid container alignItems={this.props.user.authenticated ? null : "center"} style={{position: 'relative'}}>
                 <Grid item sm={this.props.user.authenticated ? 4 : 0} xs={false} style={{position: "fixed", width: "25%"}}>

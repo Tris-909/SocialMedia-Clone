@@ -32,6 +32,7 @@ export const signupUser = (userInput, history) => (dispatch) => {
             dispatch(getUserData());
             dispatch({type: CLEAR_ERRORS});
             history.push('/');
+            window.location.reload();
         })
         .catch(err => {
             dispatch({
