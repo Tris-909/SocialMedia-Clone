@@ -1,4 +1,4 @@
-import {SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER } from '../types';
+import {SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER, MARK_NOTIFICATIONS_READ } from '../types';
 import {getPosts} from './dataAction';
 import axios from 'axios';
 
@@ -80,6 +80,18 @@ export const uploadPostImage = (formData, postID) => (dispatch) => {
         .catch(err => {
             console.log(err);
         });
+}
+
+export const markNotificationsRead = (notificationsID) => dispatch => {
+    axios.post('/notifications', notificationsID)
+        .then(res => {
+            dispatch({
+                type:  MARK_NOTIFICATIONS_READ
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 export const editUserDetails = (userDetails) => (dispatch) => {

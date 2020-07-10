@@ -79,7 +79,9 @@ export class Post extends Component {
         isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID),
         likeCount: 0,
         openComment: false,
-        body: ''
+        body: '',
+        oldPath: '',
+        newPath: ''
     }
     likedPost = () => {
         if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
@@ -110,9 +112,26 @@ export class Post extends Component {
 
     // lOADING COMMENTS
     onOpenComment = () => {
+        let oldPath = window.location.pathname;
+        const newPath = `/profile/${this.props.name}/post/${this.props.passedID}`;
+        this.setState({
+            openComment: true,
+            oldPath: oldPath,
+            newPath: newPath
+        });
+
+
+        window.history.pushState(null, null, newPath);
+        this.props.getPost(this.props.post.postID);
+
+        console.log(this.state);
+    }
+
+    onCloseComment = () => {
+        window.history.pushState(null, null, this.state.oldPath);
         this.props.getPost(this.props.post.postID);
         this.setState({
-            openComment: !this.state.openComment
+            openComment: false
         });
     }
     ///////////////////////////////////////////////////////
@@ -162,15 +181,24 @@ export class Post extends Component {
             <Card className={classes.card}>
                 <CardContent className={classes.content}>
                     <Grid container justify="space-between">
-                        <Grid item container style={{width: "auto"}}>
+                        <Grid item container style={{width: "100%"}}>
                         <Grid item>
                             <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                         </Grid>
-                        <Grid item>
-                            <Grid item>
-                                <Typography variant="h5" component={Link} color="primary" to={`/users/${userHandle}`}>
-                                    {userHandle}
-                                </Typography>
+                        <Grid item style={{width: '80%'}}>
+                            <Grid item container justify="space-between">
+                                <Grid item>
+                                    <Typography variant="h5" component={Link} color="primary" to={`/profile/${userHandle}`}>
+                                        {userHandle}
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    {addImageButton}
+                                    {deleteButton}
+                                    {this.props.user.credentials.handle === this.props.post.userHandle ? 
+                                    <input type="file" hidden id="imagePostInput" 
+                                    onChange={(event) => this.handleImageChange(`${postID}`, event)} /> : null}
+                                </Grid>
                             </Grid>
                             <Grid item>
                                 <Typography variant="body2" color="textSecondary">
@@ -183,13 +211,6 @@ export class Post extends Component {
                                 </Typography>
                             </Grid>
                         </Grid>
-                        </Grid>
-                        <Grid item>
-                            {addImageButton}
-                            {deleteButton}
-                            {this.props.user.credentials.handle === this.props.post.userHandle ? 
-                            <input type="file" hidden id="imagePostInput" 
-                            onChange={(event) => this.handleImageChange(`${postID}`, event)} /> : null}
                         </Grid>
                     </Grid>
                     {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="ERROR" style={{width: '100%'}}/> : null}
@@ -214,7 +235,7 @@ export class Post extends Component {
             {this.state.openComment ? !this.props.loading ? 
                 <AddComments 
                     open={this.state.openComment} 
-                    onClose={this.onOpenComment}
+                    onClose={this.onCloseComment}
                     key={postID} 
                     credentials={credentials} 
                     postID={postID}/>  : null : null}

@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import {logoutUser} from '../redux/actions/userAction';
 
 import AddPost from './AddPost';
+import Notifications from './Notifications';
 
 const styles = {
     Authoziration: {
@@ -35,17 +36,15 @@ export class Navbar extends Component {
                 <Button color="inherit" component={Link} to="/" edge="start">Home</Button>
                 <Grid item container direction="row" align="center" justify="center">
                     <Grid item>
-                        <Tooltip title="Profile" placement="bottom" component={Link} to="/profile">
-                            <Button color="inherit"><i className="fas fa-user"></i></Button>
+                        <Tooltip title="Profile" placement="bottom" component={Link} to={`/profile/${this.props.user.credentials.handle}`}>
+                            <Button color="inherit"  style={{fontSize: '1.25rem'}}><i className="fas fa-user"></i></Button>
                         </Tooltip>
                     </Grid>
                     <Grid item>
                         <AddPost />
                     </Grid>
                     <Grid item>
-                        <Tooltip title="Notifications" placement="bottom">
-                            <Button color="inherit"><i className="fas fa-bell"></i></Button>
-                        </Tooltip>
+                        <Notifications />
                     </Grid>
                 </Grid>
                 <Button color="inherit" component={Link} onClick={this.props.logoutUser} to="/login" edge="end">LogOut</Button>
@@ -53,7 +52,6 @@ export class Navbar extends Component {
         ) : 
         (
             <React.Fragment>
-                {/* <Button color="inherit" component={Link} to="/">Home</Button> */}
                 <Button color="inherit" component={Link} to="/login">Login</Button>
                 <Button color="inherit" component={Link} to="/signup">SignUp</Button>
             </React.Fragment>
@@ -69,9 +67,12 @@ export class Navbar extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    user: state.user
+});
 
 const mapActionToProps = {
     logoutUser
 } 
 
-export default connect(null, mapActionToProps)(withStyles(styles)(Navbar));
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Navbar));

@@ -1,4 +1,4 @@
-import {SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LIKE_POST, UNLIKE_POST } from '../types';
+import {SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LIKE_POST, UNLIKE_POST, MARK_NOTIFICATIONS_READ } from '../types';
 
 const initialState = {
     authenticated: false,
@@ -21,6 +21,12 @@ export default function(state = initialState, action) {
                 authenticated: true,
                 ...action.payload
             }
+        case  MARK_NOTIFICATIONS_READ: {
+            state.notifications.forEach(notification => notification.read = true);
+            return {
+                ...state
+            }
+        }
         case LIKE_POST: {
             return {
                 ...state,

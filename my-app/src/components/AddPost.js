@@ -109,7 +109,7 @@ export class AddPost extends Component {
         return (
             <React.Fragment>
             <Tooltip title="Add a post" placement="bottom">
-                <Button color="inherit" onClick={this.handleClickOpen}><i className="fas fa-plus"></i></Button>      
+                <Button color="inherit" style={{fontSize: '1.25rem'}} onClick={this.handleClickOpen}><i className="fas fa-plus"></i></Button>      
             </Tooltip>
             <Dialog open={this.state.open} onClose={this.handleClickClose} fullWidth maxWidth="md">
                 <Grid container justify="space-between">

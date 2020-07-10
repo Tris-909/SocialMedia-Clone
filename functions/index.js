@@ -58,7 +58,8 @@ exports.createNotificationOnLike = functions.region('asia-east2').firestore.docu
                         sender: snapshot.data().userHandle,
                         type: 'like',
                         read: false,
-                        postID: doc.id
+                        postID: doc.id,
+                        notificationId: snapshot.id
                     });
                 }
             })
@@ -87,7 +88,8 @@ exports.createNotificationOnComment = functions.region('asia-east2').firestore.d
                         sender: snapshot.data().userHandle,
                         type: 'comment',
                         read: false,
-                        postID: doc.id
+                        postID: doc.id,
+                        notificationId: snapshot.id
                     });
                 }
             })
