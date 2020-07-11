@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 import {getPosts} from '../redux/actions/dataAction';
 import {getUserData} from '../redux/actions/userAction';
 
+import PostSkeleton from '../components/PostSkeleton';
+
 export class profile extends Component {
     state = {
         userName: '',
@@ -47,7 +49,7 @@ export class profile extends Component {
                     }
                 })
             )
-        ) : <p>loading...</p>;
+        ) : <PostSkeleton />;
         return (
             <Grid item container direction="column" justify="center" alignItems="center">
                 {UserPost}

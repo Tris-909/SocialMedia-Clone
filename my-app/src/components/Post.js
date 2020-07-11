@@ -180,7 +180,7 @@ export class Post extends Component {
                         <Grid item>
                             <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                         </Grid>
-                        <Grid item style={{width: '78%'}}>
+                        <Grid item style={{width: '75%'}}>
                             <Grid item container justify="space-between">
                                 <Grid item>
                                     <Typography variant="h5" component={Link} color="primary" to={`/profile/${userHandle}`}>
