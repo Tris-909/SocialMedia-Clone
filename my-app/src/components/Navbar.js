@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 
 // MUI stuff
-import Appbar from '@material-ui/core/Appbar';
+import Appbar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
