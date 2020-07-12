@@ -8,13 +8,15 @@ import {
     LOADING_DATA, 
     DELETE_POST, 
     DELETE_A_COMMENT,
-    GET_USERS 
+    GET_USERS,
+    GET_SINGLE_USER
 } from '../types';
 
 const initialState = {
     users: [],
     posts: [],
     post: {},
+    singleUser: {},
     loading: false
 }
 
@@ -35,6 +37,12 @@ export default function(state = initialState, actions) {
             return {
                 ...state,
                 users: actions.payload,
+                loading: false
+            }
+        case GET_SINGLE_USER:
+            return {
+                ...state,
+                singleUser: actions.payload,
                 loading: false
             }
         case COMMENT_A_POST:

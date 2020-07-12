@@ -18,3 +18,4 @@ export const POST_A_POST = 'POST_A_POST';
 export const COMMENT_A_POST = 'COMMENT_A_POST';
 export const DELETE_A_COMMENT = 'DELETE_A_COMMENT';
 export const GET_USERS = 'GET_USERS';
+export const GET_SINGLE_USER = 'GET_SINGLE_USER';

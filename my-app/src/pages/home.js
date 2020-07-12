@@ -4,7 +4,7 @@ import Post from '../components/Post';
 import {connect} from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Profile from '../components/Profile';
-import {getPosts, getUsers} from '../redux/actions/dataAction';
+import {getPosts, getUsers, getSingleUser} from '../redux/actions/dataAction';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -32,10 +32,12 @@ const styles = theme => ({
 
 class home extends Component {
     state = {
-        isShow: true
+        isShow: false
     }
 
-    onHoverHandlerOpen = () => {
+    onHoverHandlerOpen = (handle) => {
+        console.log(handle);
+        this.props.getSingleUser(handle);
         this.setState({
             isShow: true
         });
@@ -60,11 +62,10 @@ class home extends Component {
         ) : <PostSkeleton />;
 
         let UsersList = !loading ? (
-            users.map(user => {
+            users.map( (user, index) => {
                 return(
-                    <React.Fragment>
-                    {/* onMouseEnter={this.onHoverHandler} onMouseLeave={this.onHoverHandler} */}
-                    <Grid item container className={classes.userChat} align="center">                  
+                    <React.Fragment key={user.userID}>
+                    <Grid item container onMouseEnter={() => this.onHoverHandlerOpen(user.handle)} onMouseLeave={this.onHoverHandlerClose} className={classes.userChat} align="center">                  
                         <Grid item>
                             <Avatar alt="user avatar" src={user.imageUrl} />
                         </Grid>
@@ -73,10 +74,10 @@ class home extends Component {
                                 {user.handle}
                             </Typography>
                         </Grid>
+                        { this.state.isShow ? (
+                        <CardProfile handle={user.handle}/>
+                        ) : null}
                     </Grid>
-                    {this.state.isShow ? (
-                        <CardProfile user={user} />
-                    ) : null}
                     </React.Fragment>
                 );
             })) : null;
@@ -114,7 +115,8 @@ const mapStateToProps = (state) => ({
 
 const mapActionToProps = {
     getPosts,
-    getUsers
+    getUsers,
+    getSingleUser
 }
 
 export default connect(mapStateToProps,mapActionToProps)(withStyles(styles)(home));

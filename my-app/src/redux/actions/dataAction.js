@@ -10,7 +10,9 @@ import {
     CLEAR_ERRORS,
     LOADING_UI,
     DELETE_POST,
-    GET_USERS} from '../types';
+    GET_USERS,
+    GET_SINGLE_USER
+} from '../types';
 import axios from 'axios';
 
 //GET ALL POSTS
@@ -47,6 +49,19 @@ export const getUsers = () => dispatch => {
             payload: []
         });
     });
+}
+
+export const getSingleUser = (handle) => dispatch => {
+    axios.get(`/users/${handle}`)
+        .then(res => {
+            dispatch({
+                type: GET_SINGLE_USER,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 export const getPost = (postID) => dispatch => {
