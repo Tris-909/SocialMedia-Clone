@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Post from '../components/Post';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Profile from '../components/Profile';
@@ -11,6 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PostSkeleton from '../components/PostSkeleton'
 import { Typography } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardProfile from '../components/CardProfile';
 
 const styles = theme => ({
     post: {
@@ -30,6 +31,22 @@ const styles = theme => ({
 })
 
 class home extends Component {
+    state = {
+        isShow: true
+    }
+
+    onHoverHandlerOpen = () => {
+        this.setState({
+            isShow: true
+        });
+    }
+
+    onHoverHandlerClose = () => {
+        this.setState({
+            isShow: false
+        });
+    }
+
     componentDidMount(){
         this.props.getPosts();
         this.props.getUsers();
@@ -45,19 +62,24 @@ class home extends Component {
         let UsersList = !loading ? (
             users.map(user => {
                 return(
-                    <Grid item container className={classes.userChat} align="center">
+                    <React.Fragment>
+                    {/* onMouseEnter={this.onHoverHandler} onMouseLeave={this.onHoverHandler} */}
+                    <Grid item container className={classes.userChat} align="center">                  
                         <Grid item>
                             <Avatar alt="user avatar" src={user.imageUrl} />
                         </Grid>
-                        <Grid item alignItems="center">
+                        <Grid item>
                             <Typography variant="body1" style={{marginLeft: '1em', marginTop: '0.5em'}}>
                                 {user.handle}
                             </Typography>
                         </Grid>
                     </Grid>
+                    {this.state.isShow ? (
+                        <CardProfile user={user} />
+                    ) : null}
+                    </React.Fragment>
                 );
-            })
-        ) : null;
+            })) : null;
 
         return (
             <React.Fragment>
@@ -73,6 +95,7 @@ class home extends Component {
 
             </Grid>
             <Grid item container direction="column" style={{position: "fixed", left: '85%', top: '8%', height: '100vh'}}>
+
                 <Paper style={{height: '100%'}}>
                     {UsersList}
                 </Paper>

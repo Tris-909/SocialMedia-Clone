@@ -49,17 +49,32 @@ exports.getPost = (req, res) => {
                     commentID: doc.id
                     });
             });
-            // if (postData.comments.length > 0) {
-            //     postData.comments.map(comment => {
-            //         comment[commentID] = doc.id;
-            //     });
-            // }
             return res.json(postData);
         })
         .catch(err => {
             console.error(err);
             res.status(500).json({error: err.code});
         });
+}
+
+exports.getSingleUser = (req, res) => {
+    let singleUser = {};
+    db.doc(`/users/${req.params.handle}`)
+    .get()
+    .then(doc => {
+        if (!doc.exists){
+            return res.status(404).json({error: 'User not found'})
+        }
+        singleUser = doc.data();
+        return db.collection('users').where('handle', '==', req.params.handle).get();
+    })
+    .then(() => {
+        return res.json(singleUser);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error: err.code});
+    });
 }
 
 exports.uploadPostImage = (req, res) => {
