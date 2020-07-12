@@ -2,7 +2,6 @@ import React from 'react';
 import Noimg from '../images/blank-profile-picture-973460_960_720.png';
 
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -57,7 +56,7 @@ const PostSkeleton = (props) => {
     const {classes} = props;
 
     const content = Array.from({length: 2}).map((item, index) => (
-        <React.Fragment> 
+        <React.Fragment key={Math.random()}> 
         <Card className={classes.card}>
         <CardContent className={classes.content}>
             <Grid container justify="space-between">

@@ -1,6 +1,18 @@
-import { SET_POSTS, SET_POST, COMMENT_A_POST,LIKE_POST, POST_A_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST, DELETE_A_COMMENT } from '../types';
+import { 
+    SET_POSTS, 
+    SET_POST, 
+    COMMENT_A_POST,
+    LIKE_POST, 
+    POST_A_POST, 
+    UNLIKE_POST, 
+    LOADING_DATA, 
+    DELETE_POST, 
+    DELETE_A_COMMENT,
+    GET_USERS 
+} from '../types';
 
 const initialState = {
+    users: [],
     posts: [],
     post: {},
     loading: false
@@ -18,6 +30,12 @@ export default function(state = initialState, actions) {
                 ...state,
                 posts: actions.payload,
                 loading: false 
+            }
+        case GET_USERS: 
+            return {
+                ...state,
+                users: actions.payload,
+                loading: false
             }
         case COMMENT_A_POST:
             let curComments = [...state.post.comments];

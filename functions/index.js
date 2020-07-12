@@ -25,7 +25,8 @@ const {
     addUserDetails, 
     getAuthenticatedUser,
     getUserDetails,
-    markNotificationRead
+    markNotificationRead,
+    getUsers
     } = require('./handlers/users');
 
 // Posts route
@@ -38,6 +39,7 @@ app.get('/post/:postID/like', FBAuth, likePost);
 app.get('/post/:postID/unlike', FBAuth, unlikePost);
 app.delete('/post/:postID', FBAuth, deletePost);
 app.post('/post/:postID/image', FBAuth, uploadPostImage);
+app.get('/users', FBAuth, getUsers);
 
 app.post('/user/image', FBAuth, uploadImage);   
 app.post('/user', FBAuth, addUserDetails);

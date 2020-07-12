@@ -200,13 +200,13 @@ export class Post extends Component {
                                     {dayjs(createdTime).fromNow()}
                                 </Typography>
                             </Grid>
-                            <Grid item>
-                                <Typography variant="body1">
-                                    {body}
-                                </Typography>
-                            </Grid>
                         </Grid>
                         </Grid>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body1" style={{fontSize: '1.25em', marginBottom: '1em'}}>
+                            {body}
+                        </Typography>
                     </Grid>
                     {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="ERROR" style={{width: '100%'}}/> : null}
                     <Grid container direction="row" justify="space-between" className={classes.DetailBox}>

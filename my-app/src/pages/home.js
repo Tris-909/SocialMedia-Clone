@@ -1,42 +1,97 @@
 import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Post from '../components/Post';
-
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import Hidden from '@material-ui/core/Hidden';
 import Profile from '../components/Profile';
-import {getPosts} from '../redux/actions/dataAction';
-
+import {getPosts, getUsers} from '../redux/actions/dataAction';
+import Avatar from '@material-ui/core/Avatar';
+import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
 import PostSkeleton from '../components/PostSkeleton'
+import { Typography } from '@material-ui/core';
+
+const styles = theme => ({
+    post: {
+        position: 'absolute', 
+        left: '30%',
+        [theme.breakpoints.down("sm")]: {
+            position: 'absolute',
+            left: '0%'
+        }
+    },
+    userChat: {
+        padding: '1em',
+        '&:hover': {
+            backgroundColor: '#dddfe2;'
+        }
+    }
+})
 
 class home extends Component {
     componentDidMount(){
         this.props.getPosts();
+        this.props.getUsers();
     }
     render() {
-        const { posts, loading } = this.props.data;
+        const { posts,users, loading } = this.props.data;
+        const {classes} = this.props;
+
         let recentPostsMarkUp = !loading ? (
             posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />} )
         ) : <PostSkeleton />;
+
+        let UsersList = !loading ? (
+            users.map(user => {
+                return(
+                    <Grid item container className={classes.userChat} align="center">
+                        <Grid item>
+                            <Avatar alt="user avatar" src={user.imageUrl} />
+                        </Grid>
+                        <Grid item alignItems="center">
+                            <Typography variant="body1" style={{marginLeft: '1em', marginTop: '0.5em'}}>
+                                {user.handle}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                );
+            })
+        ) : null;
+
         return (
+            <React.Fragment>
             <Grid container alignItems={this.props.user.authenticated ? null : "center"} style={{position: 'relative'}}>
-                <Grid item sm={this.props.user.authenticated ? 4 : 0} xs={false} style={{position: "fixed", width: "25%"}}>
+                <Hidden smDown>
+                <Grid item md={5} sm={this.props.user.authenticated ? 4 : 4} xs={false} style={{position: "fixed", width: "28%"}}>
                     {this.props.user.authenticated ? <Profile profileData = {this.props.user.credentials}/> : null}
                 </Grid>
-                <Grid item sm={this.props.user.authenticated ? 5 : 6} xs={12} style={{position: "absolute", left: '27%'}}>
+                </Hidden>
+                <Grid item lg={5} md={7} sm={this.props.user.authenticated ? 10 : 10} xs={12} className={classes.post}>
                     {recentPostsMarkUp}
                 </Grid>
+
             </Grid>
+            <Grid item container direction="column" style={{position: "fixed", left: '85%', top: '8%', height: '100vh'}}>
+                <Paper style={{height: '100%'}}>
+                    {UsersList}
+                </Paper>
+            </Grid>
+            </React.Fragment>
+
         )
     }
 }
 
 const mapStateToProps = (state) => ({
     user: state.user,
+    users: state.users,
     data: state.data
 });
 
 const mapActionToProps = {
-    getPosts
+    getPosts,
+    getUsers
 }
 
-export default connect(mapStateToProps,mapActionToProps)(home);
+export default connect(mapStateToProps,mapActionToProps)(withStyles(styles)(home));

@@ -43,7 +43,8 @@ exports.signup = (req, res) => {
                 email: newUser.email,
                 createdTime: new Date().toISOString(),
                 imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
-                userID: userId
+                userID: userId,
+                messages: [{notificationID: '', number: 0}]
             };
             return db.doc(`/users/${newUser.handle}`).set(userCredentials);
         })
@@ -58,6 +59,28 @@ exports.signup = (req, res) => {
                 return res.status(500).json({ general: 'Something went wrong please try again :(' });
             }
         })
+}
+
+exports.getUsers = (req, res) => {
+    db.collection('users')
+    .get()
+    .then(data => {
+        let users = [];
+        data.forEach(doc => {
+            users.push({
+                userID: doc.data().id,
+                bio: doc.data().bio,
+                handle: doc.data().handle,
+                imageUrl: doc.data().imageUrl,
+                messages: [...doc.data().messages]
+            });
+        });
+        return res.json(users);
+    })
+    .catch((err) => {
+        console.log(err);
+        res.status(500).json({error: err.code});
+    })
 }
 
 exports.login = (req, res) => {
