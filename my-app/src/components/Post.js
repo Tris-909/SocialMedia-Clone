@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReadMoreAndLess from 'react-read-more-less';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import DeleteButton from './DeleteButton';
@@ -81,7 +82,8 @@ export class Post extends Component {
         openComment: false,
         body: '',
         oldPath: '',
-        newPath: ''
+        newPath: '',
+        expand: false
     }
     likedPost = () => {
         if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
@@ -143,7 +145,11 @@ export class Post extends Component {
         fileInput.click();
     };
     /////////////////////////////////////////////////////////////////
-
+    expand = () => {
+        this.setState({
+            expand: true
+        })
+    }
     render() {    
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
@@ -205,7 +211,9 @@ export class Post extends Component {
                     </Grid>
                     <Grid item>
                         <Typography variant="body1" style={{fontSize: '1.25em', marginBottom: '1em'}}>
-                            {body}
+                           <ReadMoreAndLess ref={this.Readmore} charLimit={500}  readMoreText="Read more" readLessText="Read less">
+                               {body}
+                            </ReadMoreAndLess> 
                         </Typography>
                     </Grid>
                     {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="ERROR" style={{width: '100%'}}/> : null}

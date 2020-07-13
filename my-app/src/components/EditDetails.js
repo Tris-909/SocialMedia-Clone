@@ -164,7 +164,7 @@ export class EditDetails extends Component {
                                 type="text"
                                 label="Bio"
                                 multiline
-                                rows="3"
+                                rows="2"
                                 variant="outlined"
                                 placeholder="Your Bio"
                                 className={classes.Bio}

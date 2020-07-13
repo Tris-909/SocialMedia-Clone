@@ -24,15 +24,39 @@ const styles = theme => ({
     },
     userChat: {
         padding: '1em',
+        borderBottom: '1px solid black',
         '&:hover': {
             backgroundColor: '#dddfe2;'
         }
+    },
+    input: {
+        width: '100%', 
+        height: '100%',
+        borderTopLeftRadius: "0px",
+        borderTopRightRadius: "0px",  
+        borderLeft: '0px',
+        borderTop: '2px solid black',
+        '&::placeholder': {
+            fontSize: '0.875rem',
+            paddingLeft: '1em'
+        },
+        '&::focus': {
+            outline: 'none',
+            outlineOffset: 'none'
+        },
+        fontSize: '1.25rem'
+    },
+    friendList: {
+        borderBottomLeftRadius: "0px",
+        borderBottomRightRadius: "0px"
     }
 })
 
 class home extends Component {
     state = {
-        isShow: false
+        isShow: false,
+        userList: [],
+        firsttime: true
     }
 
     onHoverHandlerOpen = (handle) => {
@@ -53,6 +77,27 @@ class home extends Component {
         this.props.getPosts();
         this.props.getUsers();
     }
+
+    searchHandler = (event) => {
+        this.setState({
+            firsttime: false
+        });
+        let searchQuery = event.target.value.toLowerCase();
+        let displayUsers = this.props.data.users.filter((el) => {
+            let searchValue = el.handle.toLowerCase();
+            return searchValue.indexOf(searchQuery) !== -1;
+        });
+        this.setState({
+            userList: displayUsers
+        });
+    }
+
+    updateStateFirstTime = () => {
+        this.setState({
+            userList: this.props.data.users
+        });
+    }
+
     render() {
         const { posts,users, loading } = this.props.data;
         const {classes} = this.props;
@@ -61,11 +106,18 @@ class home extends Component {
             posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />} )
         ) : <PostSkeleton />;
 
-        let UsersList = !loading ? (
-            users.map( (user, index) => {
+        let UsersList = !loading ? 
+        this.state.firsttime ? (
+            users.map( (user) => {
                 return(
                     <React.Fragment key={user.userID}>
-                    <Grid item container onMouseEnter={() => this.onHoverHandlerOpen(user.handle)} onMouseLeave={this.onHoverHandlerClose} className={classes.userChat} align="center">                  
+                    <Grid 
+                    item 
+                    container 
+                    onMouseEnter={() => this.onHoverHandlerOpen(user.handle)} 
+                    onMouseLeave={this.onHoverHandlerClose} 
+                    className={classes.userChat} 
+                    align="center">                  
                         <Grid item>
                             <Avatar alt="user avatar" src={user.imageUrl} />
                         </Grid>
@@ -74,13 +126,31 @@ class home extends Component {
                                 {user.handle}
                             </Typography>
                         </Grid>
-                        { this.state.isShow ? (
-                        <CardProfile handle={user.handle}/>
-                        ) : null}
                     </Grid>
                     </React.Fragment>
-                );
-            })) : null;
+                )})) : (
+                    this.state.userList.map( (user) => {
+                        return(
+                            <React.Fragment key={user.userID}>
+                            <Grid 
+                            item 
+                            container 
+                            onMouseEnter={() => this.onHoverHandlerOpen(user.handle)} 
+                            onMouseLeave={this.onHoverHandlerClose} 
+                            className={classes.userChat} 
+                            align="center">                  
+                                <Grid item>
+                                    <Avatar alt="user avatar" src={user.imageUrl} />
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="body1" style={{marginLeft: '1em', marginTop: '0.5em'}}>
+                                        {user.handle}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            </React.Fragment>
+                        );
+                    })) : null;
 
         return (
             <React.Fragment>
@@ -93,12 +163,14 @@ class home extends Component {
                 <Grid item lg={5} md={7} sm={this.props.user.authenticated ? 10 : 10} xs={12} className={classes.post}>
                     {recentPostsMarkUp}
                 </Grid>
-
             </Grid>
             <Grid item container direction="column" style={{position: "fixed", left: '85%', top: '8%', height: '100vh'}}>
-
-                <Paper style={{height: '100%'}}>
+                <Paper className={classes.friendList} style={{height: '85%'}}>
+                    {this.state.isShow ? <CardProfile /> : null}
                     {UsersList}
+                </Paper>
+                <Paper style={{height: '8%'}}>
+                    <input type="text" onChange={this.searchHandler} placeholder="Search" className={classes.input} />
                 </Paper>
             </Grid>
             </React.Fragment>
