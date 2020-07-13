@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Profile from '../components/Profile';
 import {getPosts, getUsers, getSingleUser} from '../redux/actions/dataAction';
+import {getUserData} from '../redux/actions/userAction';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -76,6 +77,7 @@ class home extends Component {
     componentDidMount(){
         this.props.getPosts();
         this.props.getUsers();
+        this.props.getUserData();
     }
 
     searchHandler = (event) => {
@@ -102,9 +104,9 @@ class home extends Component {
         const { posts,users, loading } = this.props.data;
         const {classes} = this.props;
 
-        let recentPostsMarkUp = !loading ? (
+        let recentPostsMarkUp = !loading ? this.props.user.credentials.handle ? (
             posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />} )
-        ) : <PostSkeleton />;
+        ) : <PostSkeleton /> : <PostSkeleton />;
 
         let UsersList = !loading ? 
         this.state.firsttime ? (
@@ -186,6 +188,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionToProps = {
+    getUserData,
     getPosts,
     getUsers,
     getSingleUser

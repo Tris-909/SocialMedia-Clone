@@ -22,7 +22,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 import {connect} from 'react-redux';
 import {likePost, unlikePost, getPost, commentPost} from '../redux/actions/dataAction';
-import {uploadPostImage} from '../redux/actions/userAction';
+import {uploadPostImage, getUserData} from '../redux/actions/userAction';
 
 const styles = {
     card: {
@@ -79,11 +79,9 @@ export class Post extends Component {
     state = {
         isLiked: this.props.user.likes.find(like => like.postID === this.props.post.postID),
         likeCount: 0,
+        commentCount: 0,
         openComment: false,
-        body: '',
-        oldPath: '',
-        newPath: '',
-        expand: false
+        body: ''
     }
     likedPost = () => {
         if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
@@ -107,25 +105,19 @@ export class Post extends Component {
 
     // LIKED POST RENDER FULLHEART ICON
     componentDidMount() {
-        // this.likedPost();
-        setTimeout(this.likedPost, 1000);
+        this.likedPost();
     }
     ///////////////////////////////////////////////////////
 
     // lOADING COMMENTS
     onOpenComment = () => {
-        // let oldPath = window.location.pathname;
-        // const newPath = `/profile/${this.props.name}/post/${this.props.passedID}`;
         this.setState({
             openComment: true
         });
-        // window.history.pushState(null, null, newPath);
         this.props.getPost(this.props.post.postID);
-        // console.log(this.state);
     }
 
     onCloseComment = () => {
-        // window.history.pushState(null, null, this.state.oldPath);
         this.props.getPost(this.props.post.postID);
         this.setState({
             openComment: false
@@ -145,11 +137,7 @@ export class Post extends Component {
         fileInput.click();
     };
     /////////////////////////////////////////////////////////////////
-    expand = () => {
-        this.setState({
-            expand: true
-        })
-    }
+
     render() {    
         dayjs.extend(relativeTime);
         // eslint-disable-next-line
@@ -259,7 +247,8 @@ const mapActionToProps = {
     unlikePost,
     uploadPostImage,
     getPost,
-    commentPost
+    commentPost,
+    getUserData
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Post));
