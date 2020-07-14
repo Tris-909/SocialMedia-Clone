@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import SingleComment from './SingleComment';
 
 import dayjs from 'dayjs';
 import Picker from 'emoji-picker-react';
@@ -14,7 +15,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
-import {commentPost,deleteComment,getPost} from '../redux/actions/dataAction';
+import {commentPost ,deleteComment ,getPost ,likeComment ,unlikeComment} from '../redux/actions/dataAction';
 
 const styles = {
     userImage: {
@@ -151,46 +152,9 @@ export class AddComments extends Component {
                 }
             }
         let render;
-                render = SortedArr.map(comment => {
-                   return (
-                   <Card key={Math.random()*3.147} className={classes.Card}>
-                       <Grid item container style={{width: "auto", borderBottom: '1px solid'}}>
-                            <Grid item>
-                                <Avatar alt="user avatar" src={comment.userImage} className={classes.userImage} />
-                            </Grid>
-                            <Grid item style={{width: '80%'}}>
-                                <Grid item>
-                                    <Typography variant="h5" component={Link} color="primary" to={`/users/${comment.userHandle}`}>
-                                        {comment.userHandle}
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {dayjs(comment.createdTime).fromNow()}
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body1" style={{width: '90%'}}>
-                                        {comment.body}
-                                    </Typography>
-                                </Grid>
-                                <Grid item style={{marginBottom: '1em', marginTop: '1em'}}>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {comment.likeCount} likes
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            {this.props.user.credentials.handle === comment.userHandle ? (
-                            <Grid item>
-                                 <Button style={{fontSize: '1.5em', marginTop: '0.75em'}} 
-                                 onClick={() => this.deleteComment(this.props.post.postID, comment.commentID)}>
-                                     <i className="fas fa-trash"></i>
-                                 </Button>
-                             </Grid>
-                            ) : null}
-                        </Grid>
-                    </Card>);
-                });
+        render = SortedArr.map(comment => {
+            return ( <SingleComment comment={comment} />);
+        });
         
         
         return(
@@ -251,7 +215,9 @@ const mapStateToProps = (state) => ({
 const mapActionToProps = {
     commentPost,
     deleteComment,
-    getPost
+    getPost,
+    likeComment,
+    unlikeComment
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(AddComments));

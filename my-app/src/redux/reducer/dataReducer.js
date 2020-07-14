@@ -9,7 +9,9 @@ import {
     DELETE_POST, 
     DELETE_A_COMMENT,
     GET_USERS,
-    GET_SINGLE_USER
+    GET_SINGLE_USER,
+    LIKE_COMMENT,
+    UNLIKE_COMMENT
 } from '../types';
 
 const initialState = {
@@ -80,6 +82,13 @@ export default function(state = initialState, actions) {
         case UNLIKE_POST: 
             let index = state.posts.findIndex((post) => post.postID === actions.payload.postID);
             state.posts[index] = actions.payload;
+            return {
+                ...state
+            }
+        case LIKE_COMMENT:
+        case UNLIKE_COMMENT:
+            let indexC = state.post.comments.findIndex((comment) => comment.commentID === actions.payload.commentID);
+            state.post.comments[indexC] = actions.payload;
             return {
                 ...state
             }

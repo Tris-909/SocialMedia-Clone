@@ -6,7 +6,9 @@ import {
     DELETE_A_COMMENT,
     LOADING_DATA, 
     LIKE_POST, 
-    UNLIKE_POST, 
+    UNLIKE_POST,
+    LIKE_COMMENT,
+    UNLIKE_COMMENT,
     CLEAR_ERRORS,
     LOADING_UI,
     DELETE_POST,
@@ -140,6 +142,29 @@ export const likePost = (postID) => dispatch => {
         .catch(err => console.log(err));
 }
 
+export const likeComment = (commentID) => dispatch => {
+    axios.get(`comment/${commentID}/like`)
+        .then(res => {
+            dispatch({
+                type: LIKE_COMMENT,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log(err));
+}
+
+export const unlikeComment = (commentID) => dispatch => {
+    axios.get(`comment/${commentID}/unlike`)
+        .then(res => {
+            dispatch({
+                type: UNLIKE_COMMENT,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log(err));
+}
+
+
 //UNLIKE A POST
 export const unlikePost = (postID) => dispatch => {
     axios.get(`post/${postID}/unlike`)
@@ -166,9 +191,9 @@ export const deletePost = (postID) => dispatch => {
 }
 
 export const openCardProfile = () => dispatch => {
-    dispatch({type : 'OPEN_CARD_PROFILE'});
+    dispatch({type : OPEN_CARD_PROFILE});
 }
 
 export const closeCardProfile = () => dispatch => {
-    dispatch({type : 'CLOSE_CARD_PROFILE'});
+    dispatch({type : CLOSE_CARD_PROFILE});
 }
