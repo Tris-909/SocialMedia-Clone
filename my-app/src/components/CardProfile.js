@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {connect} from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {closeCardProfile} from '../redux/actions/dataAction';
 
 const styles = theme => ({
     card: {
@@ -20,14 +21,11 @@ const styles = theme => ({
 })
 
 export class CardProfile extends Component {
-    state = {
-        currentstatus: 0
-    }
-
     render() {
         const {classes} = this.props;
         let content;
         if (this.props.singleUser.handle !== undefined ) {
+            if (this.props.openCardProfile) {
                 content = (
                     <React.Fragment>
                     <Card className={classes.card} style={{top: `1%`}}>
@@ -36,9 +34,17 @@ export class CardProfile extends Component {
                             <img style={{width: '100%', height: '100%'}} src={this.props.singleUser.imageUrl} alt="user avatar" />
                         </Grid>
                         <Grid item className={classes.width} style={{padding: '1em'}}> 
-                            <Typography variant="h5">
-                                {this.props.singleUser.handle}
-                            </Typography>
+                            <Grid item container justify="space-between">
+                                <Grid item>
+                                    <Typography variant="h5">
+                                        {this.props.singleUser.handle}
+                                    </Typography>
+                                </Grid>
+                                <Grid item style={{fontSize: '1.25rem'}} onClick={() => this.props.closeCardProfile()}>
+                                    <i class="fas fa-times"></i>
+                                </Grid>
+                            </Grid>
+
                             <Typography>
                                 {this.props.singleUser.bio}
                             </Typography>
@@ -50,6 +56,9 @@ export class CardProfile extends Component {
                     </Card>
                     </React.Fragment>
                 );
+            } else {
+                content= null;
+            }
         } else {
             content = null;
         }
@@ -63,7 +72,12 @@ export class CardProfile extends Component {
 
 const mapStateToProps = state => ({
     singleUser: state.data.singleUser,
-    loading: state.UI.loading
+    loading: state.UI.loading,
+    openCardProfile: state.UI.openCardProfile
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(CardProfile));
+const mapActionToProps = {
+    closeCardProfile
+}
+
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(CardProfile));

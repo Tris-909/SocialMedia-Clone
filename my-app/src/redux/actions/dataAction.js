@@ -11,7 +11,9 @@ import {
     LOADING_UI,
     DELETE_POST,
     GET_USERS,
-    GET_SINGLE_USER
+    GET_SINGLE_USER,
+    OPEN_CARD_PROFILE, 
+    CLOSE_CARD_PROFILE
 } from '../types';
 import axios from 'axios';
 
@@ -163,3 +165,10 @@ export const deletePost = (postID) => dispatch => {
         .catch(err => console.log(err));
 }
 
+export const openCardProfile = () => dispatch => {
+    dispatch({type : 'OPEN_CARD_PROFILE'});
+}
+
+export const closeCardProfile = () => dispatch => {
+    dispatch({type : 'CLOSE_CARD_PROFILE'});
+}

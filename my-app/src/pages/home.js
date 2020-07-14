@@ -4,7 +4,7 @@ import Post from '../components/Post';
 import {connect} from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Profile from '../components/Profile';
-import {getPosts, getUsers, getSingleUser} from '../redux/actions/dataAction';
+import {getPosts, getUsers, getSingleUser, openCardProfile, closeCardProfile} from '../redux/actions/dataAction';
 import {getUserData} from '../redux/actions/userAction';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
@@ -13,6 +13,7 @@ import PostSkeleton from '../components/PostSkeleton'
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardProfile from '../components/CardProfile';
+import Chatbox from '../components/Chatbox';
 
 const styles = theme => ({
     post: {
@@ -55,24 +56,25 @@ const styles = theme => ({
 
 class home extends Component {
     state = {
-        isShow: false,
         userList: [],
         firsttime: true
     }
 
     onHoverHandlerOpen = (handle) => {
-        console.log(handle);
         this.props.getSingleUser(handle);
-        this.setState({
-            isShow: true
-        });
+        this.props.openCardProfile();
     }
 
     onHoverHandlerClose = () => {
-        this.setState({
-            isShow: false
-        });
+        this.props.closeCardProfile();
     }
+
+    // openChatbox = (handle) => {
+    //     this.props.getSingleUser(handle);
+    //     this.setState({
+    //         showChatbox: true
+    //     });
+    // }
 
     componentDidMount(){
         this.props.getPosts();
@@ -117,7 +119,6 @@ class home extends Component {
                     item 
                     container 
                     onMouseEnter={() => this.onHoverHandlerOpen(user.handle)} 
-                    onMouseLeave={this.onHoverHandlerClose} 
                     className={classes.userChat} 
                     align="center">                  
                         <Grid item>
@@ -138,7 +139,6 @@ class home extends Component {
                             item 
                             container 
                             onMouseEnter={() => this.onHoverHandlerOpen(user.handle)} 
-                            onMouseLeave={this.onHoverHandlerClose} 
                             className={classes.userChat} 
                             align="center">                  
                                 <Grid item>
@@ -168,7 +168,7 @@ class home extends Component {
             </Grid>
             <Grid item container direction="column" style={{position: "fixed", left: '85%', top: '8%', height: '100vh'}}>
                 <Paper className={classes.friendList} style={{height: '85%'}}>
-                    {this.state.isShow ? <CardProfile /> : null}
+                    {this.props.openCardProfile ? <CardProfile /> : null}
                     {UsersList}
                 </Paper>
                 <Paper style={{height: '8%'}}>
@@ -184,14 +184,17 @@ class home extends Component {
 const mapStateToProps = (state) => ({
     user: state.user,
     users: state.users,
-    data: state.data
+    data: state.data,
+    openCardProfile: state.UI.openCardProfile
 });
 
 const mapActionToProps = {
     getUserData,
     getPosts,
     getUsers,
-    getSingleUser
+    getSingleUser,
+    openCardProfile,
+    closeCardProfile
 }
 
 export default connect(mapStateToProps,mapActionToProps)(withStyles(styles)(home));

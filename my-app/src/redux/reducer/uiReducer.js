@@ -1,8 +1,9 @@
-import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI} from '../types';
+import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI, OPEN_CARD_PROFILE, CLOSE_CARD_PROFILE} from '../types';
 
 const initialState = {
     loading: false,
-    errors: null
+    errors: null,
+    openCardProfile: false
 };
 
 export default function(state = initialState, action) {
@@ -23,6 +24,16 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 loading: true
+            }
+        case OPEN_CARD_PROFILE: 
+            return {
+                ...state,
+                openCardProfile: true
+            }
+        case CLOSE_CARD_PROFILE: 
+            return {
+                ...state,
+                openCardProfile: false
             }
         default:
             return state; 
