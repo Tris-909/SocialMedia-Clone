@@ -11,9 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PostSkeleton from '../components/PostSkeleton'
 import { Typography } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
 import CardProfile from '../components/CardProfile';
-import Chatbox from '../components/Chatbox';
 
 const styles = theme => ({
     post: {
@@ -166,6 +164,7 @@ class home extends Component {
                     {recentPostsMarkUp}
                 </Grid>
             </Grid>
+            <Hidden smDown>
             <Grid item container direction="column" style={{position: "fixed", left: '85%', top: '8%', height: '100vh'}}>
                 <Paper className={classes.friendList} style={{height: '85%'}}>
                     {this.props.openCardProfile ? <CardProfile /> : null}
@@ -175,6 +174,7 @@ class home extends Component {
                     <input type="text" onChange={this.searchHandler} placeholder="Search" className={classes.input} />
                 </Paper>
             </Grid>
+            </Hidden>
             </React.Fragment>
 
         )

@@ -30,13 +30,49 @@ const styles = {
 }
 
 export class SingleComment extends Component {
-    
+    state = {
+        isLiked: this.props.user.likes.find(like => like.commentID === this.props.comment.commentID)
+    }
+
+    likedComment = () => {
+        if (this.props.user.likes.find(like => like.userHandle === this.props.comment.userHandle) && 
+            this.props.user.likes.find(like => like.commentID === this.props.comment.commentID)) {
+            this.setState({isLiked: true, likeCount: 1});
+        } else {
+            this.setState({isLiked: false});
+        }
+    }
+
     deleteComment = (postID, commentID) => {
         this.props.deleteComment(postID, commentID);
     }
 
+    componentDidMount() {
+        this.likedComment();
+    }
+
+    likeComment = () => {
+        this.props.likeComment(this.props.comment.commentID);
+        this.setState({isLiked: true});
+    }
+
+    unlikeComment = () => {
+        this.props.unlikeComment(this.props.comment.commentID);
+        this.setState({isLiked: false});
+    }
+
     render() {
         const{classes} = this.props;
+        const likeButton = !this.props.user.authenticated ? 
+        (
+            null
+        ) : (
+            this.state.isLiked ? (
+                <p style={{display: 'inline', cursor: 'pointer', color: 'blue', fontWeigth: '700'}} onClick={() => this.unlikeComment(this.props.comment.commentID)}>{this.props.comment.likeCount} likes</p>
+            ) : (
+                <p style={{display: 'inline', cursor: 'pointer'}} onClick={() => this.likeComment(this.props.comment.commentID)}>{this.props.comment.likeCount} likes</p>
+            )
+        );
 
         return (
             <Card key={this.props.comment.commentID} className={classes.Card}>
@@ -62,7 +98,7 @@ export class SingleComment extends Component {
                          </Grid>
                          <Grid item style={{marginBottom: '1em', marginTop: '1em'}}>
                              <Typography variant="body2" color="textSecondary">
-                                 {this.props.comment.likeCount} <p style={{display: 'inline', cursor: 'pointer'}} onClick={() => this.onLikeHandler(this.props.comment.commentID)}>likes</p>
+                                  {likeButton}
                              </Typography>
                          </Grid>
                      </Grid>

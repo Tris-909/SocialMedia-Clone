@@ -41,7 +41,7 @@ export class CardProfile extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item style={{fontSize: '1.25rem'}} onClick={() => this.props.closeCardProfile()}>
-                                    <i class="fas fa-times"></i>
+                                    <i className="fas fa-times"></i>
                                 </Grid>
                             </Grid>
 

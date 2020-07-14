@@ -16,10 +16,17 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+//Mui MENU
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
+
+//Mui Icon
 import ChatIcon from '@material-ui/icons/Chat';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
+//REDUX
 import {connect} from 'react-redux';
 import {likePost, unlikePost, getPost, commentPost} from '../redux/actions/dataAction';
 import {uploadPostImage, getUserData} from '../redux/actions/userAction';
@@ -81,8 +88,12 @@ export class Post extends Component {
         likeCount: 0,
         commentCount: 0,
         openComment: false,
-        body: ''
+        body: '',
+        editPost: false,
+        anchorEl: null
     }
+     
+
     likedPost = () => {
         if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
             this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
@@ -90,6 +101,19 @@ export class Post extends Component {
         } else {
             this.setState({isLiked: false});
         }
+    }
+
+    // EDIT POST MENU
+    handleOpen = (event) => {
+        this.setState({
+            anchorEl:  event.target
+        });
+    }
+
+    handleClose = () => {
+        this.setState({
+            anchorEl: null 
+        });
     }
 
     // LIKE AND UNLIKE A POST
@@ -140,6 +164,7 @@ export class Post extends Component {
 
     render() {    
         dayjs.extend(relativeTime);
+        const anchorEl = this.state.anchorEl;
         // eslint-disable-next-line
         const {classes, post : { body, createdTime, imagePostUrl, userImage, userHandle, postID, likeCount, commentCount}, user: {authenticated, credentials} } = this.props;
         const likeButton = !authenticated ? 
@@ -156,11 +181,15 @@ export class Post extends Component {
             </Button>
             )
         );
-        const deleteButton = this.props.user.credentials.handle === this.props.post.userHandle ? <DeleteButton thisPostID={postID}/> : null;
+        
+        const deleteButton = this.props.user.credentials.handle === this.props.post.userHandle ? (
+            <DeleteButton thisPostID={postID}/>
+        )  : null;
+        
         const addImageButton = this.props.user.credentials.handle === this.props.post.userHandle ? (
             <Tooltip title="Add Image" placement="left-start" className={classes.tooltip}> 
             <Button onClick={this.handleEditImage}  style={{fontSize: '1.5em'}} >
-                <i className="far fa-image" style={{marginRight: '1em'}}></i>
+                <i className="far fa-image"></i>
             </Button>
             </Tooltip>
         ) : null;   
@@ -174,7 +203,7 @@ export class Post extends Component {
                         <Grid item>
                             <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                         </Grid>
-                        <Grid item style={{width: '75%'}}>
+                        <Grid item style={{width: '79%'}}>
                             <Grid item container justify="space-between">
                                 <Grid item>
                                     <Typography variant="h5" component={Link} color="primary" to={`/profile/${userHandle}`}>
@@ -182,8 +211,15 @@ export class Post extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    {addImageButton}
-                                    {deleteButton}
+                                <Tooltip title="Edit" placement="bottom">
+                                    <Button aria-owns={anchorEl ? 'simple-menu' : undefined} color="inherit" style={{fontSize: '1.25rem'}} aria-haspopup="true" onClick={this.handleOpen}>
+                                        <i className="fas fa-ellipsis-h"></i>
+                                    </Button>
+                                </Tooltip>
+                                <Menu  disableScrollLock={true}  anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} onEntered={this.onMenuOpened}>
+                                    <MenuItem onClick={this.handleClose}>{addImageButton}</MenuItem>
+                                    <MenuItem>{deleteButton}</MenuItem>
+                                </Menu>
                                     {this.props.user.credentials.handle === this.props.post.userHandle ? 
                                     <input type="file" hidden id="imagePostInput" 
                                     onChange={(event) => this.handleImageChange(`${postID}`, event)} /> : null}
