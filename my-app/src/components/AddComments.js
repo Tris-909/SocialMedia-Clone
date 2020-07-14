@@ -23,8 +23,7 @@ const styles = {
         margin: '1em'
     },
     Card: {
-        paddingTop: '0.5em',
-        paddingBottom: '0.5em',
+        paddingTop: '0.5em',        
         borderTopLeftRadius: "0px",
         borderTopRightRadius: "0px",  
         borderBottomLeftRadius: "0px",
@@ -155,7 +154,7 @@ export class AddComments extends Component {
                 render = SortedArr.map(comment => {
                    return (
                    <Card key={Math.random()*3.147} className={classes.Card}>
-                       <Grid item container style={{width: "auto"}}>
+                       <Grid item container style={{width: "auto", borderBottom: '1px solid'}}>
                             <Grid item>
                                 <Avatar alt="user avatar" src={comment.userImage} className={classes.userImage} />
                             </Grid>
@@ -171,14 +170,19 @@ export class AddComments extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Typography variant="body1">
+                                    <Typography variant="body1" style={{width: '90%'}}>
                                         {comment.body}
+                                    </Typography>
+                                </Grid>
+                                <Grid item style={{marginBottom: '1em', marginTop: '1em'}}>
+                                    <Typography variant="body2" color="textSecondary">
+                                        {comment.likeCount} likes
                                     </Typography>
                                 </Grid>
                             </Grid>
                             {this.props.user.credentials.handle === comment.userHandle ? (
                             <Grid item>
-                                 <Button style={{fontSize: '1.5em', marginTop: '1em'}} 
+                                 <Button style={{fontSize: '1.5em', marginTop: '0.75em'}} 
                                  onClick={() => this.deleteComment(this.props.post.postID, comment.commentID)}>
                                      <i className="fas fa-trash"></i>
                                  </Button>
@@ -193,7 +197,7 @@ export class AddComments extends Component {
             <Dialog open={this.props.open} onClose={this.props.onClose} fullWidth maxWidth="md" style={{height: '90%'}}>
                 <Grid item container style={{height: '100%'}}>
                 <Grid item sm={12} style={{height: '100%'}}>
-                <Card className={classes.Card}>
+                <Card className={classes.Card} style={{borderBottom: '1px solid'}}>
                 <Grid item container style={{width: "auto"}}>
                     <Grid item>
                         <Avatar alt="user avatar" src={this.props.credentials.imageUrl} className={classes.userImage} />

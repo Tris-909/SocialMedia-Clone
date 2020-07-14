@@ -20,7 +20,7 @@ const styles = theme => ({
     },
 })
 
-export class CardProfile extends Component {
+export class CardProfile extends Component {    
     render() {
         const {classes} = this.props;
         let content;
@@ -36,7 +36,7 @@ export class CardProfile extends Component {
                         <Grid item className={classes.width} style={{padding: '1em'}}> 
                             <Grid item container justify="space-between">
                                 <Grid item>
-                                    <Typography variant="h5">
+                                    <Typography variant="h5" component={Link} style={{textDecoration: 'underline'}} color="primary" to={`/profile/${this.props.singleUser.handle}`}>
                                         {this.props.singleUser.handle}
                                     </Typography>
                                 </Grid>
@@ -57,7 +57,7 @@ export class CardProfile extends Component {
                     </React.Fragment>
                 );
             } else {
-                content= null;
+                content = null;
             }
         } else {
             content = null;

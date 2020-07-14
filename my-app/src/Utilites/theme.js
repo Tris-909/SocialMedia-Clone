@@ -1,8 +1,8 @@
 export default {
     palette: {
       primary: {
-        light: '#33c9dc',
-        main: '#00bcd4',
+        light: '#33312a',
+        main: '#33312a',
         dark: '#008394',
         navbarColor: '#33312a',
         contrastText: '#fff'

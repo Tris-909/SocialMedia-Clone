@@ -161,7 +161,8 @@ exports.commentOnPost = (req, res) => {
         createdTime: new Date().toISOString(),
         postID: req.params.postID,
         userHandle: req.user.handle,
-        userImage: req.user.imageUrl
+        userImage: req.user.imageUrl,
+        likeCount: 0
     };
 
     db.doc(`/posts/${req.params.postID}`).get()
@@ -175,11 +176,86 @@ exports.commentOnPost = (req, res) => {
             return db.collection('comments').add(newComment);
         })
         .then(() => {
-            res.json(newComment);
+            res.json(resComment);
         })
         .catch(err => {
             res.status(500).json({error: 'Something went wrong'});
         });
+}
+
+exports.likeComment = (req, res) => {
+    const likeDocument = db.collection('likes').where('userHandle', '==', req.user.handle)
+    .where('commentID', '==', req.params.commentID).limit(1);
+
+    const commentDocument = db.doc(`/comments/${req.params.commentID}`);
+
+    let commentData;
+
+    commentDocument.get()
+    .then(doc => {
+        if (doc.exists) {
+            commentData = doc.data();
+            commentData.commentID = doc.id;
+            return likeDocument.get();
+        } else {
+            return res.status(400).json({error: 'Comment not found'});
+        }
+    }).then(data => {
+        if (data.empty) {
+            return db.collection('likes').add({
+                commentID: req.params.commentID,
+                userHandle: req.user.handle
+            })
+            .then(() => {
+                commentData.likeCount++;
+                return commentDocument.update({ likeCount: commentData.likeCount });
+            }).then(() => {
+                return res.json(commentData);
+            })
+        } else {
+            return res.status(400).json({ error: 'This comment is already liked by the user'});
+        }
+    })
+    .catch(error => {
+        res.status(500).json({error: err.code});
+    })
+}
+
+exports.unlikeComment = (req, res) => {
+    const likeDocument = db.collection('likes').where('userHandle', '==', req.user.handle)
+    .where('commentID', '==', req.params.commentID).limit(1);
+
+    const commentDocument = db.doc(`/comments/${req.params.commentID}`);
+
+    let commentData;
+
+    commentDocument.get()
+        .then(doc => {
+            if (doc.exists){
+                commentData = doc.data();
+                commentData.commentID = doc.id;
+                return likeDocument.get(); 
+            } else {
+                return res.status(400).json({error: 'Post not found'});
+            }
+        })
+        .then(data => {
+            if (data.empty) {
+                return res.status(400).json({ error: 'This post is not liked by the user'});
+            } else {
+                return db.doc(`/likes/${data.docs[0].id}`).delete()
+                    .then(() => {
+                        commentData.likeCount--;
+                        return commentDocument.update({likeCount: commentData.likeCount});
+                    })
+                    .then(() => {
+                        res.json(commentData);
+                    })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({error: err.code});
+        })
 }
 
 exports.likePost = (req, res) => {
