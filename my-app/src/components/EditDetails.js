@@ -17,7 +17,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Tooltip from '@material-ui/core/Tooltip';
 
-const styles = {
+const styles = theme => ({ 
     buttonLayout: {
         display: 'flex',
         justifyContent: "space-between"
@@ -40,9 +40,23 @@ const styles = {
     },
     EmojiButton: {
         fontSize: '2em',
-        marginLeft: '1em'
+        marginLeft: '1em',
+        marginTop: '0.25em'
+    },
+    BioWidthControl: {
+        width: '50%',
+        [theme.breakpoints.down("xs")]: {
+            width: '100%'
+        }
+    },
+    BirthWidthControl: {
+        width: '50%', 
+        margin: 'auto',
+        [theme.breakpoints.down("xs")]: {
+            width: '100%'
+        }
     }
-};
+});
 
 const CssTextField = withStyles({
     root: {
@@ -148,8 +162,17 @@ export class EditDetails extends Component {
                         Edit Details
                     </Button>
                 <Dialog disableScrollLock={true} open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="md" >
-                    <Grid>
-                        <DialogTitle>Edit your details</DialogTitle>
+                    <Grid item container direction="row" justify="space-between">
+                        <Grid item>
+                            <DialogTitle>Edit your details</DialogTitle>
+                        </Grid>
+                        <Grid item>
+                            <Tooltip title="Emoji for Bio" placement="bottom"> 
+                                <Button onClick={this.onEmojiOpen} className={classes.EmojiButton}>
+                                    <i className="far fa-smile-beam"></i>
+                                </Button>  
+                            </Tooltip>
+                        </Grid>
                     </Grid>
                     <DialogContent>
                     {this.state.openEmoji ? (
@@ -158,7 +181,7 @@ export class EditDetails extends Component {
                     </Dialog>) : null}
                         <form>
                             <Grid container direction="row">
-                            <Grid item style={{width: '50%'}}>
+                            <Grid item className={classes.BioWidthControl}>
                             <CssTextField 
                                 name="bio"
                                 type="text"
@@ -173,7 +196,6 @@ export class EditDetails extends Component {
                                 fullWidth
                             />
                             </Grid>
-                            <Grid item container justify="center" style={{width: '50%', margin: 'auto'}}>
                             <Grid item>
                                 <CssTextField 
                                     name="birth"
@@ -184,14 +206,6 @@ export class EditDetails extends Component {
                                     value={this.state.birth}
                                     onChange={this.onChange}
                                 />
-                            </Grid>
-                            <Grid item>
-                                <Tooltip title="Emoji for Bio" placement="bottom"> 
-                                <Button onClick={this.onEmojiOpen} className={classes.EmojiButton}>
-                                    <i className="far fa-smile-beam"></i>
-                                </Button>  
-                                </Tooltip>
-                            </Grid>
                             </Grid>
                             </Grid>
 

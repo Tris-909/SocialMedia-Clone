@@ -54,10 +54,16 @@ const styles = theme => ({
     },
     TextFieldWidth: {
         width: '70%',
-        [theme.breakpoints.down("md")]: {
+        [theme.breakpoints.down("xs")]: {
+            width: '70%'
+        },
+        [theme.breakpoints.up("sm")]: {
+            width: '70%'
+        },
+        [theme.breakpoints.up("md")]: {
             width: '85%'
         },
-        [theme.breakpoints.down("lg")]: {
+        [theme.breakpoints.up("lg")]: {
             width: '88%'
         }
     }

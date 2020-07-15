@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {getPosts} from '../redux/actions/dataAction';
 import {getUserData} from '../redux/actions/userAction';
 import PostSkeleton from '../components/PostSkeleton';
+import DetailsPhone from '../components/DetailsPhone';
 
 const styles = theme => ({ 
     container: {
@@ -62,6 +63,7 @@ export class profile extends Component {
         ) : <PostSkeleton />;
         return (
             <Grid item container direction="column" justify="center" alignItems="center">
+                <DetailsPhone />
                 {UserPost}
             </Grid>
         )
