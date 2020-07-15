@@ -1,7 +1,6 @@
 const {admin, db} = require('../utilities/admin');
 const config = require('../utilities/config');
 
-
 exports.getAllPosts = (req, res) => {
     db.collection('posts')
     .orderBy('createdTime', 'desc')
@@ -27,7 +26,6 @@ exports.getAllPosts = (req, res) => {
         res.status(500).json({ error: err.code });
     });
 }
-
 
 exports.getPost = (req, res) => {
     let postData = {};

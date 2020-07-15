@@ -12,6 +12,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PostSkeleton from '../components/PostSkeleton'
 import { Typography } from '@material-ui/core';
 import CardProfile from '../components/CardProfile';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const styles = theme => ({
     post: {
@@ -49,6 +50,12 @@ const styles = theme => ({
     friendList: {
         borderBottomLeftRadius: "0px",
         borderBottomRightRadius: "0px"
+    },
+    position: {
+        position: 'relative',
+        [theme.breakpoints.down("xs")]: {
+            position: 'initial'
+        }
     }
 })
 
@@ -105,7 +112,7 @@ class home extends Component {
         const {classes} = this.props;
 
         let recentPostsMarkUp = !loading ? this.props.user.credentials.handle ? (
-            posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />} )
+            posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />} ) 
         ) : <PostSkeleton /> : <PostSkeleton />;
 
         let UsersList = !loading ? 
@@ -154,13 +161,13 @@ class home extends Component {
 
         return (
             <React.Fragment>
-            <Grid container alignItems={this.props.user.authenticated ? null : "center"} style={{position: 'relative'}}>
+            <Grid container alignItems={this.props.user.authenticated ? null : "center"} className={classes.position}>
                 <Hidden smDown>
                 <Grid item md={5} sm={this.props.user.authenticated ? 4 : 4} xs={false} style={{position: "fixed", width: "28%"}}>
                     {this.props.user.authenticated ? <Profile profileData = {this.props.user.credentials}/> : null}
                 </Grid>
                 </Hidden>
-                <Grid item lg={5} md={7} sm={this.props.user.authenticated ? 10 : 10} xs={12} className={classes.post}>
+                <Grid item lg={6} md={7} sm={this.props.user.authenticated ? 12 : 12} xs={12} className={classes.post}>
                     {recentPostsMarkUp}
                 </Grid>
             </Grid>

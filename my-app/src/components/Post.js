@@ -31,7 +31,7 @@ import {connect} from 'react-redux';
 import {likePost, unlikePost, getPost, commentPost} from '../redux/actions/dataAction';
 import {uploadPostImage, getUserData} from '../redux/actions/userAction';
 
-const styles = {
+const styles =  theme => ({
     card: {
         display: 'flex',
         marginTop: '1em',
@@ -59,7 +59,14 @@ const styles = {
         height: '4em', 
         marginLeft: '1em',
         marginRight: '1em',
-        marginBottom: '1em'
+        marginBottom: '1em',
+        [theme.breakpoints.down("xs")]: {
+            width: "2.5em", 
+            height: '2.5em', 
+            marginLeft: '0em',
+            marginRight: '1em',
+            marginBottom: '1em',
+        }
     },
     DetailBox: {
         marginTop: '1em'
@@ -79,8 +86,20 @@ const styles = {
     commentButton: {
         width: "100%",
         border: '0px',
+    },
+    widthControl: {
+        width: '75%',
+        [theme.breakpoints.down("sm")]: {
+            width: '70%'
+        },
+        [theme.breakpoints.down("xs")]: {
+            width: '78%'
+        },
+        [theme.breakpoints.down("md")]: {
+            width: '73%'
+        }
     }
-};
+});
 
 export class Post extends Component {
     state = {
@@ -203,7 +222,7 @@ export class Post extends Component {
                         <Grid item>
                             <Avatar alt="user avatar" src={userImage} className={classes.userImage} />
                         </Grid>
-                        <Grid item style={{width: '79%'}}>
+                        <Grid item className={classes.widthControl}>
                             <Grid item container justify="space-between">
                                 <Grid item>
                                     <Typography variant="h5" component={Link} color="primary" to={`/profile/${userHandle}`}>
