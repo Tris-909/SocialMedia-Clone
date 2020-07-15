@@ -7,8 +7,6 @@ import Picker from 'emoji-picker-react';
 
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import {Link} from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
@@ -17,11 +15,16 @@ import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
 import {commentPost ,deleteComment ,getPost ,likeComment ,unlikeComment} from '../redux/actions/dataAction';
 
-const styles = {
+const styles = theme => ({ 
     userImage: {
         width: "2em", 
         height: '2em', 
-        margin: '1em'
+        margin: '1em',
+        [theme.breakpoints.down("xs")]: {
+            marginTop: '20px',
+            marginLeft: '20px',
+            marginRight: '10px'
+        }
     },
     Card: {
         paddingTop: '0.5em',        
@@ -36,10 +39,11 @@ const styles = {
         width: '100%'
     },
     EmojiButton: {
-        marginTop: '1em',
-        marginBottom: '1em',
         paddingTop: '0px',
         fontSize: '2em',
+        width: '100%',   
+        border: '1px solid black',
+        borderRadius: '0px',
         '&:hover': {
             backgroundColor: '#fff'
         }
@@ -47,8 +51,17 @@ const styles = {
     DialogPaper: {
         minHeight: '80vh',
         maxHeight: '80vh'
+    },
+    TextFieldWidth: {
+        width: '70%',
+        [theme.breakpoints.down("md")]: {
+            width: '85%'
+        },
+        [theme.breakpoints.down("lg")]: {
+            width: '88%'
+        }
     }
-}
+});
 
 const CssTextField = withStyles({
     root: {
@@ -160,13 +173,13 @@ export class AddComments extends Component {
         return(
             <Dialog open={this.props.open} onClose={this.props.onClose} fullWidth maxWidth="md" style={{height: '90%'}}>
                 <Grid item container style={{height: '100%'}}>
-                <Grid item sm={12} style={{height: '100%'}}>
+                <Grid item sm={12} style={{height: '100%', width: '100%'}}>
                 <Card className={classes.Card} style={{borderBottom: '1px solid'}}>
                 <Grid item container style={{width: "auto"}}>
                     <Grid item>
                         <Avatar alt="user avatar" src={this.props.credentials.imageUrl} className={classes.userImage} />
                     </Grid>
-                    <Grid item style={{width: '70%'}}>
+                    <Grid item className={classes.TextFieldWidth}>
                         <CssTextField 
                             name="body"
                             type="text"
@@ -179,23 +192,22 @@ export class AddComments extends Component {
                             fullWidth
                         />
                     </Grid>
-                    <Grid item>
-                        <Button onClick={this.onEmojiOpen} className={classes.EmojiButton} style={{marginLeft: '0.75em'}}>
-                            <i className="far fa-smile-beam"></i>
+                    <Grid item container justify="space-between">  
+                    <Grid item style={{width: '50%'}}>
+                        <Button onClick={this.onEmojiOpen} className={classes.EmojiButton}>
+                            <i style={{  margin: '0.5em'}} className="far fa-smile-beam"></i>
                         </Button>  
                     </Grid>
-                    <Grid item>
-                        <Button 
-                            onClick={this.handleSubmit} 
-                            className={classes.EmojiButton}
-                            style={{marginLeft: '0.5em'}}>
-                            <i className="far fa-paper-plane"></i>
+                    <Grid item style={{width: '50%'}}>
+                        <Button onClick={this.handleSubmit} className={classes.EmojiButton}>
+                            <i style={{  margin: '0.5em'}} className="far fa-paper-plane"></i>
                         </Button>
                     </Grid>
                     {this.state.openEmoji ? (
                         <Dialog open={this.state.openEmoji} onClose={this.onEmojiClose}>
                             <Picker onEmojiClick={this.onEmojiCLick} disableSearchBar disableSkinTonePicker /> 
                         </Dialog>) : null}
+                    </Grid>
                 </Grid>
                 </Card>
                 {render !== undefined ? render : null}

@@ -166,7 +166,7 @@ class home extends Component {
                     {this.props.user.authenticated ? <Profile profileData = {this.props.user.credentials}/> : null}
                 </Grid>
                 </Hidden>
-                <Grid item lg={6} md={7} sm={this.props.user.authenticated ? 12 : 12} xs={12} className={classes.post}>
+                <Grid item lg={6} md={6} sm={this.props.user.authenticated ? 12 : 12} xs={12} className={classes.post}>
                     {recentPostsMarkUp}
                 </Grid>
             </Grid>

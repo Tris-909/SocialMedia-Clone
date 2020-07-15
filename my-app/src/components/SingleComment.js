@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
 import {deleteComment, likeComment ,unlikeComment} from '../redux/actions/dataAction';
 
-const styles = {
+const styles =  theme => ({ 
     Card: {
         paddingTop: '0.5em',        
         borderTopLeftRadius: "0px",
@@ -26,8 +26,8 @@ const styles = {
         width: "2em", 
         height: '2em', 
         margin: '1em'
-    },
-}
+    }
+});
 
 export class SingleComment extends Component {
     state = {
@@ -77,10 +77,10 @@ export class SingleComment extends Component {
         return (
             <Card key={this.props.comment.commentID} className={classes.Card}>
                 <Grid item container style={{width: "auto", borderBottom: '1px solid'}}>
-                     <Grid item>
+                     <Grid item xs={3} sm={2} md={1}>
                          <Avatar alt="user avatar" src={this.props.comment.userImage} className={classes.userImage} />
                      </Grid>
-                     <Grid item style={{width: '80%'}}>
+                     <Grid item xs={7} sm={8} md={9}>
                          <Grid item>
                              <Typography variant="h5" component={Link} color="primary" to={`/users/${this.props.comment.userHandle}`}>
                                  {this.props.comment.userHandle}
@@ -103,7 +103,7 @@ export class SingleComment extends Component {
                          </Grid>
                      </Grid>
                      {this.props.user.credentials.handle === this.props.comment.userHandle ? (
-                     <Grid item>
+                     <Grid item xs={2} sm={2} md={2}>
                           <Button style={{fontSize: '1.75em', marginTop: '0.75em'}} 
                           onClick={() => this.deleteComment(this.props.post.postID, this.props.comment.commentID)}>
                               <i className="fas fa-trash"></i>
