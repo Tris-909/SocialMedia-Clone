@@ -104,7 +104,7 @@ export class SingleComment extends Component {
                      </Grid>
                      {this.props.user.credentials.handle === this.props.comment.userHandle ? (
                      <Grid item>
-                          <Button style={{fontSize: '1.5em', marginTop: '0.75em'}} 
+                          <Button style={{fontSize: '1.75em', marginTop: '0.75em'}} 
                           onClick={() => this.deleteComment(this.props.post.postID, this.props.comment.commentID)}>
                               <i className="fas fa-trash"></i>
                           </Button>

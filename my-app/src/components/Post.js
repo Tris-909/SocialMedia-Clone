@@ -191,11 +191,11 @@ export class Post extends Component {
             null
         ) : (
             this.state.isLiked ? (
-            <Button onClick={this.unlikePost} style={{width: '100%'}}>
+            <Button onClick={this.unlikePost} style={{height: '100%',padding: '1em', width: '100%'}}>
                 <Favorite color="secondary" className={classes.icon}/>
             </Button>
             ) : (
-            <Button onClick={this.likePost} style={{width: '100%'}}>
+            <Button onClick={this.likePost} style={{height: '100%',padding: '1em', width: '100%'}}>
                 <FavoriteBorder color="secondary" className={classes.icon}/>
             </Button>
             )
@@ -212,6 +212,14 @@ export class Post extends Component {
             </Button>
             </Tooltip>
         ) : null;   
+        
+        const EditPostButton = this.props.user.credentials.handle === this.props.post.userHandle ? (
+            <Tooltip title="Edit" placement="bottom">
+            <Button aria-owns={anchorEl ? 'simple-menu' : undefined} color="inherit" style={{fontSize: '1.25rem'}} aria-haspopup="true" onClick={this.handleOpen}>
+                <i className="fas fa-ellipsis-h"></i>
+            </Button>
+            </Tooltip>
+        ) : null;
 
         return (
         <React.Fragment>
@@ -230,11 +238,7 @@ export class Post extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                <Tooltip title="Edit" placement="bottom">
-                                    <Button aria-owns={anchorEl ? 'simple-menu' : undefined} color="inherit" style={{fontSize: '1.25rem'}} aria-haspopup="true" onClick={this.handleOpen}>
-                                        <i className="fas fa-ellipsis-h"></i>
-                                    </Button>
-                                </Tooltip>
+                                {EditPostButton}
                                 <Menu  disableScrollLock={true}  anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} onEntered={this.onMenuOpened}>
                                     <MenuItem onClick={this.handleClose}>{addImageButton}</MenuItem>
                                     <MenuItem>{deleteButton}</MenuItem>
@@ -268,11 +272,11 @@ export class Post extends Component {
             </Card>
             <Card className={classes.CommentSection}>
                 <Grid item container align="center" direction="row" justify="space-between" className={classes.buttonContainer}>
-                    <Grid item className={classes.likeButton} style={{paddingTop: '1em', paddingBottom: '1em'}}>
+                    <Grid item className={classes.likeButton} style={{height: '100%'}}>
                         {likeButton} 
                     </Grid> 
-                    <Grid item style={{width: "50%", paddingTop: '1em', paddingBottom: '1em'}}>  
-                        <Button className={classes.commentButton} onClick={this.onOpenComment} style={{color: '#33312a'}}>
+                    <Grid item style={{width: "50%"}}>  
+                        <Button className={classes.commentButton} onClick={this.onOpenComment} style={{color: '#33312a', height: '100%', padding: '1em'}}>
                         {!this.props.loading ? ( <ChatIcon className={classes.icon}/> ) : <CircularProgress color="inherit"/>}
                         </Button>
                     </Grid>

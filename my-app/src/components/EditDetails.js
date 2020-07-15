@@ -147,7 +147,7 @@ export class EditDetails extends Component {
                     <Button onClick={this.handleOpen} className={classes.button}>
                         Edit Details
                     </Button>
-                <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="md" >
+                <Dialog disableScrollLock={true} open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="md" >
                     <Grid>
                         <DialogTitle>Edit your details</DialogTitle>
                     </Grid>

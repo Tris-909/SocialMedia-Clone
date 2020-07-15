@@ -16,7 +16,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import {connect} from 'react-redux';
 import {postOnePost} from '../redux/actions/dataAction';
 
-const styles = {
+const styles = theme => ({
     body: {
         margin: '1em'
     },
@@ -26,8 +26,20 @@ const styles = {
     },
     EmojiButton: {
         fontSize: '2em'
+    },
+    PostButton: {
+        fontSize: '1.5rem', 
+        border:  '3px solid #33312a',
+        width: '20%',
+        [theme.breakpoints.down("xs")]: {
+            width: '45%'
+        }
+    },
+    DialogTitle: {
+        paddingLeft: '8px',
+        paddingRight: '0px'
     }
-}
+});
 
 const CssTextField = withStyles({
     root: {
@@ -111,9 +123,9 @@ export class AddPost extends Component {
             <Tooltip title="Add a post" placement="bottom">
                 <Button color="inherit" style={{fontSize: '1.25rem'}} onClick={this.handleClickOpen}><i className="fas fa-plus"></i></Button>      
             </Tooltip>
-            <Dialog open={this.state.open} onClose={this.handleClickClose} fullWidth maxWidth="md">
+            <Dialog disableScrollLock={true}  open={this.state.open} onClose={this.handleClickClose} fullWidth maxWidth="md">
                 <Grid container justify="space-between">
-                <DialogTitle>What is on your mind ?</DialogTitle>
+                <DialogTitle className={classes.DialogTitle}>What is on your mind ?</DialogTitle>
                     <Button onClick={this.onEmojiOpen} className={classes.EmojiButton}>
                         <i className="far fa-smile-beam"></i>
                     </Button>  
@@ -140,7 +152,7 @@ export class AddPost extends Component {
                 </DialogContent>
                 <DialogActions>
                     <Grid container justify="center" align="center">
-                        <Button onClick={this.handleSubmit} style={{fontSize: '1.5rem', border:  '3px solid #33312a', width: '20%'}}>POST</Button>
+                        <Button onClick={this.handleSubmit} className={classes.PostButton}>POST</Button>
                     </Grid>
                 </DialogActions>
             </Dialog>

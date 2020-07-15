@@ -99,7 +99,7 @@ class Notifications extends Component {
                         {notificationIcon}
                     </Button>
                 </Tooltip>
-                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} onEntered={this.onMenuOpened}>
+                <Menu disableScrollLock={true} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} onEntered={this.onMenuOpened}>
                     {notificationsMarkUp}
                 </Menu>
             </React.Fragment>
