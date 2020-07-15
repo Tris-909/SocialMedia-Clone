@@ -12,7 +12,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PostSkeleton from '../components/PostSkeleton'
 import { Typography } from '@material-ui/core';
 import CardProfile from '../components/CardProfile';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const styles = theme => ({
     post: {
