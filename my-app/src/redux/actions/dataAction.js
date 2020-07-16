@@ -1,5 +1,7 @@
 import {
     SET_POSTS, 
+    SET_FIRST_SET_OF_POSTS,
+    SET_MORE_POSTS,
     SET_POST,
     POST_A_POST, 
     COMMENT_A_POST, 
@@ -35,6 +37,38 @@ export const getPosts = () => dispatch => {
                 payload: []
             })
         })
+}
+
+export const getFirstSetOfPosts = () => dispatch => {
+    axios.get('/firstSetPosts')
+        .then(res => {
+            dispatch({
+                type: SET_FIRST_SET_OF_POSTS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_FIRST_SET_OF_POSTS,
+                payload: []
+            })
+        })
+}
+
+export const getMorePosts = (last) => dispatch => {
+    axios.get(`/fetchMoreData/${last}`)
+    .then(res => {
+        dispatch({ 
+            type: SET_MORE_POSTS,
+            payload: res.data
+        })
+    })
+    .catch(err => {
+        dispatch({ 
+            type: SET_MORE_POSTS,
+            payload: []
+        })
+    })
 }
 
 export const getUsers = () => dispatch => {

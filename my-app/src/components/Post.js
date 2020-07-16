@@ -89,6 +89,9 @@ const styles =  theme => ({
     },
     widthControl: {
         width: '75%',
+        [theme.breakpoints.up("md")]: {
+            width: '83%'
+        },
         [theme.breakpoints.down("sm")]: {
             width: '70%'
         },

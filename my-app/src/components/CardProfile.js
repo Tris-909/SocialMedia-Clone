@@ -5,7 +5,6 @@ import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {connect} from 'react-redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import {closeCardProfile} from '../redux/actions/dataAction';
 
 const styles = theme => ({

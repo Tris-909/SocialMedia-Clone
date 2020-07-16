@@ -27,6 +27,62 @@ exports.getAllPosts = (req, res) => {
     });
 }
 
+exports.getFirstSetOfPosts = (req, res) => {
+    db.collection('posts')
+    .orderBy('createdTime', 'desc')
+    .limit(3)
+    .get()
+    .then(data => {
+        let lastVisible = data.docs[data.docs.length-1];
+        let posts = [];
+        data.forEach(doc => {
+            posts.push({
+                postID: doc.id,
+                body: doc.data().body,
+                userHandle: doc.data().userHandle,
+                createdTime: doc.data().createdTime,
+                commentCount: doc.data().commentCount,
+                likeCount: doc.data().likeCount,
+                userImage: doc.data().userImage,
+                imagePostUrl: doc.data().imagePostUrl
+            });
+        });
+        return res.json( {posts,last: lastVisible});
+    })
+    .catch( (err) => {
+        console.log(err);
+        res.status(500).json({ error: err.code });
+    });
+}
+
+exports.fetchMoreData = (req, res) => {
+    db.collection('posts')
+    .orderBy('createdTime', 'desc')
+    .startAfter(req.params.last)
+    .get()
+    .then(data => {
+        let lastVisible = data.docs[data.docs.length-1];
+        let posts = [];
+        data.forEach(doc => {
+            posts.push({
+                postID: doc.id,
+                body: doc.data().body,
+                userHandle: doc.data().userHandle,
+                createdTime: doc.data().createdTime,
+                commentCount: doc.data().commentCount,
+                likeCount: doc.data().likeCount,
+                userImage: doc.data().userImage,
+                imagePostUrl: doc.data().imagePostUrl
+            });
+        });
+        return res.json( {posts,last: lastVisible});
+    })
+    .catch( (err) => {
+        console.log(err);
+        res.status(500).json({ error: err.code });
+    });
+  };
+
 exports.getPost = (req, res) => {
     let postData = {};
     db.doc(`/posts/${req.params.postID}`)

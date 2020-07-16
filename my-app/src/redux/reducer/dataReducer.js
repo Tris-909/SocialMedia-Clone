@@ -1,5 +1,7 @@
 import { 
     SET_POSTS, 
+    SET_FIRST_SET_OF_POSTS,
+    SET_MORE_POSTS,
     SET_POST, 
     COMMENT_A_POST,
     LIKE_POST, 
@@ -16,6 +18,7 @@ import {
 
 const initialState = {
     users: [],
+    last: {},
     posts: [],
     post: {},
     singleUser: {},
@@ -34,6 +37,24 @@ export default function(state = initialState, actions) {
                 ...state,
                 posts: actions.payload,
                 loading: false 
+            }
+        case SET_FIRST_SET_OF_POSTS: 
+            let PostArr = [];
+            PostArr = [...actions.payload.posts];
+            console.log(actions.payload.last._fieldsProto.createdTime.stringValue);
+            return {
+                ...state,
+                posts: PostArr,
+                last: actions.payload.last
+            }
+        case SET_MORE_POSTS: 
+            let CurrentPostArr = [...state.posts];
+            let NewPostArr = [...CurrentPostArr, ...actions.payload.posts];
+            console.log(actions.payload.last);
+            return {
+                ...state,
+                posts: NewPostArr,
+                last: actions.payload.last
             }
         case GET_USERS: 
             return {

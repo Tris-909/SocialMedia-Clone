@@ -43,20 +43,24 @@ export class profile extends Component {
                 this.props.data.posts.map(post => {
                     if (this.state.userName === post.userHandle) {
                         return (
-                            <Grid item className={classes.container}>
-                                <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />
+                            <Grid item className={classes.container} key={post.postID}>
+                                <Post  passedID={post.postID} name={post.userHandle} post={post} />
                             </Grid>
                         );
+                    } else {
+                        return null;
                     }
                 })
             ) : (
                 this.props.data.posts.map(post => {
                     if (this.state.postIDparam === post.postID) {
                         return (
-                            <Grid item className={classes.container}>
+                            <Grid item className={classes.container} key={post.postID}>
                                 <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />
                             </Grid>
                         );
+                    }  else {
+                        return null;
                     }
                 })
             )

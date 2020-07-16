@@ -9,6 +9,8 @@ export const LOADING_UI = 'LOADING_UI';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export const SET_POSTS = "SET_POSTS";
+export const SET_FIRST_SET_OF_POSTS = "SET_FIRST_SET_OF_POSTS";
+export const SET_MORE_POSTS = "SET_MORE_POSTS";
 export const SET_POST = "SET_POST";
 export const LOADING_DATA = "LOADING_DATA";
 export const LIKE_POST = "LIKE_POST";

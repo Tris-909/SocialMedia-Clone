@@ -196,7 +196,7 @@ export class EditDetails extends Component {
                                 fullWidth
                             />
                             </Grid>
-                            <Grid item>
+                            <Grid item container>
                                 <CssTextField 
                                     name="birth"
                                     type="text"

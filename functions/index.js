@@ -12,6 +12,8 @@ const {
     getAllPosts, 
     postOnePost, 
     getPost, 
+    getFirstSetOfPosts,
+    fetchMoreData,
     commentOnPost, 
     deleteComment,
     likePost, 
@@ -20,7 +22,7 @@ const {
     unlikeComment,
     deletePost,
     uploadPostImage,
-    getSingleUser} = require('./handlers/posts');
+    getSingleUser } = require('./handlers/posts');
 const {
     signup, 
     login, 
@@ -34,6 +36,8 @@ const {
 
 // Posts route
 app.get('/posts', getAllPosts);
+app.get('/firstSetPosts', getFirstSetOfPosts);
+app.get('/fetchMoreData/:last', fetchMoreData);
 app.post('/post', FBAuth, postOnePost);
 app.get('/post/:postID', getPost);
 app.post('/posts/:postID/comment', FBAuth, commentOnPost);
@@ -79,6 +83,37 @@ exports.createNotificationOnLike = functions.region('asia-east2').firestore.docu
                 console.error(err);
             });
     });
+
+exports.createNotificationOnLikeComment = functions.region('asia-east2').firestore.document('likes/{id}')
+    .onCreate((snapshot) => {
+        return db.doc(`comments/${snapshot.data().commentID}`).get()
+            .then(doc => {
+                if (doc.exists && doc.data().userHandle !== snapshot.data().userHandle) {
+                    return db.doc(`/notifications/${snapshot.id}`).set({
+                        createdTime: new Date().toISOString(),
+                        recipient: doc.data().userHandle,
+                        sender: snapshot.data().userHandle,
+                        type: 'likeComment',
+                        read: false,
+                        postID: doc.id,
+                        notificationId: snapshot.id
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    })
+
+exports.deleteNotificationOnUnlikeComment =  functions.region('asia-east2').firestore.document('likes/{id}')
+    .onDelete((snapshot) => {
+        return db.doc(`/notifications/${snapshot.id}`)
+        .delete()
+        .catch(() => {
+            return;
+        })
+    })
+
 
 exports.deleteNotificationOnUnlike =  functions.region('asia-east2').firestore.document('likes/{id}')
     .onDelete((snapshot) => {
