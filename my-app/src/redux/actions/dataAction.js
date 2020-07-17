@@ -252,6 +252,19 @@ export const deletePost = (postID) => dispatch => {
         .catch(err => console.log(err));
 }
 
+export const editPostBody = (postID, body) => dispatch => {
+    axios.post(`editpost/${postID}`, body)
+        .then((res) => {
+            dispatch({
+                type: 'SET_POSTS',
+                payload: res.data
+            })
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+}
+
 export const openCardProfile = () => dispatch => {
     dispatch({type : OPEN_CARD_PROFILE});
 }

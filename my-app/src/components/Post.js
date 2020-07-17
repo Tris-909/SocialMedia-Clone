@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import DeleteButton from './DeleteButton';
 import AddComments from './AddComments';
+import EditBodyButton from './EditBodyButton';
 // Mui Stuff
 import withStyles from '@material-ui/core/styles/withStyles';
 import {Link} from 'react-router-dom';
@@ -215,6 +216,10 @@ export class Post extends Component {
             </Tooltip>
         ) : null;   
         
+        const editBodyPost = this.props.user.credentials.handle === this.props.post.userHandle ? (
+            <EditBodyButton postID={postID} />
+        ) : null;
+
         const EditPostButton = this.props.user.credentials.handle === this.props.post.userHandle ? (
             <Tooltip title="Edit" placement="bottom">
             <Button aria-owns={anchorEl ? 'simple-menu' : undefined} color="inherit" style={{fontSize: '1.25rem'}} aria-haspopup="true" onClick={this.handleOpen}>
@@ -244,6 +249,7 @@ export class Post extends Component {
                                 <Menu  disableScrollLock={true}  anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} onEntered={this.onMenuOpened}>
                                     <MenuItem onClick={this.handleClose}>{addImageButton}</MenuItem>
                                     <MenuItem>{deleteButton}</MenuItem>
+                                    <MenuItem>{editBodyPost}</MenuItem>
                                 </Menu>
                                     {this.props.user.credentials.handle === this.props.post.userHandle ? 
                                     <input type="file" hidden id="imagePostInput" 
