@@ -58,12 +58,13 @@ export class DetailsPhone extends Component {
     render() {
         const {classes} = this.props;
         console.log(this.props.name);
+        console.log(this.props.credentials.handle);
         let content = (
             <Card className={classes.Card}>
                     <Grid item container direction="column">
                         <Grid item container justify="center">
                             <Tooltip title="Change Avatar" placement="right-start">
-                                <Avatar  alt="your avatar" src={this.props.user.imageUrl} onClick={this.handleEditImage} className={classes.avatar}  />
+                                <Avatar  alt="your avatar" src={this.props.user.imageUrl} onClick={this.props.name === this.props.credentials.handle ? this.handleEditImage : null} className={classes.avatar}  />
                             </Tooltip>
                             <input type="file" hidden id="imageInput" onChange={this.handleImageChange} />
                         </Grid>
@@ -122,9 +123,11 @@ export class DetailsPhone extends Component {
                         : null
                         }
                         </Grid>
+                        {this.props.name === this.props.credentials.handle ? (
                         <Grid item container align="center" justify="center" className={classes.editBox}>
                             <EditDetails />
                         </Grid>
+                        ) : null}
                     </Grid>
                 </Card>
         );
