@@ -11,6 +11,7 @@ import {
     DELETE_POST, 
     DELETE_A_COMMENT,
     GET_USERS,
+    GET_USER,
     GET_SINGLE_USER,
     LIKE_COMMENT,
     UNLIKE_COMMENT
@@ -18,6 +19,7 @@ import {
 
 const initialState = {
     users: [],
+    user: {},
     last: {},
     posts: [],
     post: {},
@@ -61,6 +63,11 @@ export default function(state = initialState, actions) {
                 ...state,
                 users: actions.payload,
                 loading: false
+            }
+        case GET_USER: 
+            return {
+                ...state,
+                user: {...actions.payload.user}
             }
         case GET_SINGLE_USER:
             return {

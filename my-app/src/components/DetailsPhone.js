@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {connect} from 'react-redux';
+import {getUser} from '../redux/actions/dataAction';
 import {editUserDetails, uploadImage} from '../redux/actions/userAction';
 import Card from '@material-ui/core/Card';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -38,7 +39,6 @@ const styles = theme => ({
 });
 
 export class DetailsPhone extends Component {
-    
     handleImageChange = (event) => {
         const image = event.target.files[0];
         const formData = new FormData();
@@ -51,53 +51,57 @@ export class DetailsPhone extends Component {
         fileInput.click();
     };
     
+    componentDidMount() {
+        this.props.getUser(this.props.name);
+    }
+
     render() {
-        const {classes, credentials: {bio, handle,website,insta , linkedIn,  imageUrl, birth} } = this.props;
-        return (
-            <React.Fragment>
-                <Card className={classes.Card}>
+        const {classes} = this.props;
+        console.log(this.props.name);
+        let content = (
+            <Card className={classes.Card}>
                     <Grid item container direction="column">
                         <Grid item container justify="center">
                             <Tooltip title="Change Avatar" placement="right-start">
-                                <Avatar  alt="your avatar" src={imageUrl} onClick={this.handleEditImage} className={classes.avatar}  />
+                                <Avatar  alt="your avatar" src={this.props.user.imageUrl} onClick={this.handleEditImage} className={classes.avatar}  />
                             </Tooltip>
                             <input type="file" hidden id="imageInput" onChange={this.handleImageChange} />
                         </Grid>
                         <Grid item container justify="center" align="center" direction="column">
                         <Grid item style={{marginBottom: '0.5em'}}>
                                 <Typography variant="h4">
-                                    {handle}
+                                    { this.props.user.handle}
                                 </Typography>
                             </Grid>   
                             <Grid item style={{marginBottom: '0.5em'}}>
                                 <Typography>
-                                    {birth}
+                                    { this.props.user.birth}
                                 </Typography>
                             </Grid>
                             <Grid item style={{marginBottom: '0.5em'}}>
                                 <Typography>
-                                    {bio}
+                                    { this.props.user.bio}
                                 </Typography>
                             </Grid>
                         </Grid>
                         <Grid item container direction="row" alignItems="center" justify="center">
                         
-                        {website ? 
+                        { this.props.user.website ? 
                         (
                             <Grid item>
                             <Typography variant="h5" className={classes.itemMargin}>
-                                <a href={`${website}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
+                                <a href={`${ this.props.user.website}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
                                     <i className="fab fa-facebook-f"></i>
                                 </a>
                             </Typography>
                             </Grid>
                         ) : null }
 
-                        {insta ? 
+                        { this.props.user.insta ? 
                         (
                             <Grid item>
                             <Typography variant="h5" className={classes.itemMargin}>
-                                <a href={`${insta}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
+                                <a href={`${ this.props.user.insta}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
                                     <i className="fab fa-instagram"></i>
                                 </a>
                             </Typography>
@@ -105,11 +109,11 @@ export class DetailsPhone extends Component {
                         )
                         : null }
 
-                        {linkedIn ? 
+                        { this.props.user.linkedIn ? 
                         (
                             <Grid item>
                             <Typography variant="h5" className={classes.itemMargin}>
-                                <a href={`${linkedIn}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
+                                <a href={`${ this.props.user.linkedIn}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
                                     <i className="fab fa-linkedin-in"></i>
                                 </a>
                             </Typography>
@@ -123,18 +127,25 @@ export class DetailsPhone extends Component {
                         </Grid>
                     </Grid>
                 </Card>
+        );
+
+        return (
+            <React.Fragment>
+                {content}
             </React.Fragment>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    credentials: state.user.credentials
+    credentials: state.user.credentials,
+    user: state.data.user
 });
 
 const mapActionToProps = {
     editUserDetails,
-    uploadImage
+    uploadImage,
+    getUser
 }
 
 export default connect(mapStateToProps , mapActionToProps)(withStyles(styles)(DetailsPhone));

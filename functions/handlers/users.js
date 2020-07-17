@@ -44,8 +44,7 @@ exports.signup = (req, res) => {
                 password: newUser.password,
                 createdTime: new Date().toISOString(),
                 imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
-                userID: userId,
-                messages: [{notificationID: '', number: 0}]
+                userID: userId
             };
             return db.doc(`/users/${newUser.handle}`).set(userCredentials);
         })
@@ -72,8 +71,7 @@ exports.getUsers = (req, res) => {
                 userID: doc.data().userID,
                 bio: doc.data().bio,
                 handle: doc.data().handle,
-                imageUrl: doc.data().imageUrl,
-                messages: [...doc.data().messages]
+                imageUrl: doc.data().imageUrl
             });
         });
         return res.json(users);

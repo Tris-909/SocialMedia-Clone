@@ -74,13 +74,6 @@ class home extends Component {
         this.props.closeCardProfile();
     }
 
-    // openChatbox = (handle) => {
-    //     this.props.getSingleUser(handle);
-    //     this.setState({
-    //         showChatbox: true
-    //     });
-    // }
-
     componentDidMount(){
         this.props.getPosts();
         this.props.getUsers();

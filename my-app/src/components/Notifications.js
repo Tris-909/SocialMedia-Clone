@@ -71,7 +71,7 @@ class Notifications extends Component {
                     const text = not.type === 'like' ? 'liked' : 'commented on';
                     const time = dayjs(not.createdTime).fromNow();
                     const iconColor = not.read ? 'primary' : 'secondary';
-                    const icon = not.type === 'like' ? (
+                    const icon = not.type === ('like' || 'likeComment') ? (
                         <FavoriteIcon color={iconColor} style={{marginRight: '1em'}} />
                     ) : (
                         <ChatIcon color={iconColor} style={{marginRight: '1em'}} />
@@ -81,7 +81,7 @@ class Notifications extends Component {
                         <MenuItem key={not.createdTime} onClick={this.handleClose}>
                             {icon}
                             <Typography component={Link} style={{color: 'black'}} color="black" variant="body1" to={`/profile/${not.recipient}/post/${not.postID}`}>
-                                {not.sender} {text} your post {time}
+                                {not.sender} {text} your {not.type === 'likeComment' ? 'comment' : 'post'} {time}
                             </Typography>
                         </MenuItem>
                     )

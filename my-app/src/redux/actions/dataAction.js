@@ -15,6 +15,7 @@ import {
     LOADING_UI,
     DELETE_POST,
     GET_USERS,
+    GET_USER,
     GET_SINGLE_USER,
     OPEN_CARD_PROFILE, 
     CLOSE_CARD_PROFILE
@@ -87,6 +88,19 @@ export const getUsers = () => dispatch => {
             payload: []
         });
     });
+}
+
+export const getUser = (handle) => dispatch => {
+    axios.get(`/profile/${handle}`)
+        .then(res => {
+            dispatch({
+                type: GET_USER,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log(err)
+        });
 }
 
 export const getSingleUser = (handle) => dispatch => {

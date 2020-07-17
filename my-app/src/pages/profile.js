@@ -37,7 +37,6 @@ export class profile extends Component {
     }
     render() {
         const {classes} = this.props;
-
         let UserPost = ( !this.props.data.loading && this.props.data.posts !== undefined ) ? (
             !this.state.postIDparam ? (
                 this.props.data.posts.map(post => {
@@ -65,9 +64,14 @@ export class profile extends Component {
                 })
             )
         ) : <PostSkeleton />;
+
+        const detailUser = this.state.userName ? (
+            <DetailsPhone name={this.state.userName}/>
+        ) : null;
+
         return (
             <Grid item container direction="column" justify="center" alignItems="center">
-                <DetailsPhone />
+                {detailUser}
                 {UserPost}
             </Grid>
         )

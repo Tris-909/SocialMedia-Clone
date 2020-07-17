@@ -9,7 +9,7 @@ const cors = require('cors');
 app.use(cors());
 
 const {
-    getAllPosts, 
+    getAllPosts,
     postOnePost, 
     getPost, 
     getFirstSetOfPosts,
@@ -54,7 +54,7 @@ app.get('/users/:handle', FBAuth, getSingleUser);
 app.post('/user/image', FBAuth, uploadImage);   
 app.post('/user', FBAuth, addUserDetails);
 app.get('/user', FBAuth, getAuthenticatedUser);
-app.get('/user/:handle', getUserDetails);
+app.get('/profile/:handle', getUserDetails);
 app.post('/notifications',FBAuth, markNotificationRead);
 //login and signup
 app.post('/signup', signup);
@@ -200,3 +200,4 @@ exports.onPostDelete = functions.region('asia-east2').firestore.document('/posts
             })
             .catch(err => console.error(err));
     })
+
