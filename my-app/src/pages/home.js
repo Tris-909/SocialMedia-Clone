@@ -7,6 +7,7 @@ import Profile from '../components/Profile';
 import {getPosts, getUsers, getSingleUser, openCardProfile, closeCardProfile, getFirstSetOfPosts, getMorePosts, countPosts} from '../redux/actions/dataAction';
 import {getUserData} from '../redux/actions/userAction';
 import Avatar from '@material-ui/core/Avatar';
+import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PostSkeleton from '../components/PostSkeleton'
@@ -110,11 +111,15 @@ class home extends Component {
                 dataLength={this.props.data.posts.length} 
                 next={() => this.props.getMorePosts(last)}
                 hasMore={this.props.data.posts.length < this.props.data.numberOfPosts ? true : false}
-                loader={<p>Loading...</p>}
+                loader={null}
                 endMessage={
-                  <p style={{textAlign: 'center'}}>
-                    <b>Yay! You have seen it all</b>
-                  </p>
+                  <Card style={{width: '100%'}}>
+                    <Grid item container justify="center" style={{margin: '1em'}}>
+                        <Typography variant="h2" style={{fontWeight: '400'}}>
+                            You have read all the posts.
+                        </Typography>
+                    </Grid>
+                  </Card>
                 }>
                     {posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />}) }
                 </InfiniteScroll> 

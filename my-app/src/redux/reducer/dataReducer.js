@@ -58,7 +58,6 @@ export default function(state = initialState, actions) {
         case SET_MORE_POSTS: 
             let CurrentPostArr = [...state.posts];
             let NewPostArr = [...CurrentPostArr, ...actions.payload.posts];
-            console.log(actions.payload.last);
             return {
                 ...state,
                 posts: NewPostArr,
