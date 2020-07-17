@@ -57,8 +57,6 @@ export class DetailsPhone extends Component {
 
     render() {
         const {classes} = this.props;
-        console.log(this.props.name);
-        console.log(this.props.credentials.handle);
         let content = (
             <Card className={classes.Card}>
                     <Grid item container direction="column">

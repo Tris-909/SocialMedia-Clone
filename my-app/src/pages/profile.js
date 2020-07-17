@@ -35,6 +35,13 @@ export class profile extends Component {
         }
         this.props.getPosts();
     }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.match.params.handle !== this.state.userName) {
+            window.location.reload();
+        }
+    }
+
     render() {
         const {classes} = this.props;
         let UserPost = ( !this.props.data.loading && this.props.data.posts !== undefined ) ? (

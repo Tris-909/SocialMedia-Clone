@@ -28,7 +28,7 @@ const styles = {
 
 export class Navbar extends Component {
 
-    render(props) {
+    render() {
         const {classes} = this.props;
         const content = this.props.token ? 
         (

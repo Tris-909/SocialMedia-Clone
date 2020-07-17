@@ -259,12 +259,10 @@ export class Post extends Component {
                         </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item>
-                        <Typography variant="body1" style={{fontSize: '1.25em', marginBottom: '1em'}}>
-                           <ReadMoreAndLess ref={this.Readmore} charLimit={500}  readMoreText="Read more" readLessText="Read less">
-                               {body}
-                            </ReadMoreAndLess> 
-                        </Typography>
+                    <Grid item style={{fontSize: '1.25em', marginBottom: '1em'}} >
+                        <ReadMoreAndLess ref={this.Readmore} charLimit={500} readMoreText="Read more" readLessText="Read less">
+                            {body}
+                        </ReadMoreAndLess> 
                     </Grid>
                     {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="ERROR" style={{width: '100%'}}/> : null}
                     <Grid container direction="row" justify="space-between" className={classes.DetailBox}>
