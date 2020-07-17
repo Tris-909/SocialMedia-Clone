@@ -172,7 +172,7 @@ export class AddComments extends Component {
             }
         let render;
         render = SortedArr.map(comment => {
-            return ( <SingleComment comment={comment} />);
+            return ( <SingleComment key={comment.commentID} comment={comment} />);
         });
         
         

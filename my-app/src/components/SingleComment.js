@@ -26,6 +26,13 @@ const styles =  theme => ({
         width: "2em", 
         height: '2em', 
         margin: '1em'
+    },
+    commentBody: {
+        fontSize: '0.875rem',
+        fontFamily: "Roboto", 
+        fontWeight: 400,
+        lineHeight: 1.43,
+        letterSpacing: '0.01071em'
     }
 });
 
@@ -68,9 +75,13 @@ export class SingleComment extends Component {
             null
         ) : (
             this.state.isLiked ? (
-                <p style={{display: 'inline', cursor: 'pointer', color: 'blue', fontWeigth: '700'}} onClick={() => this.unlikeComment(this.props.comment.commentID)}>{this.props.comment.likeCount} likes</p>
+                <div className={classes.commentBody} style={{display: 'inline', cursor: 'pointer', color: 'blue', fontWeigth: '700'}} onClick={() => this.unlikeComment(this.props.comment.commentID)}>
+                    {this.props.comment.likeCount} {this.props.comment.likeCount > 1 ? "likes" : "like"}
+                </div>
             ) : (
-                <p style={{display: 'inline', cursor: 'pointer'}} onClick={() => this.likeComment(this.props.comment.commentID)}>{this.props.comment.likeCount} likes</p>
+                <div className={classes.commentBody} style={{display: 'inline', cursor: 'pointer'}} onClick={() => this.likeComment(this.props.comment.commentID)}>
+                    {this.props.comment.likeCount} {this.props.comment.likeCount > 1 ? "likes" : "like"}
+                </div>
             )
         );
 
@@ -97,9 +108,7 @@ export class SingleComment extends Component {
                              </Typography>
                          </Grid>
                          <Grid item style={{marginBottom: '1em', marginTop: '1em'}}>
-                             <Typography variant="body2" color="textSecondary">
-                                  {likeButton}
-                             </Typography>
+                            {likeButton}
                          </Grid>
                      </Grid>
                      {this.props.user.credentials.handle === this.props.comment.userHandle ? (

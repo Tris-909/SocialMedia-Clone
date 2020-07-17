@@ -117,8 +117,7 @@ export class Post extends Component {
      
 
     likedPost = () => {
-        if (this.props.user.likes.find(like => like.userHandle === this.props.post.userHandle) && 
-            this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
+        if (this.props.user.likes.find(like => like.postID === this.props.post.postID)) {
             this.setState({isLiked: true, likeCount: 1});
         } else {
             this.setState({isLiked: false});
@@ -223,7 +222,7 @@ export class Post extends Component {
             </Button>
             </Tooltip>
         ) : null;
-
+        
         return (
         <React.Fragment>
             <Card className={classes.card}>
@@ -266,8 +265,8 @@ export class Post extends Component {
                     </Grid>
                     {imagePostUrl !== undefined ? <img src={imagePostUrl} alt="ERROR" style={{width: '100%'}}/> : null}
                     <Grid container direction="row" justify="space-between" className={classes.DetailBox}>
-                        <Grid item>{likeCount} Likes</Grid>
-                        <Grid item>{commentCount} Comment</Grid>
+                        <Grid item>{likeCount} {likeCount > 1 ? "Likes" : "Like"}</Grid>
+                        <Grid item>{commentCount} {commentCount > 1 ? "Comments" : "Comment"}</Grid>
                     </Grid>
                 </CardContent>
             </Card>
