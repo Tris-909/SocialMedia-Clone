@@ -23,6 +23,7 @@ const {
     unlikeComment,
     deletePost,
     uploadPostImage,
+    editPostBody,
     getSingleUser } = require('./handlers/posts');
 const {
     signup, 
@@ -52,6 +53,7 @@ app.delete('/post/:postID', FBAuth, deletePost);
 app.post('/post/:postID/image', FBAuth, uploadPostImage);
 app.get('/users', FBAuth, getUsers);
 app.get('/users/:handle', FBAuth, getSingleUser);
+app.post('/editpost/:postID', FBAuth, editPostBody);
 
 app.post('/user/image', FBAuth, uploadImage);   
 app.post('/user', FBAuth, addUserDetails);

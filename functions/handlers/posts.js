@@ -455,3 +455,13 @@ exports.deleteComment = (req, res) => {
         return res.status(500).json({error: err.code});
     })
 }
+
+exports.editPostBody = (req, res) => {
+    db.doc(`posts/${req.params.postID}`).update(req.body)
+    .then(res => {
+        return res.status(200).json({message: 'Edit the body of the post successfully'});
+    })
+    .catch(err => {
+        return res.status(500).json({error: err.code});
+    })
+}
