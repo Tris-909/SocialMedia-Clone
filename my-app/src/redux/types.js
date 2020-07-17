@@ -8,6 +8,7 @@ export const SET_ERRORS = 'SET_ERRORS';
 export const LOADING_UI = 'LOADING_UI';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
+export const COUNT_NUMBER_OF_POSTS = "COUNT_NUMBER_OF_POSTS";
 export const SET_POSTS = "SET_POSTS";
 export const SET_FIRST_SET_OF_POSTS = "SET_FIRST_SET_OF_POSTS";
 export const SET_MORE_POSTS = "SET_MORE_POSTS";

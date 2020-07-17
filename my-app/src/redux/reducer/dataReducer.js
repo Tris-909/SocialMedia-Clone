@@ -1,5 +1,6 @@
 import { 
     SET_POSTS, 
+    COUNT_NUMBER_OF_POSTS,
     SET_FIRST_SET_OF_POSTS,
     SET_MORE_POSTS,
     SET_POST, 
@@ -22,6 +23,7 @@ const initialState = {
     user: {},
     last: {},
     posts: [],
+    numberOfPosts: 0,
     post: {},
     singleUser: {},
     loading: false
@@ -34,6 +36,11 @@ export default function(state = initialState, actions) {
                 ...state,
                 loading: true
             }
+        case COUNT_NUMBER_OF_POSTS: 
+            return {
+                ...state, 
+                numberOfPosts: actions.payload
+            }
         case SET_POSTS: 
             return {
                 ...state,
@@ -43,7 +50,6 @@ export default function(state = initialState, actions) {
         case SET_FIRST_SET_OF_POSTS: 
             let PostArr = [];
             PostArr = [...actions.payload.posts];
-            console.log(actions.payload.last._fieldsProto.createdTime.stringValue);
             return {
                 ...state,
                 posts: PostArr,

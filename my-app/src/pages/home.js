@@ -4,7 +4,7 @@ import Post from '../components/Post';
 import {connect} from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 import Profile from '../components/Profile';
-import {getPosts, getUsers, getSingleUser, openCardProfile, closeCardProfile, getFirstSetOfPosts, getMorePosts} from '../redux/actions/dataAction';
+import {getPosts, getUsers, getSingleUser, openCardProfile, closeCardProfile, getFirstSetOfPosts, getMorePosts, countPosts} from '../redux/actions/dataAction';
 import {getUserData} from '../redux/actions/userAction';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
@@ -75,7 +75,8 @@ class home extends Component {
     }
 
     componentDidMount(){
-        this.props.getPosts();
+        this.props.countPosts();
+        this.props.getFirstSetOfPosts();
         this.props.getUsers();
         this.props.getUserData();
     }
@@ -105,17 +106,18 @@ class home extends Component {
         const {classes} = this.props;
 
         let recentPostsMarkUp = !loading ? this.props.user.credentials.handle ? (
-            // <InfiniteScroll
-            //     dataLength={5} 
-            //     next={() => this.props.getMorePosts(last)}
-            //     hasMore={true}
-            //     loader={null}
-            //     endMessage={
-            //       <p style={{textAlign: 'center'}}>
-            //         <b>Yay! You have seen it all</b>
-            //       </p>
-            //     }></InfiniteScroll> 
-                posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />}) 
+            <InfiniteScroll
+                dataLength={this.props.data.posts.length} 
+                next={() => this.props.getMorePosts(last)}
+                hasMore={this.props.data.posts.length < this.props.data.numberOfPosts ? true : false}
+                loader={<p>Loading...</p>}
+                endMessage={
+                  <p style={{textAlign: 'center'}}>
+                    <b>Yay! You have seen it all</b>
+                  </p>
+                }>
+                    {posts.map(post =>{return <Post key={post.postID} passedID={post.postID} name={post.userHandle} post={post} />}) }
+                </InfiniteScroll> 
         ) : <PostSkeleton /> : <PostSkeleton />;
 
         let UsersList = !loading ? 
@@ -207,7 +209,8 @@ const mapActionToProps = {
     openCardProfile,
     closeCardProfile,
     getFirstSetOfPosts,
-    getMorePosts
+    getMorePosts,
+    countPosts
 }
 
 export default connect(mapStateToProps,mapActionToProps)(withStyles(styles)(home));

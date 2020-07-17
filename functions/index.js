@@ -10,6 +10,7 @@ app.use(cors());
 
 const {
     getAllPosts,
+    countNumberOfPosts,
     postOnePost, 
     getPost, 
     getFirstSetOfPosts,
@@ -35,6 +36,7 @@ const {
     } = require('./handlers/users');
 
 // Posts route
+app.get('/count', countNumberOfPosts);
 app.get('/posts', getAllPosts);
 app.get('/firstSetPosts', getFirstSetOfPosts);
 app.get('/fetchMoreData/:last', fetchMoreData);

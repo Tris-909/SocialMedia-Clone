@@ -27,13 +27,27 @@ exports.getAllPosts = (req, res) => {
     });
 }
 
+exports.countNumberOfPosts = (req, res) => {
+    db.collection('posts')
+    .orderBy('createdTime', 'desc')
+    .get()
+    .then(data => {
+        let numberOfPosts = data.docs.length;
+       return res.json(numberOfPosts);
+    })
+    .catch((err) => {
+        console.log(err);
+        res.status(500).json({error: err.code});
+    });
+}
+
 exports.getFirstSetOfPosts = (req, res) => {
     db.collection('posts')
     .orderBy('createdTime', 'desc')
     .limit(3)
     .get()
     .then(data => {
-        let lastVisible = data.docs[data.docs.length-1];
+        let lastVisible = data.docs[data.docs.length-1]._fieldsProto.createdTime.stringValue;
         let posts = [];
         data.forEach(doc => {
             posts.push({
@@ -59,9 +73,10 @@ exports.fetchMoreData = (req, res) => {
     db.collection('posts')
     .orderBy('createdTime', 'desc')
     .startAfter(req.params.last)
+    .limit(1)
     .get()
     .then(data => {
-        let lastVisible = data.docs[data.docs.length-1];
+        let lastVisible = data.docs[data.docs.length-1]._fieldsProto.createdTime.stringValue;
         let posts = [];
         data.forEach(doc => {
             posts.push({

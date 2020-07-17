@@ -1,5 +1,6 @@
 import {
     SET_POSTS, 
+    COUNT_NUMBER_OF_POSTS,
     SET_FIRST_SET_OF_POSTS,
     SET_MORE_POSTS,
     SET_POST,
@@ -37,6 +38,19 @@ export const getPosts = () => dispatch => {
                 type: SET_POSTS,
                 payload: []
             })
+        })
+}
+
+export const countPosts = () => dispatch => {
+    axios.get('/count')
+        .then(res => {
+            dispatch({
+                type: COUNT_NUMBER_OF_POSTS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err);
         })
 }
 
