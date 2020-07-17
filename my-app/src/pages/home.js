@@ -1,19 +1,38 @@
 import React, { Component } from 'react'
+
+//** NPM PACKAGES */
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+//** MATERIAL-UI */
 import Grid from '@material-ui/core/Grid';
-import Post from '../components/Post';
-import {connect} from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
-import Profile from '../components/Profile';
-import {getPosts, getUsers, getSingleUser, openCardProfile, closeCardProfile, getFirstSetOfPosts, getMorePosts, countPosts} from '../redux/actions/dataAction';
-import {getUserData} from '../redux/actions/userAction';
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
-import PostSkeleton from '../components/PostSkeleton'
 import { Typography } from '@material-ui/core';
-import CardProfile from '../components/CardProfile';
-import InfiniteScroll from 'react-infinite-scroll-component';
+
+//** REDUX STORE */
+import {connect} from 'react-redux';
+import {
+    getPosts, 
+    getUsers, 
+    getSingleUser, 
+    openCardProfile, 
+    closeCardProfile, 
+    getFirstSetOfPosts, 
+    getMorePosts, 
+    countPosts
+} from '../redux/actions/dataAction';
+import {
+    getUserData
+} from '../redux/actions/userAction';
+
+//** COMPONENTS */
+import Profile from '../components/CardProfile/Profile';
+import PostSkeleton from '../components/Skeleton/PostSkeleton';
+import CardProfile from '../components/CardProfile/CardProfile';
+import Post from '../components/Post/Post';
 
 const styles = theme => ({
     post: {

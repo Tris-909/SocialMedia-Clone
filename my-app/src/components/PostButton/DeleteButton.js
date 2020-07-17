@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 
+//** MATERIAL-UI */
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import {deletePost} from '../redux/actions/dataAction';
+import {deletePost} from '../../redux/actions/dataAction';
 
 export class DeleteButton extends Component {
     state = {

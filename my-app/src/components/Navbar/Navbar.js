@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+
+//** NPM PACKAGES */
 import {Link} from 'react-router-dom';
 
-// MUI stuff
+//** MATERIAL-UI */
 import Appbar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
@@ -9,9 +11,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import {logoutUser} from '../redux/actions/userAction';
+import {logoutUser} from '../../redux/actions/userAction';
 
+//** COMPONENTS */
 import AddPost from './AddPost';
 import Notifications from './Notifications';
 

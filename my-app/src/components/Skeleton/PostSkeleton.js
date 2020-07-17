@@ -1,11 +1,13 @@
 import React from 'react';
-import Noimg from '../images/blank-profile-picture-973460_960_720.png';
 
+//** BLANK IMAGES FOR SKELETONS  */
+import Noimg from '../../images/blank-profile-picture-973460_960_720.png';
+
+//** MATERIAL-UI */
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {

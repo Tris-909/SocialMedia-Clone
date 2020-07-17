@@ -1,19 +1,30 @@
 import React, {Component} from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
-import SingleComment from './SingleComment';
 
+//** NPM PACKAGES */
 import dayjs from 'dayjs';
 import Picker from 'emoji-picker-react';
 
+//** MATERIAL-UI */
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import withStyles from '@material-ui/core/styles/withStyles';
 
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import {commentPost ,deleteComment ,getPost ,likeComment ,unlikeComment} from '../redux/actions/dataAction';
+import {
+    commentPost,
+    deleteComment,
+    getPost,
+    likeComment,
+    unlikeComment
+} from '../../redux/actions/dataAction';
+
+//** COMPONENTS  */
+import SingleComment from './SingleComment';
 
 const styles = theme => ({ 
     userImage: {

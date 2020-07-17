@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
-import withStyles from '@material-ui/core/styles/withStyles';
+
+//** NPM PACKAGES */
 import {Link} from 'react-router-dom';
 
+//** MATERIAL-UI */
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
 
+//** REDUX STORE */
 import {connect} from 'react-redux';
 import {loginUser} from '../redux/actions/userAction';
 

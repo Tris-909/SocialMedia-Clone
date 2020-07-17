@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
+
+//** MATERIAL-UI */
 import Grid from '@material-ui/core/Grid';
-import Post from '../components/Post';
 import withStyles from '@material-ui/core/styles/withStyles';
-import {connect} from 'react-redux';
-import {getPosts} from '../redux/actions/dataAction';
-import {getUserData} from '../redux/actions/userAction';
-import PostSkeleton from '../components/PostSkeleton';
-import DetailsPhone from '../components/DetailsPhone';
+
+//** REDUX-STORE */
+import { connect } from 'react-redux';
+import { getPosts } from '../redux/actions/dataAction';
+import { getUserData } from '../redux/actions/userAction';
+
+//** COMPONENTS */
+import PostSkeleton from '../components/Skeleton/PostSkeleton';
+import DetailsPhone from '../components/CardProfile/DetailsPhone';
+import Post from '../components/Post/Post';
 
 const styles = theme => ({ 
     container: {

@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
+
+//** MARTERIAL-UI IMPORTS */
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import {connect} from 'react-redux';
-import {getUser} from '../redux/actions/dataAction';
-import {editUserDetails, uploadImage} from '../redux/actions/userAction';
 import Card from '@material-ui/core/Card';
 import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
-import EditDetails from '../components/EditDetails';
+
+//** REDUX STORE */
+import {connect} from 'react-redux';
+import {getUser} from '../../redux/actions/dataAction';
+import {editUserDetails, uploadImage} from '../../redux/actions/userAction';
+
+//* COMPONENTS */
+import EditDetails from './EditDetails';
 
 const styles = theme => ({ 
     avatar: {

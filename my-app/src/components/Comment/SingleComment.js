@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
-import withStyles from '@material-ui/core/styles/withStyles';
 
+//** NPM PACKAGES */
 import dayjs from 'dayjs';
+import {Link} from 'react-router-dom';
 
+//** MATERIAL-UI */
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import withStyles from '@material-ui/core/styles/withStyles';
 
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import {deleteComment, likeComment ,unlikeComment} from '../redux/actions/dataAction';
+import {
+    deleteComment, 
+    likeComment,
+    unlikeComment
+} from '../../redux/actions/dataAction';
 
 const styles =  theme => ({ 
     Card: {

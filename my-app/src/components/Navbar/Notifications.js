@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+
+//** NPM PACKAGES */
 import {Link} from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
+//** MATERIAL-UI */
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -10,11 +13,13 @@ import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
 
+//** MATERIAL-UI ICON */
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/Chat';
 
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import { markNotificationsRead } from '../redux/actions/userAction';
+import { markNotificationsRead } from '../../redux/actions/userAction';
 
 class Notifications extends Component {
     state = {

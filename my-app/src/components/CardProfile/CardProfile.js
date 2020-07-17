@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
+
+//** NPM PACKAGES */
 import {Link} from 'react-router-dom';
+
+//** MATERIAL-UI */
 import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import withStyles from '@material-ui/core/styles/withStyles';
+
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import {closeCardProfile} from '../redux/actions/dataAction';
+import {closeCardProfile} from '../../redux/actions/dataAction';
 
 const styles = theme => ({
     card: {
         position: 'absolute',
         left: '-20%',
-        width: '20em',
-        
+        width: '20em'    
     },
     width: {
         width: '50%'

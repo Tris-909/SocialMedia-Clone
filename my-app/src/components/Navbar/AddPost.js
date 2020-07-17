@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 
+//** NPM PACKAGES */
 import Picker from 'emoji-picker-react';
 
+//** MATERIAL-UI */
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,8 +14,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import {postOnePost} from '../redux/actions/dataAction';
+import {postOnePost} from '../../redux/actions/dataAction';
 
 const styles = theme => ({
     body: {

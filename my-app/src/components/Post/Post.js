@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
+
+//** NPM PACKAGES */
 import ReadMoreAndLess from 'react-read-more-less';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import DeleteButton from './DeleteButton';
-import AddComments from './AddComments';
-import EditBodyButton from './EditBodyButton';
-// Mui Stuff
-import withStyles from '@material-ui/core/styles/withStyles';
 import {Link} from 'react-router-dom';
+
+//** MATERIAL-UI */
+import withStyles from '@material-ui/core/styles/withStyles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
@@ -16,21 +16,23 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-//Mui MENU
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-
-//Mui Icon
+//** MATERIAL-UI ICON */
 import ChatIcon from '@material-ui/icons/Chat';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
-//REDUX
+//** REDUX STORE */
 import {connect} from 'react-redux';
-import {likePost, unlikePost, getPost, commentPost} from '../redux/actions/dataAction';
-import {uploadPostImage, getUserData} from '../redux/actions/userAction';
+import {likePost, unlikePost, getPost, commentPost} from '../../redux/actions/dataAction';
+import {uploadPostImage, getUserData} from '../../redux/actions/userAction';
+
+//** COMPONENTS */
+import DeleteButton from '../PostButton/DeleteButton';
+import AddComments from '../Comment/AddComments';
+import EditBodyButton from '../PostButton/EditBodyButton';
 
 const styles =  theme => ({
     card: {

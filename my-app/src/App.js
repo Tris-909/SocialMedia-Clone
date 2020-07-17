@@ -4,7 +4,7 @@ import './App.css';
 import themeFile from './Utilites/theme';
 import jwtDecode from 'jwt-decode';
 
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar/Navbar';
 import AuthRoute from './Utilites/AuthRoute';
 
 import {Provider} from 'react-redux';
