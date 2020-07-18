@@ -94,6 +94,7 @@ exports.login = (req, res) => {
 
     firebase.auth().signInWithEmailAndPassword(user.email, user.password)
     .then(data => {
+        console.log(data);
         return data.user.getIdToken();
     })
     .then(token => {

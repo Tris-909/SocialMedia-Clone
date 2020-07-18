@@ -122,7 +122,6 @@ export class EditBodyButton extends Component {
 
     render(){
         const {classes} = this.props;
-        console.log(this.props.postID);
         return(
             <React.Fragment>
             <Tooltip title="Edit Post" placement="bottom">

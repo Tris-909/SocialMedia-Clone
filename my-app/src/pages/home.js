@@ -31,7 +31,7 @@ import {
 //** COMPONENTS */
 import Profile from '../components/CardProfile/Profile';
 import PostSkeleton from '../components/Skeleton/PostSkeleton';
-import CardProfile from '../components/CardProfile/CardProfile';
+// import CardProfile from '../components/CardProfile/CardProfile';
 import Post from '../components/Post/Post';
 
 const styles = theme => ({
@@ -203,7 +203,7 @@ class home extends Component {
             <Hidden smDown>
             <Grid item container direction="column" style={{position: "fixed", left: '85%', top: '8%', height: '100vh'}}>
                 <Paper className={classes.friendList} style={{height: '85%'}}>
-                    {this.props.openCardProfile ? <CardProfile /> : null}
+                    {/* {this.props.openCardProfile ? <CardProfile /> : null} */}
                     {UsersList}
                 </Paper>
                 <Paper style={{height: '8%'}}>
