@@ -76,6 +76,13 @@ const styles = theme => ({
         [theme.breakpoints.down("xs")]: {
             position: 'initial'
         }
+    },
+    EndPosts: {
+        fontSize: '3.25em',
+        fontFamily: 'Lobster',
+        [theme.breakpoints.down("xs")]: {
+            fontSize: '1.75em'
+        }
     }
 })
 
@@ -134,7 +141,7 @@ class home extends Component {
                 endMessage={
                   <Card style={{width: '100%'}}>
                     <Grid item container justify="center" style={{margin: '1em'}}>
-                        <Typography variant="h2" style={{fontWeight: '400'}}>
+                        <Typography className={classes.EndPosts} style={{fontWeight: '400'}}>
                             You have read all the posts.
                         </Typography>
                     </Grid>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
 import './App.css';
 import themeFile from './Utilites/theme';
 import jwtDecode from 'jwt-decode';
@@ -16,6 +16,7 @@ import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
 import profile from './pages/profile';
+import chat from './pages/chat';
 
 import {SET_AUTHENTICATED} from './redux/types';
 import {logoutUser, getUserData} from './redux/actions/userAction';
@@ -40,6 +41,15 @@ if (token) {
 
 
 function App() {
+
+  const redirect = token ? (
+    <Route exact path="/" component={home} />
+  ) : (<Redirect from='/' to='/login' />);
+
+  // Home Route :
+  // <Route exact path="/" component={home} />
+
+
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
@@ -47,10 +57,11 @@ function App() {
         <Navbar token={token}/>
           <div className="container">
             <Switch>
-              <Route exact path="/" component={home} />
-              <Route exact path="/profile/:handle" component={profile} />
               <AuthRoute exact path="/login" component={login} />
               <AuthRoute exact path="/signup" component={signup} />
+              {redirect}
+              <Route exact path="/profile/:handle" component={profile} />
+              <Route exact path="/chat" component={chat} />
               <Route exact path="/profile/:handle/post/:postID" component={profile} />
             </Switch>
           </div> 
