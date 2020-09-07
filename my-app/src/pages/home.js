@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom';
 
 //** NPM PACKAGES */
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -166,7 +167,11 @@ class home extends Component {
                             <Avatar alt="user avatar" src={user.imageUrl} />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body1" style={{marginLeft: '1em', marginTop: '0.5em'}}>
+                            <Typography 
+                                variant="body1" 
+                                style={{marginLeft: '1em', marginTop: '0.5em', textDecoration: 'none', color: 'black'}} 
+                                component={Link} 
+                                to={`/profile/${user.handle}`}>
                                 {user.handle}
                             </Typography>
                         </Grid>
@@ -179,14 +184,18 @@ class home extends Component {
                             <Grid 
                             item 
                             container 
-                            onMouseEnter={() => this.onHoverHandlerOpen(user.handle)} 
+                            onMouseEnter={() => this.onHoverHandlerOpen(user.handle)}
                             className={classes.userChat} 
                             align="center">                  
                                 <Grid item>
                                     <Avatar alt="user avatar" src={user.imageUrl} />
                                 </Grid>
                                 <Grid item>
-                                    <Typography variant="body1" style={{marginLeft: '1em', marginTop: '0.5em'}}>
+                                    <Typography 
+                                        variant="body1" 
+                                        style={{marginLeft: '1em', marginTop: '0.5em', textDecoration: 'none', color: 'black'}} 
+                                        component={Link} 
+                                        to={`/profile/${user.handle}`}>
                                         {user.handle}
                                     </Typography>
                                 </Grid>

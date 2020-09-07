@@ -41,14 +41,9 @@ if (token) {
 
 
 function App() {
-
   const redirect = token ? (
     <Route exact path="/" component={home} />
   ) : (<Redirect from='/' to='/login' />);
-
-  // Home Route :
-  // <Route exact path="/" component={home} />
-
 
   return (
     <MuiThemeProvider theme={theme}>

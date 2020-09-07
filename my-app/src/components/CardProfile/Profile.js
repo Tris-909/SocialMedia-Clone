@@ -78,7 +78,7 @@ class Profile extends Component {
                         <input type="file" hidden id="imageInput" onChange={this.handleImageChange} />
                     </Grid>
                     <Grid item>
-                        <Typography variant="h4" color="primary" className={classes.Name} component={Link} to={`/users/${handle}`}>
+                        <Typography variant="h4" color="primary" className={classes.Name} component={Link} to={`/profile/${handle}`}>
                             {handle}
                         </Typography>
                     </Grid>

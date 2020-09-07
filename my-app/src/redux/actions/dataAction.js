@@ -23,7 +23,18 @@ import {
 } from '../types';
 import axios from 'axios';
 
-//GET ALL POSTS
+//? WHAT IN HERE ? 
+//? + Get all the posts for new feed [ F1 ]
+//? + Get the information of the post you click on notifications [ F2 ]
+//? + Infinity Scroll Actions [ F3 ]
+//? + Get users information [ F4 ] 
+//? + Redirect user to people profile page when he click on the name [ F5 ]
+//? + Comment/ Like/ UnLike/ Delete comments [ F6 ]
+//? + Post a new post [ F7 ]
+//? + Like/ Unlike/ Delete/ Edit Post [ F8 ]
+
+
+//! F1
 export const getPosts = () => dispatch => {
     dispatch({ type: LOADING_DATA });
     axios.get('/posts')
@@ -40,7 +51,28 @@ export const getPosts = () => dispatch => {
             })
         })
 }
+//! END OF F1
 
+
+//! F2
+export const getPost = (postID) => dispatch => {
+    dispatch({type: LOADING_UI});
+    axios.get(`/post/${postID}`)
+        .then(res => {
+            dispatch({
+                type: SET_POST,
+                payload: res.data
+            });
+            dispatch({type: CLEAR_ERRORS});
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({type: CLEAR_ERRORS});
+        });
+}
+//! END OF F2
+
+//! F3
 export const countPosts = () => dispatch => {
     axios.get('/count')
         .then(res => {
@@ -85,7 +117,9 @@ export const getMorePosts = (last) => dispatch => {
         })
     })
 }
+//! END OF F3
 
+//! F4
 export const getUsers = () => dispatch => {
     dispatch({ type: LOADING_DATA });
     axios.get('/users')
@@ -103,7 +137,9 @@ export const getUsers = () => dispatch => {
         });
     });
 }
+//! END OF F4
 
+//! F5
 export const getUser = (handle) => dispatch => {
     axios.get(`/profile/${handle}`)
         .then(res => {
@@ -116,6 +152,7 @@ export const getUser = (handle) => dispatch => {
             console.log(err)
         });
 }
+//! END OF F5
 
 export const getSingleUser = (handle) => dispatch => {
     axios.get(`/users/${handle}`)
@@ -130,22 +167,7 @@ export const getSingleUser = (handle) => dispatch => {
         })
 }
 
-export const getPost = (postID) => dispatch => {
-    dispatch({type: LOADING_UI});
-    axios.get(`/post/${postID}`)
-        .then(res => {
-            dispatch({
-                type: SET_POST,
-                payload: res.data
-            });
-            dispatch({type: CLEAR_ERRORS});
-        })
-        .catch(err => {
-            console.log(err);
-            dispatch({type: CLEAR_ERRORS});
-        });
-}
-
+//! F6
 export const commentPost = (postID, body) => dispatch => {
     dispatch({type: LOADING_UI});
     axios.post(`/posts/${postID}/comment`, body)
@@ -160,48 +182,6 @@ export const commentPost = (postID, body) => dispatch => {
             console.log(err);
             dispatch({type: CLEAR_ERRORS});
         })
-}
-
-//DELETE A COMMENT
-export const deleteComment = (postID, commentID) => dispatch => {
-    dispatch({type: LOADING_UI});
-    axios.delete(`post/${postID}/${commentID}/comment`)
-        .then(() => {
-            dispatch({
-                type:  DELETE_A_COMMENT,
-                payload: {postID, commentID}
-            })
-            dispatch({type: CLEAR_ERRORS});
-        })
-        .catch(err => {
-            console.log(err);
-            dispatch({type: CLEAR_ERRORS});
-        });
-}
-
-export const postOnePost = (newPost) => (dispatch) => {
-    axios.post('/post', newPost)
-        .then(res => {
-            dispatch({
-                type: POST_A_POST,
-                payload: res.data
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-}
-
-//LIKE A POST
-export const likePost = (postID) => dispatch => {
-    axios.get(`post/${postID}/like`)
-        .then(res => {
-            dispatch({
-                type: LIKE_POST,
-                payload: res.data
-            });
-        })
-        .catch(err => console.log(err));
 }
 
 export const likeComment = (commentID) => dispatch => {
@@ -226,8 +206,49 @@ export const unlikeComment = (commentID) => dispatch => {
         .catch(err => console.log(err));
 }
 
+export const deleteComment = (postID, commentID) => dispatch => {
+    dispatch({type: LOADING_UI});
+    axios.delete(`post/${postID}/${commentID}/comment`)
+        .then(() => {
+            dispatch({
+                type:  DELETE_A_COMMENT,
+                payload: {postID, commentID}
+            })
+            dispatch({type: CLEAR_ERRORS});
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({type: CLEAR_ERRORS});
+        });
+}
+//! END OF F6
 
-//UNLIKE A POST
+//! F7
+export const postOnePost = (newPost) => (dispatch) => {
+    axios.post('/post', newPost)
+        .then(res => {
+            dispatch({
+                type: POST_A_POST,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+//! END OF F7
+
+//! F8
+export const likePost = (postID) => dispatch => {
+    axios.get(`post/${postID}/like`)
+        .then(res => {
+            dispatch({
+                type: LIKE_POST,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log(err));
+}
 export const unlikePost = (postID) => dispatch => {
     axios.get(`post/${postID}/unlike`)
         .then(res => {
@@ -239,7 +260,7 @@ export const unlikePost = (postID) => dispatch => {
         .catch(err => console.log(err));
 }
 
-//DELETE A POST
+//TODO  4) Delete START
 export const deletePost = (postID) => dispatch => {
     axios.delete(`post/${postID}`)
         .then(() => {
@@ -252,6 +273,8 @@ export const deletePost = (postID) => dispatch => {
         .catch(err => console.log(err));
 }
 
+
+//TODO 5) EDIT START
 export const editPostBody = (postID, body) => dispatch => {
     axios.post(`editpost/${postID}`, body)
         .then((res) => {
@@ -264,7 +287,10 @@ export const editPostBody = (postID, body) => dispatch => {
             console.log(err);
         })
 }
+//! END OF F8
 
+
+//TODO: ONGOING --> Irrelevant 
 export const openCardProfile = () => dispatch => {
     dispatch({type : OPEN_CARD_PROFILE});
 }
