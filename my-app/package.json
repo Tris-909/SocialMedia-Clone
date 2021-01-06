@@ -9,7 +9,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@webscopeio/react-textarea-autocomplete": "^4.7.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dayjs": "^1.8.29",
     "emoji-picker-react": "^3.2.1",
     "jwt-decode": "^2.2.0",
